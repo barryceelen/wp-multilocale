@@ -15,6 +15,7 @@ The Multilocale plugin offers a tiny toolset for publishing content in multiple 
 - Store taxonomy term post count per language and use that number in stead. For example one might end up with an incorrect result when using `get_terms()` setting `hide_empy` to true.
 - ~~Modify parent selector on hierarchical post type admin screen to only include posts from the same locale.~~
 - Add UI to enable changing the locale of a post and/or change its translation group.
+- Use Automattic [wp-cldr](https://github.com/Automattic/wp-cldr) plugin if it is available.
 
 ### Also
 
