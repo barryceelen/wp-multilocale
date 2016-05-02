@@ -151,7 +151,7 @@ class Multilocale_Public_Posts {
 	 */
 	public function redirect_to_localized_post_url() {
 
-		if ( ! is_singular( multilocale_get_supported_post_types() ) ) {
+		if ( ! is_singular( get_post_types_by_support( 'multilocale' ) ) ) {
 			return;
 		}
 

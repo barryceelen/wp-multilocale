@@ -31,18 +31,6 @@ function multilocale_get_locale_object() {
 }
 
 /**
- * Get list of names of posts with 'multilocale' support.
- *
- * Call this function after or late on init as that is when post types are most likely to be registered.
- *
- * @return array List of post types.
- */
-function multilocale_get_supported_post_types() {
-	global $_wp_post_type_features;
-	return array_keys( wp_filter_object_list( $_wp_post_type_features, array( 'multilocale' => true ) ) );
-}
-
-/**
  * Get the locale for a post.
  *
  * @see Multilocale_Posts->get_post_locale()

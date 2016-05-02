@@ -166,7 +166,7 @@ class Multilocale_Admin_Posts {
 			if ( 'delete' === $_POST['delete_option'] ) { // WPCS: input var okay.
 
 				$args = array(
-					'post_type' => multilocale_get_supported_post_types(),
+					'post_type' => get_post_types_by_support( 'multilocale' ),
 					'tax_query' => array(
 						array(
 							'taxonomy' => $this->_locale_taxonomy,
@@ -239,7 +239,7 @@ class Multilocale_Admin_Posts {
 		 *
 		 */
 		$args = array(
-			'post_type' => multilocale_get_supported_post_types(),
+			'post_type' => get_post_types_by_support( 'multilocale' ),
 			'post_status' => 'any',
 			'nopaging' => true,
 		);
@@ -819,14 +819,14 @@ class Multilocale_Admin_Posts {
 
 		$posts = array();
 
-		if ( count( multilocale_get_supported_post_types() ) ) {
+		if ( count( get_post_types_by_support( 'multilocale' ) ) ) {
 
 			$terms = get_terms( array( $this->_locale_taxonomy ), array( 'fields' => 'ids' ) );
 
 			if ( count( $terms ) ) {
 
 				$args = array(
-					'post_type' => multilocale_get_supported_post_types(),
+					'post_type' => get_post_types_by_support( 'multilocale' ),
 					'tax_query' => array(
 						array(
 							'taxonomy' => $this->_locale_taxonomy,

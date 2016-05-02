@@ -93,7 +93,7 @@ class Multilocale_Locales {
 
 		register_taxonomy(
 			$this->_locale_taxonomy,
-			multilocale_get_supported_post_types(),
+			get_post_types_by_support( 'multilocale' ),
 			$args
 		);
 	}

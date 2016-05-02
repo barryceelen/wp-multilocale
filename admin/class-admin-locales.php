@@ -441,7 +441,7 @@ class Multilocale_Admin_Locales {
 	 */
 	public function add_init_page_text() {
 
-		$supported_post_types = multilocale_get_supported_post_types();
+		$supported_post_types = get_post_types_by_support( 'multilocale' );
 		$messages = array();
 
 		if ( ! $supported_post_types ) {

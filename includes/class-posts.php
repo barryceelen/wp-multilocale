@@ -107,7 +107,7 @@ class Multilocale_Posts {
 
 		register_taxonomy(
 			$this->post_translation_taxonomy,
-			multilocale_get_supported_post_types(),
+			get_post_types_by_support( 'multilocale' ),
 			$args
 		);
 	}
@@ -355,7 +355,7 @@ class Multilocale_Posts {
 	public function get_posts_by_translation_group_id( $id, $post_status = 'any', $exclude = false ) {
 
 		$args = array(
-			'post_type' => multilocale_get_supported_post_types(),
+			'post_type' => get_post_types_by_support( 'multilocale' ),
 			'post_status' => $post_status,
 			'tax_query' => array(
 				array(
