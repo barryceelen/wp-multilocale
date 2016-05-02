@@ -1,0 +1,484 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Multilocale\n"
+"POT-Creation-Date: 2015-12-18 14:20+0100\n"
+"PO-Revision-Date: 2015-12-18 14:20+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.6\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: multilocale.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: admin/class-admin-locales.php:79
+msgid "Could not insert locale into the database"
+msgstr ""
+
+#: admin/class-admin-locales.php:80
+msgid "The WordPress locale is required."
+msgstr ""
+
+#: admin/class-admin-locales.php:81
+msgid "A name is required"
+msgstr "Ein Name ist erforderlich"
+
+#: admin/class-admin-locales.php:82
+msgid "A slug is required"
+msgstr "Titelform ist erforderlich"
+
+#: admin/class-admin-locales.php:83
+msgid "Invalid locale taxonomy"
+msgstr "Ungültige Lokalisierungs Taxonomie"
+
+#: admin/class-admin-locales.php:84
+msgid "Locale not found"
+msgstr "Lokalisierung nicht gefunden"
+
+#: admin/class-admin-locales.php:85
+msgid "Invalid locale term ID"
+msgstr ""
+
+#: admin/class-admin-locales.php:86
+msgid "A locale with the name provided already exists."
+msgstr ""
+
+#: admin/class-admin-locales.php:220
+#, php-format
+msgid "Unknown locale. %s"
+msgstr ""
+
+#: admin/class-admin-locales.php:251
+#, php-format
+msgid "Default %s added. <a href=\"%s\">%s</a>"
+msgstr ""
+
+#: admin/class-admin-locales.php:279
+#, php-format
+msgid "%s added. <a href=\"%s\">%s</a>"
+msgstr ""
+
+#: admin/class-admin-locales.php:337
+#, php-format
+msgid "The slug &#8220;%s&#8221; is already in use by another locale"
+msgstr ""
+
+#: admin/class-admin-locales.php:375
+msgid "Locale updated"
+msgstr "Lokalisierung aktualisiert"
+
+#: admin/class-admin-locales.php:426
+msgid ""
+"You attempted to edit an item that doesn&#8217;t exist. Perhaps it was "
+"deleted?"
+msgstr ""
+
+#: admin/class-admin-locales.php:429
+msgid "You did not select an item for editing."
+msgstr ""
+
+#: admin/class-admin-locales.php:450
+msgid ""
+"Select your default locale. <strong>Note:</strong> No supported post types "
+"defined."
+msgstr ""
+
+#: admin/class-admin-locales.php:472
+#, php-format
+msgctxt ""
+"A comma-separated list where \"and\" comes before the last element, eg. "
+"Dutch, English and French"
+msgid "%1$s and %2$s"
+msgstr ""
+
+#: admin/class-admin-locales.php:473
+#, php-format
+msgctxt "Refers to a comma separated list of supported post types"
+msgid ""
+"Select your default locale. Existing content (%s) will be automatically "
+"assigned to the default locale."
+msgstr ""
+
+#: admin/class-admin-locales.php:520
+#: admin/templates/content-delete-locale.php:63
+msgid "Undefined"
+msgstr "Nicht definiert"
+
+#: admin/class-admin-locales.php:526
+#: admin/templates/content-edit-locale.php:192
+#: admin/templates/content-edit-locale.php:196
+msgid "Default Locale"
+msgstr "Standardgebietsschema"
+
+#: admin/class-admin-locales.php:634
+msgid "Core language pack not installed."
+msgstr ""
+
+#: admin/class-admin-locales.php:685
+msgid "Admin Locale"
+msgstr "Sprache"
+
+#: admin/class-admin-posts.php:313
+#, php-format
+msgctxt "String refers to the post title"
+msgid "Edit &quot;%s&quot;"
+msgstr ""
+
+#: admin/class-admin.php:135 admin/class-admin.php:136
+#: admin/templates/page-options.php:26 includes/class-locales.php:74
+msgid "Locales"
+msgstr ""
+
+#: admin/class-admin.php:180
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: admin/class-admin.php:235
+msgid "Plain permalinks are not supported by the Multilocale plugin."
+msgstr ""
+
+#: admin/class-admin.php:275
+#, php-format
+msgid ""
+"The minimum required WordPress version is 4.4.  <a href=\"%s\">Update</a>"
+msgstr ""
+
+#: admin/class-admin.php:277
+msgid ""
+"The minimum required WordPress version is 4.4. Please notify the site "
+"administrator."
+msgstr ""
+
+#: admin/class-admin.php:284
+#, php-format
+msgid ""
+"Pretty permalinks are disabled. <a href=\"%s\">Please enable them</a> in "
+"order to have language prefixed URLs work correctly."
+msgstr ""
+
+#: admin/includes/vendor/glotpress/locales.php:55
+#, php-format
+msgctxt "locales"
+msgid "%1$s/%2$s"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:20
+#, php-format
+msgid "Delete %s"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:21
+msgid "You have specified this locale for deletion:"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:37
+msgid "Select a new default locale"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:52
+msgid "What should be done with content in this locale?"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:56
+msgid "Delete existing content"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:61
+msgid "Assign to locale"
+msgstr ""
+
+#: admin/templates/content-delete-locale.php:69
+msgid "Confirm Deletion"
+msgstr "Löschen bestätigen"
+
+#: admin/templates/content-edit-locale.php:44
+#: admin/templates/content-locales.php:16
+msgid "Name"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:52
+#: admin/templates/content-locales.php:17
+msgid "Slug"
+msgstr "Titelform"
+
+#: admin/templates/content-edit-locale.php:56
+msgid ""
+"The &#8220;slug&#8221; is the URL-friendly version of the name. It is "
+"usually all lowercase and contains only letters, numbers, and hyphens."
+msgstr ""
+"Die &#8222;Titelform (in URLs)&#8220; ist die URL-Variante des Namens. Sie "
+"besteht normalerweise nur aus Kleinbuchstaben, Zahlen und Bindestrichen."
+
+#: admin/templates/content-edit-locale.php:62
+msgctxt "multilocale"
+msgid "WordPress Locale"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:66
+msgid "The code WordPress uses internally to indentify locales."
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:71
+msgid "Site Title"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:79
+msgid "Tagline"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:86
+#: admin/templates/content-edit-locale.php:88
+msgid "Date Format"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:104
+msgid "F j, Y"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:131
+#: admin/templates/content-edit-locale.php:182
+msgid "Custom:"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:131
+msgid "enter a custom date format in the following field"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:132
+msgid "Custom date format:"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:132
+#: admin/templates/content-edit-locale.php:183
+msgid "example:"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:138
+#: admin/templates/content-edit-locale.php:140
+msgid "Time Format"
+msgstr "Zeitformat"
+
+#: admin/templates/content-edit-locale.php:155
+msgid "g:i a"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:182
+msgid "enter a custom time format in the following field"
+msgstr "Geben Sie eine benutzerdefiniertes Zeitformat in das folgende Feld ein"
+
+#: admin/templates/content-edit-locale.php:183
+msgid "Custom time format:"
+msgstr "Benutzerdefiniertes Zeitformat:"
+
+#: admin/templates/content-edit-locale.php:185
+msgid ""
+"<a href=\"https://codex.wordpress.org/Formatting_Date_and_Time"
+"\">Documentation on date and time formatting</a>."
+msgstr ""
+"<a href=“https://codex.wordpress.org/Formatting_Date_and_Time”>Dokumentation "
+"über Datum und Uhrzeit-Formatierung.</a>"
+
+#: admin/templates/content-edit-locale.php:203
+#, php-format
+msgid "&#8220;%s&#8221; is the default locale"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:203
+#, php-format
+msgid "Make &#8220;%s&#8221; the default locale"
+msgstr ""
+
+#: admin/templates/content-edit-locale.php:224
+msgid "Update"
+msgstr "Aktualisieren"
+
+#: admin/templates/content-locales.php:18
+msgid "WP Locale"
+msgstr "WP Locale"
+
+#: admin/templates/content-locales.php:19
+msgid "Count"
+msgstr "Anzahl"
+
+#: admin/templates/content-locales.php:65
+msgid "No locales found."
+msgstr ""
+
+#: admin/templates/content-locales.php:74
+msgid "Error"
+msgstr "Fehler"
+
+#: admin/templates/content-locales.php:94
+msgid " &ndash; Default"
+msgstr " &ndash; Standard"
+
+#: admin/templates/content-locales.php:98
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: admin/templates/content-locales.php:98
+msgid "Delete"
+msgstr "Löschen"
+
+#: admin/templates/content-locales.php:98
+msgid "View"
+msgstr "Zeigen"
+
+#: admin/templates/content-locales.php:149
+#, php-format
+msgctxt "multilocale"
+msgid "Select %s"
+msgstr ""
+
+#: admin/templates/page-setup.php:19
+msgid "Multilocale Setup"
+msgstr "Multilokale Setup"
+
+#: admin/templates/page-setup.php:52
+msgid "Confirm"
+msgstr "Bestätigen"
+
+#: includes/class-activator.php:41
+msgid "Multilocale requires WordPress 4.4 or higher."
+msgstr ""
+
+#: includes/class-locales.php:72
+msgctxt "taxonomy general name"
+msgid "Locale"
+msgstr ""
+
+#: includes/class-locales.php:73
+msgctxt "taxonomy singular name"
+msgid "Locale"
+msgstr ""
+
+#: includes/class-locales.php:75
+msgid "All Locales"
+msgstr ""
+
+#: includes/class-locales.php:76
+msgid "Edit Locale"
+msgstr ""
+
+#: includes/class-locales.php:77
+msgid "Update Locale"
+msgstr ""
+
+#: includes/class-locales.php:78
+msgid "Add New Locale"
+msgstr ""
+
+#: includes/class-locales.php:79
+msgid "New Locale Name"
+msgstr ""
+
+#: includes/class-locales.php:80
+msgid "Search Locales"
+msgstr ""
+
+#: includes/class-locales.php:81
+msgid "Popular Locales"
+msgstr ""
+
+#: includes/class-locales.php:82
+msgid "Add or remove locales"
+msgstr ""
+
+#: includes/class-locales.php:83
+msgid "Choose from most used locales"
+msgstr ""
+
+#: includes/class-locales.php:84
+msgid "No locales found"
+msgstr ""
+
+#: includes/class-posts.php:74
+msgctxt "taxonomy general name"
+msgid "Translations"
+msgstr "Übersetzungen"
+
+#: includes/class-posts.php:75
+msgctxt "taxonomy singular name"
+msgid "Translation"
+msgstr "Übersetzung"
+
+#: includes/class-posts.php:76
+msgid "Translations"
+msgstr "Übersetzungen"
+
+#: includes/class-posts.php:77
+msgid "All Translations"
+msgstr "Alle Übersetzungen"
+
+#: includes/class-posts.php:78
+msgid "Edit Translation"
+msgstr "Übersetzung bearbeiten"
+
+#: includes/class-posts.php:79
+msgid "Update Translation"
+msgstr "Übersetzung aktualisieren"
+
+#: includes/class-posts.php:80
+msgid "Add Translation"
+msgstr "Übersetzung hinzufügen"
+
+#: includes/class-posts.php:81
+msgid "Search Translations"
+msgstr "Übersetzungen suchen"
+
+#: includes/class-posts.php:82
+msgid "Add or remove translations"
+msgstr "Übersetzungen hinzufügen oder entfernen"
+
+#: includes/class-posts.php:83
+msgid "No translations found"
+msgstr "Keine Übersetzungen gefunden"
+
+#: includes/class-posts.php:153 includes/class-posts.php:195
+#: includes/class-posts.php:257
+msgid "Post not found."
+msgstr "Beitrag wurde nicht gefunden"
+
+#: includes/class-posts.php:157
+#, php-format
+msgid "Locale with id %d not found."
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Multilocale"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/barryceelen/wp-multilocale"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Publish content in multiple locales."
+msgstr "Inhalte in mehreren Sprachen veröffentlichen."
+
+#. Author of the plugin/theme
+msgid "Barry Ceelen"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://barryceelen.github.com/"
+msgstr ""
+
+#~ msgid "A slug is required."
+#~ msgstr "Titelform ist erforderlich"
+
+#~ msgid ""
+#~ "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus "
+#~ "corrupti eveniet animi quisquam.."
+#~ msgstr ""
+#~ "Lorem Ipsum Dolor Ist Amit, Consectetur Voluptatem Eilt. Possimus "
+#~ "Corrupti Eveniet Animi Quisquam…"
