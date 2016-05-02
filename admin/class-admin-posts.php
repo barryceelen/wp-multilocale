@@ -268,7 +268,7 @@ class Multilocale_Admin_Posts {
 
 		$current_screen = get_current_screen();
 
-		if ( 'post' === $current_screen->base && in_array( $current_screen->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( 'post' === $current_screen->base && post_type_supports( $current_screen->post_type, 'multilocale' ) ) {
 			wp_enqueue_style(
 				'plugin_multilocale',
 				MULTILOCALE_PLUGIN_URL . '/admin/css/posts.css'
@@ -287,7 +287,7 @@ class Multilocale_Admin_Posts {
 
 		global $typenow;
 
-		if ( ! in_array( $typenow, multilocale_get_supported_post_types(), true ) ) {
+		if ( ! post_type_supports( $typenow, 'multilocale' ) ) {
 			return;
 		}
 
@@ -327,7 +327,7 @@ class Multilocale_Admin_Posts {
 	 */
 	public function manage_posts_columns( $columns, $post_type ) {
 
-		if ( ! in_array( $post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( ! post_type_supports( $post_type, 'multilocale' ) ) {
 			return $columns;
 		}
 
@@ -418,7 +418,8 @@ class Multilocale_Admin_Posts {
 	 */
 	public function edit_form_advanced_tabs( $post ) {
 
-		if ( ! in_array( $post->post_type, multilocale_get_supported_post_types(), true ) ) {
+
+		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
 			return;
 		}
 
@@ -572,7 +573,7 @@ class Multilocale_Admin_Posts {
 			return $post_id;
 		}
 
-		if ( ! in_array( $post->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
 			return $post_id;
 		}
 
@@ -670,7 +671,7 @@ class Multilocale_Admin_Posts {
 	 * @return string The modified permalink.
 	 */
 	public function filter_pre_post_link( $permalink, $post ) {
-		if ( is_admin() && in_array( $post->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( is_admin() && post_type_supports( $post->post_type, 'multilocale' ) ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $post );
 			if ( $post_locale && $post_locale->term_id !== $options['default_locale_id'] ) {
@@ -692,7 +693,7 @@ class Multilocale_Admin_Posts {
 
 		$_post = get_post( $post );
 
-		if ( is_admin() && in_array( $_post->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( is_admin() && post_type_supports( $_post->post_type, 'multilocale' ) ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 			if ( $post_locale && $post_locale->term_id !== $options['default_locale_id'] ) {

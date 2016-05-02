@@ -129,7 +129,7 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		if ( ! in_array( $_post->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( ! post_type_supports( $_post->post_type, 'multilocale' ) ) {
 			return false;
 		}
 

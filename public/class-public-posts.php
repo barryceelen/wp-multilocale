@@ -181,7 +181,7 @@ class Multilocale_Public_Posts {
 		// The page_link filter sends the post id as the second parameter.
 		$_post = get_post( $post );
 
-		if ( ! is_admin() && in_array( $_post->post_type, multilocale_get_supported_post_types(), true ) ) {
+		if ( ! is_admin() && post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $post );
