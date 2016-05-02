@@ -151,13 +151,10 @@ class Multilocale_Admin_Locales {
 	 */
 	function filter_update_check_locales( $locales ) {
 
-		$locales = multilocale_get_locales();
+		$installed_locales = multilocale_get_locales();
 
-		if ( $locales ) {
-			$additional_locales = wp_list_pluck( $locales, 'description' );
-			foreach ( $additional_locales as $locale ) {
-				$locales[] = $locale;
-			}
+		if ( $installed_locales ) {
+			$locales = array_unique( array_merge( $locales, wp_list_pluck( $installed_locales, 'description' ) ) );
 		}
 
 		return $locales;
