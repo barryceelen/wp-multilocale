@@ -83,6 +83,7 @@ do_action( "{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj, $locale_ta
 				</th>
 				<td>
 					<input name="blogdescription" class="regular-text" id="blogdescription" type="text" value="<?php echo esc_attr( get_term_meta( $locale_obj->term_id, 'blogdescription', true ) ); ?>" size="40" />
+					<p class="description"><?php esc_html_e( 'In a few words, explain what this site is about.' ); ?></p>
 				</td>
 			</tr>
 			<tr>
