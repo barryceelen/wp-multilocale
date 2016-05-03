@@ -98,13 +98,13 @@ do_action( "{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj, $locale_ta
 				}
 
 				/**
-				* Filter the default date formats.
-				*
-				* @since 2.7.0
-				* @since 4.0.0 Added ISO date standard YYYY-MM-DD format.
-				*
-				* @param array $default_date_formats Array of default date formats.
-				*/
+				 * Filter the default date formats.
+				 *
+				 * @since 2.7.0
+				 * @since 4.0.0 Added ISO date standard YYYY-MM-DD format.
+				 *
+				 * @param array $default_date_formats Array of default date formats.
+				 */
 				$date_formats = array_unique( apply_filters( 'date_formats', array( __( 'F j, Y' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) );
 
 				$custom = true;
