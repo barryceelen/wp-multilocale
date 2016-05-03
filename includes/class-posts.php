@@ -116,7 +116,7 @@ class Multilocale_Posts {
 	 * Get the post locale.
 	 *
 	 * @see get_post()
-	 * @see wp_get_post_terms()
+	 * @see get_the_terms()
 	 *
 	 * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
 	 * @return obj|false Locale object on success or false on failure.
@@ -135,13 +135,12 @@ class Multilocale_Posts {
 
 		if ( ! $results = wp_cache_get( $_post->ID, 'post_locale' ) ) {
 
-			$terms = wp_get_post_terms( $_post->ID, $this->locale_taxonomy, array( 'fields' => 'all' ) );
+			$terms = get_the_terms( $_post->ID, $this->locale_taxonomy );
 
 			if ( is_wp_error( $terms ) || empty( $terms ) ) {
 				$results = false;
 			} else {
 				$results = $terms[0];
-				wp_cache_add( $_post->ID, $results, 'post_locale' );
 			}
 		}
 
@@ -154,9 +153,6 @@ class Multilocale_Posts {
 	 * Will remove the current translation id if present. If the post is part of a translation group,
 	 * and there is a post in this group with the passed locale id, we'll assign a new translation
 	 * group to the post.
-	 *
-	 * @see get_post()
-	 * @see wp_get_post_terms()
 	 *
 	 * @param int|WP_Post|null $post      Optional. Post ID or post object. Defaults to global $post.
 	 * @param int              $locale_id Locale term ID.
@@ -252,7 +248,7 @@ class Multilocale_Posts {
 	 * Get the post translation group.
 	 *
 	 * @see get_post()
-	 * @see wp_get_post_terms()
+	 * @see get_the_terms()
 	 *
 	 * @since 0.0.1
 	 *
@@ -267,7 +263,7 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		$terms = wp_get_post_terms(
+		$terms = get_the_terms(
 			$_post->ID,
 			$this->post_translation_taxonomy
 		);
