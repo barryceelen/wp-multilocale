@@ -69,6 +69,9 @@ class Multilocale_Posts {
 
 		// Register the post translation taxonomy.
 		add_action( 'init', array( $this, 'register_post_translation_taxonomy' ) );
+
+		// Add support to 'post' and 'page' post types.
+		add_action( 'registered_post_type', array( $this, 'add_post_type_support' ), 10, 1 );
 	}
 
 	/**
@@ -110,6 +113,18 @@ class Multilocale_Posts {
 			get_post_types_by_support( 'multilocale' ),
 			$args
 		);
+	}
+
+	/**
+	 * Add support to 'post' and 'page' post types.
+	 *
+	 * @since 1.0.0
+	 */
+	function add_post_type_support( $post_type ) {
+
+		if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
+			add_post_type_support( $post_type, 'multilocale' );
+		}
 	}
 
 	/**

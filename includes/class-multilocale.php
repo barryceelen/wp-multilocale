@@ -91,13 +91,7 @@ class Multilocale {
 	 */
 	private function add_actions_and_filters() {
 
-		add_action( 'init', array( $this, 'add_post_type_support' ) );
 		add_action( 'widgets_init', array( $this, 'unregister_widgets' ) );
-	}
-
-	function add_post_type_support() {
-		add_post_type_support( 'post', 'multilocale' );
-		add_post_type_support( 'page', 'multilocale' );
 	}
 
 	/**
