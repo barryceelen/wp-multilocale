@@ -160,10 +160,17 @@ class Multilocale_Public_Locale {
 			// Remove the first element from our array.
 			array_shift( $req_uri_array );
 
-			if ( $this->_options['default_locale_id'] === $locales[ $slug ] ) {
+			if ( (int) $this->_options['default_locale_id'] === (int) $locales[ $slug ] ) {
 
 				// The default locale is not supposed to have a slug, let's just redirect here.
-				wp_redirect( $this->_home_url . implode( '/', $req_uri_array ) , 301 );
+
+				if ( !$is_IIS && PHP_SAPI != 'cgi-fcgi' ) {
+					status_header(301); // This causes problems on IIS and some FastCGI setups
+				}
+
+				$location = $this->_home_url . implode( '/', $req_uri_array );
+
+				header("Location: $location", true, 301);
 				exit;
 
 			} else {
