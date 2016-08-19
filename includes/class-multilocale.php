@@ -63,7 +63,6 @@ class Multilocale {
 		$this->options_page = 'multilocale-options';
 		$this->post_translation_taxonomy = 'post_translation';
 
-		$this->load_plugin_textdomain();
 		$this->add_actions_and_filters();
 	}
 
@@ -81,22 +80,6 @@ class Multilocale {
 			self::$instance = new self;
 		}
 		return self::$instance;
-	}
-
-	/**
-	 * Load the plugin's translated strings.
-	 *
-	 * @since 0.0.1
-	 *
-	 * @access private
-	 */
-	private function load_plugin_textdomain() {
-
-		load_plugin_textdomain(
-			'multilocale',
-			false,
-			dirname( dirname( plugin_basename( __FILE__ ) ) ) . '/languages/'
-		);
 	}
 
 	/**
