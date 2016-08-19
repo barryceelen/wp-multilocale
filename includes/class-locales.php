@@ -37,6 +37,7 @@ class Multilocale_Locales {
 		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
 
 		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 99 );
+		add_action( 'init', array( $this, 'register_locale_term_meta' ) );
 	}
 
 	/**
@@ -99,18 +100,50 @@ class Multilocale_Locales {
 	}
 
 	/**
+	 * Register meta for terms in the locale taxonomy.
+	 *
+	 * @todo Prefix meta key.
+	 *
+	 * @see register_meta()
+	 *
+	 * @since 0.0.1
+	 */
+	public function register_locale_term_meta() {
+
+		foreach ( array( '_blogname', '_blogdescription' ) as $meta_key ) {
+			register_meta(
+				'term',
+				$meta_key,
+				array(
+					'description' => __( 'Blogname for the locale' ),
+					'sanitize_callback' => 'trim',
+					'single' => true,
+					'type' => 'string',
+				)
+			);
+		}
+	}
+
+	/**
 	 * Create new locale.
 	 *
-	 * @todo Add date and time settings etc..
+	 * @todo Add date and time settings etc.
 	 *
 	 * @since 0.0.1
 	 *
 	 * @see wp_insert_term()
 	 *
-	 * @param  string $name       The locale name, eg. "English".
-	 * @param  string $wp_locale  The WP_Locale code.
-	 * @param  string $slug       The locale slug to use.
-	 * @param  array  $meta       Term meta, blogname, blogdescription, time_format, date_format etc.
+	 * @param string $name       The locale name, eg. "English".
+	 * @param string $wp_locale  The WP_Locale code.
+	 * @param string $slug       The locale slug to use.
+	 * @param array  $meta {
+	 *     Term meta.
+	 *
+	 *     @type string $blogname        Optional. The blogname for the locale.
+	 *     @type string $blogdescription Optional. The blogdescription for the locale.
+	 *     @type string $time_format     Optional. The time format for the locale.
+	 *     @type string $date_format     Optional. The date format for the locale.
+	 * }
 	 * @return array|WP_Error An array containing the `term_id` and `term_taxonomy_id`,
 	 *                        {@see WP_Error} otherwise.
 	 */
