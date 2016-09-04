@@ -78,14 +78,18 @@ class Multilocale_Public_Posts {
 	 *
 	 * @param  int|WP_Post $post   The post in question.
 	 * @param  WP_Term     $locale The slug for the locale in question.
-	 * @return string Localized url.
+	 * @return string|bool False if the post does not exist, localized permalink if the post does not support multilocale, else the permalink.
 	 */
 	public function get_locale_unsupported_post_url( $post, $locale ) {
 
 		$_post = get_post( $post );
 
-		if ( ! $_post || post_type_supports( $_post->post_type, 'multilocale' ) ) {
-			return;
+		if ( ! $_post ) {
+			return false;
+		}
+
+		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
+			return get_permalink( $_post );
 		}
 
 		global $multilocale_public;
