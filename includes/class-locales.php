@@ -100,7 +100,7 @@ class Multilocale_Locales {
 	}
 
 	/**
-	 * Register meta for terms in the locale taxonomy.
+	 * Register term metadata for terms in the locale taxonomy.
 	 *
 	 * @see register_meta()
 	 *
