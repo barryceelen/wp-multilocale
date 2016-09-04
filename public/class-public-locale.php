@@ -122,6 +122,8 @@ class Multilocale_Public_Locale {
 	 * @since 0.0.1
 	 *
 	 * @access private
+	 *
+	 * @global bool $is_IIS
 	 */
 	private function init() {
 
@@ -164,7 +166,9 @@ class Multilocale_Public_Locale {
 
 				// The default locale is not supposed to have a slug, let's just redirect here.
 
-				if ( !$is_IIS && PHP_SAPI != 'cgi-fcgi' ) {
+				global $is_IIS;
+
+				if ( ! $is_IIS && PHP_SAPI != 'cgi-fcgi' ) {
 					status_header(301); // This causes problems on IIS and some FastCGI setups
 				}
 
