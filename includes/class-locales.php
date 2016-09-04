@@ -102,20 +102,33 @@ class Multilocale_Locales {
 	/**
 	 * Register meta for terms in the locale taxonomy.
 	 *
-	 * @todo Prefix meta key.
-	 *
 	 * @see register_meta()
 	 *
 	 * @since 0.0.1
 	 */
 	public function register_locale_term_meta() {
 
-		foreach ( array( '_blogname', '_blogdescription' ) as $meta_key ) {
+		$term_meta_keys = array(
+			'_locale_blogname' => array(
+				'description' => esc_html__( 'Site name for the locale' ),
+			),
+			'_locale_blogdescription' => array(
+				'description' => esc_html__( 'Site description' ),
+			),
+			'_locale_date_format' => array(
+				'description' => esc_html__( 'Date format' ),
+			),
+			'_locale_time_format' => array(
+				'description' => esc_html__( 'Time format' ),
+			),
+		);
+
+		foreach ( $term_meta_keys as $meta_key => $args ) {
 			register_meta(
 				'term',
 				$meta_key,
 				array(
-					'description' => __( 'Blogname for the locale' ),
+					'description' => $args['description'],
 					'sanitize_callback' => 'trim',
 					'single' => true,
 					'type' => 'string',
