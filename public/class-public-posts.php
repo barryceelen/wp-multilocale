@@ -119,9 +119,12 @@ class Multilocale_Public_Posts {
 	 */
 	public function filter_main_query( $wp_query ) {
 
-		// Redundant check for is_admin() but there you go.
-		if ( is_admin() || ! $wp_query->is_main_query() || $wp_query->is_singular() ) {
-			return;
+		if ( ! $wp_query->is_main_query() || $wp_query->is_singular() ) {
+			return $wp_query;
+		}
+
+		if ( ! empty( $wp_query->query_vars['post_type'] ) && ! post_type_supports( $wp_query->query_vars['post_type'], 'multilocale' ) ) {
+			return $wp_query;
 		}
 
 		// Todo: This does not seem very elegant.
