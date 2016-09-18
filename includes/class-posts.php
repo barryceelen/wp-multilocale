@@ -148,7 +148,7 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		if ( ! $results = wp_cache_get( $_post->ID, 'post_locale' ) ) {
+		if ( ! $results = wp_cache_get( 'post_locale_' . $_post->ID ) ) {
 
 			$terms = get_the_terms( $_post->ID, $this->locale_taxonomy );
 
@@ -156,6 +156,7 @@ class Multilocale_Posts {
 				$results = false;
 			} else {
 				$results = $terms[0];
+				wp_cache_add( 'post_locale_' . $_post->ID, $results );
 			}
 		}
 
