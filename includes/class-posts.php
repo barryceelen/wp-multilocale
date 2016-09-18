@@ -377,7 +377,7 @@ class Multilocale_Posts {
 			),
 		);
 
-		if ( $exclude ) {
+		if ( ! empty( $exclude ) ) {
 			$args['post__not_in'] = (array) $exclude;
 		}
 
