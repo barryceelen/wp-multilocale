@@ -127,7 +127,7 @@ class Multilocale_Public_Posts {
 			return $wp_query;
 		}
 
-		$post_type = empty( $wp_query->query_vars['post_type'] ) ? 'post' : $wp_query->query_vars['post_type'];
+		$post_type = empty( $wp_query->query_vars['post_type'] ) ? 'post' : sanitize_key( $wp_query->query_vars['post_type'] );
 
 		if ( ! post_type_supports( $post_type, 'multilocale' ) ) {
 			return $wp_query;
