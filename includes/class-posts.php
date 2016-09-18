@@ -253,7 +253,7 @@ class Multilocale_Posts {
 			if ( $exclude ) {
 				$exclude = $post->ID;
 			}
-			$posts = $this->get_posts_by_translation_group_id( $translation_group->term_id, $status = 'all', $exclude );
+			$posts = $this->get_posts_by_translation_group_id( $translation_group->term_id, $status, $exclude );
 		}
 
 		return $posts;
