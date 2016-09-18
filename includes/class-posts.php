@@ -408,7 +408,7 @@ class Multilocale_Posts {
 	 * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
 	 * @return string|false Translation group ID on success or false on failure.
 	 */
-	public function get_post_translation_group_id( $post ) {
+	public function get_post_translation_group_id( $post = null ) {
 
 		$_post = get_post( $post );
 
