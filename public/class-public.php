@@ -17,14 +17,37 @@
 class Multilocale_Public {
 
 	/**
+	 * Locale object.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var string
+	 */
+	private $_locale_obj;
+
+	/**
+	 * Home URL.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var string
+	 */
+	private $_home_url;
+
+	/**
 	 * Initialize the class.
 	 *
 	 * @since 0.0.1
 	 */
 	public function __construct() {
 
-		$this->locale_obj = multilocale_locale()->locale_obj;
-		$this->home_url = get_home_url();
+		$this->_locale_obj = multilocale_locale()->locale_obj;
+
+		if ( empty( $this->_locale_obj ) ) {
+			return false;
+		}
+
+		$this->_home_url = get_home_url();
 
 		$this->add_actions_and_filters();
 	}
@@ -63,10 +86,10 @@ class Multilocale_Public {
 
 		$options = get_option( 'plugin_multilocale' );
 
-		if ( (int) $options['default_locale_id'] !== (int) $this->locale_obj->term_id ) {
-			$home = trailingslashit( $this->home_url );
+		if ( (int) $options['default_locale_id'] !== (int) $this->_locale_obj->term_id ) {
+			$home = trailingslashit( $this->_home_url );
 			$url  = trailingslashit( $url );
-			$url  = $home . $this->locale_obj->slug . '/' . str_replace( $home, '', $url );
+			$url  = $home . $this->_locale_obj->slug . '/' . str_replace( $home, '', $url );
 		}
 
 		return $url;
@@ -77,20 +100,27 @@ class Multilocale_Public {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param WP_Term $locale The locale in question
+	 * @param WP_Term $locale The locale in question.
 	 * @return string Home URL for the specified locale.
 	 */
 	public function get_locale_home_url( $locale ) {
 
 		$url = $this->get_default_home_url();
 
-		if ( $locale->term_id !== multilocale_get_default_locale_id() ) {
+		if ( multilocale_get_default_locale_id() !== $locale->term_id ) {
 			$url = trailingslashit( $url ) . $locale->slug;
 		}
 
 		return $url;
 	}
 
+	/**
+	 * Get unfiltered home URL.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string Home URL.
+	 */
 	public function get_default_home_url() {
 
 		remove_filter( 'home_url', array( $this, 'filter_home_url' ), 10 );
@@ -113,22 +143,22 @@ class Multilocale_Public {
 	 */
 	public function filter_options( $value, $option ) {
 
-		if ( ! $this->locale_obj ) {
+		if ( ! $this->_locale_obj ) {
 			return $value;
 		}
 
 		switch ( $option ) {
 			case 'blogname' :
-				$value = get_term_meta( $this->locale_obj->term_id, 'blogname', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'blogname', true );
 				break;
 			case 'blogdescription' :
-				$value = get_term_meta( $this->locale_obj->term_id, 'blogdescription', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'blogdescription', true );
 				break;
 			case 'date_format' :
-				$value = get_term_meta( $this->locale_obj->term_id, 'date_format', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'date_format', true );
 				break;
 			case 'time_format' :
-				$value = get_term_meta( $this->locale_obj->term_id, 'time_format', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'time_format', true );
 				break;
 		}
 

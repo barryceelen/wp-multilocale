@@ -26,16 +26,30 @@ class Multilocale_Public_Posts {
 	private $_locale_taxonomy;
 
 	/**
+	 * Locale object.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var string
+	 */
+	private $_locale_obj;
+
+	/**
 	 * Initialize the class.
 	 *
 	 * @since 0.0.1
 	 */
 	public function __construct() {
 
+		$this->_locale_obj = multilocale_locale()->locale_obj;
+
+		if ( empty( $this->_locale_obj ) ) {
+			return;
+		}
+
 		$multilocale = multilocale();
 
 		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-
 		$this->add_actions_and_filters();
 	}
 
@@ -96,7 +110,7 @@ class Multilocale_Public_Posts {
 
 		remove_filter( 'home_url', array( $multilocale_public, 'filter_home_url' ), 10 );
 
-		if ( (int) $locale->term_id === multilocale_get_default_locale_id() ) {
+		if ( multilocale_get_default_locale_id() === (int) $locale->term_id ) {
 			$url = get_permalink( $_post );
 		} else {
 			$permalink = get_permalink( $_post );
@@ -133,15 +147,12 @@ class Multilocale_Public_Posts {
 			return $wp_query;
 		}
 
-		// Todo: This does not seem very elegant.
-		$locale_id = multilocale_locale()->locale_obj->term_id;
-
 		// Todo: What's up if we're already querying terms in one or more other taxonomies?
 		$tax_query = array(
 			array(
 				'taxonomy' => 'locale',
 				'field'    => 'id',
-				'terms'    => array( $locale_id ),
+				'terms'    => array( $this->_locale_obj->term_id ),
 				'operator' => 'IN',
 			),
 		);
@@ -174,8 +185,8 @@ class Multilocale_Public_Posts {
 		$post_locale = multilocale_get_post_locale( $post );
 
 		if ( $post_locale && $locale !== $post_locale->description ) {
-			wp_redirect( get_permalink( $post ), 301 );
-			die();
+			wp_safe_redirect( get_permalink( $post ), 301 );
+			exit();
 		}
 	}
 
