@@ -275,12 +275,12 @@ class Multilocale_Public_Posts {
 		}
 
 		$smaller_bigger = ( 'get_previous_post_where' === current_filter() ) ? '<' : '>';
-		$term_id = absint( $post_locale->term_id );
 
-		$where = $wpdb->prepare(
-			"WHERE p.post_date {$smaller_bigger} %s AND p.post_type = %s AND p.post_status = 'publish' AND tt.term_id IN ({$term_id})",
+		$where = $wpdb->prepare( // WPCS: unprepared SQL ok.
+			"WHERE p.post_date {$smaller_bigger} %s AND p.post_type = %s AND p.post_status = 'publish' AND tt.term_id IN (%d)",
 			$post->post_date,
-			$post->post_type
+			$post->post_type,
+			absint( $post_locale->term_id )
 		);
 
 		return $where;
