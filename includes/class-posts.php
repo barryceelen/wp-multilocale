@@ -119,9 +119,10 @@ class Multilocale_Posts {
 	 * Add support to 'post' and 'page' post types.
 	 *
 	 * @since 1.0.0
+	 *
+	 * @param string $post_type Post type.
 	 */
 	function add_post_type_support( $post_type ) {
-
 		if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
 			add_post_type_support( $post_type, 'multilocale' );
 		}
@@ -148,14 +149,15 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		if ( ! $results = wp_cache_get( $_post->ID, 'post_locale' ) ) {
+		if ( ! $results = wp_cache_get( 'post_locale_' . $_post->ID ) ) {
 
 			$terms = get_the_terms( $_post->ID, $this->locale_taxonomy );
 
 			if ( is_wp_error( $terms ) || empty( $terms ) ) {
 				$results = false;
 			} else {
-				$results = $terms[0];
+				$results = array_shift( $terms );
+				wp_cache_add( 'post_locale_' . $_post->ID, $results );
 			}
 		}
 
@@ -253,7 +255,7 @@ class Multilocale_Posts {
 			if ( $exclude ) {
 				$exclude = $post->ID;
 			}
-			$posts = $this->get_posts_by_translation_group_id( $translation_group->term_id, $status = 'all', $exclude );
+			$posts = $this->get_posts_by_translation_group_id( $translation_group->term_id, $status, $exclude );
 		}
 
 		return $posts;
@@ -287,7 +289,7 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		return $terms[0];
+		return array_shift( $terms );
 	}
 
 	/**
@@ -311,44 +313,35 @@ class Multilocale_Posts {
 			return new WP_Error( 'post_not_found', __( 'Post not found.', 'multilocale' ) );
 		}
 
-		$taxonomy = $this->post_translation_taxonomy;
-		$terms = wp_get_post_terms(
-			$_post->ID,
-			$taxonomy,
-			array( 'fields' => 'all' )
-		);
-
-		if ( is_wp_error( $terms ) ) {
-			return $terms;
-		}
+		$terms = get_the_terms( $post, $this->post_translation_taxonomy );
 
 		/*
 		 * Remove post from existing translation group if any, and delete
 		 * the translation group if no more posts are present in that group.
 		 */
-		if ( count( $terms ) > 0 ) {
+		if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) {
 			foreach ( $terms as $term ) {
 				if ( 1 === $term->count ) {
-					wp_delete_term( $term->term_id, $taxonomy );
+					wp_delete_term( $term->term_id, $this->post_translation_taxonomy );
 				}
-				wp_remove_object_terms( $_post->ID, $term->term_id, $taxonomy );
+				wp_remove_object_terms( $_post->ID, $term->term_id, $this->post_translation_taxonomy );
 			}
 		}
 
 		$term_name = uniqid( $_post->ID );
-		$term  = wp_insert_term( $term_name, $taxonomy, $args = array() );
+		$term = wp_insert_term( $term_name, $this->post_translation_taxonomy, $args = array() );
 
 		if ( is_wp_error( $term ) ) {
 			return $term;
 		}
 
-		$new_term = wp_set_object_terms( $_post->ID, absint( $term['term_id'] ), $taxonomy );
+		$new_term = wp_set_object_terms( $_post->ID, absint( $term['term_id'] ), $this->post_translation_taxonomy );
 
 		if ( is_wp_error( $new_term ) ) {
 			return $new_term;
 		}
 
-		return $new_term[0];
+		return array_shift( $new_term );
 	}
 
 	/**
@@ -365,28 +358,31 @@ class Multilocale_Posts {
 	 */
 	public function get_posts_by_translation_group_id( $id, $post_status = 'any', $exclude = false ) {
 
+		$result = array();
+
 		$args = array(
+			'posts_per_page' => 100, // Make PHP Code Sniffer happy.
 			'post_type' => get_post_types_by_support( 'multilocale' ),
 			'post_status' => $post_status,
 			'tax_query' => array(
 				array(
-					'taxonomy' => $this->post_translation_taxonomy,
-					'field'    => 'term_id',
-					'terms'    => absint( $id ),
+					'taxonomy'         => $this->post_translation_taxonomy,
+					'terms'            => absint( $id ),
+					'field'            => 'term_id',
+					'include_children' => false,
 				),
 			),
 		);
 
-		if ( $exclude ) {
+		if ( ! empty( $exclude ) ) {
 			$args['post__not_in'] = (array) $exclude;
 		}
 
-		$posts = get_posts( $args );
-		$result = array();
+		$query = new WP_Query( $args );
 
-		if ( $posts ) {
+		if ( $query->have_posts() ) {
 
-			foreach ( $posts as $post ) {
+			foreach ( $query->posts as $post ) {
 				$post_locale = $this->get_post_locale( $post );
 				if ( $post_locale ) {
 					$result[ $post_locale->term_id ] = $post;
@@ -400,33 +396,24 @@ class Multilocale_Posts {
 	/**
 	 * Get the translation group ID for a post.
 	 *
-	 * @see get_post()
-	 * @see wp_get_post_terms()
+	 * @see get_the_terms()
 	 *
 	 * @since 0.0.1
 	 *
 	 * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
 	 * @return string|false Translation group ID on success or false on failure.
 	 */
-	public function get_post_translation_group_id( $post ) {
+	public function get_post_translation_group_id( $post = null ) {
 
-		$_post = get_post( $post );
-
-		if ( ! $_post ) {
-			return false;
-		}
-
-		$terms = wp_get_post_terms(
-			$_post->ID,
-			$this->post_translation_taxonomy,
-			array( 'fields' => 'ids' )
-		);
+		$terms = get_the_terms( $post, $this->post_translation_taxonomy );
 
 		if ( empty( $terms ) || is_wp_error( $terms ) ) {
 			return false;
 		}
 
-		return $terms[0];
+		$ids = wp_list_pluck( $terms, 'term_id' );
+
+		return array_shift( $ids );
 	}
 }
 

@@ -762,6 +762,7 @@ class Multilocale_Admin_Posts {
 					'operator' => 'IN',
 				),
 			),
+			'numberposts' => 100, // Todo: Magic number.
 		);
 
 		$posts = get_posts( $args );

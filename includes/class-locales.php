@@ -302,7 +302,12 @@ class Multilocale_Locales {
 	 * @return boolean
 	 */
 	public function locale_id_exists( $id ) {
-		return get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
+		if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
+			return wpcom_vip_get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
+		} else {
+			return get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
+		}
+
 	}
 }
 
