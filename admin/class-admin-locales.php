@@ -231,7 +231,7 @@ class Multilocale_Admin_Locales {
 					$this->add_settings_error(
 						'default_locale_added',
 						sprintf(
-							__( 'Default %s added. <a href="%s">%s</a>', 'multilocale' ),
+							__( 'Default %1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
 							$edit_url = add_query_arg( array( 'action' => 'edit_locale', 'locale_id' => $term['term_id'] ),
 							admin_url( 'options-general.php?page=' . $this->_options_page ) ),
@@ -266,7 +266,7 @@ class Multilocale_Admin_Locales {
 					$this->add_settings_error(
 						'default_locale_added',
 						sprintf(
-							__( '%s added. <a href="%s">%s</a>', 'multilocale' ),
+							__( '%1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
 							$edit_url = add_query_arg( array( 'action' => 'edit_locale', 'locale_id' => $term['term_id'] ),
 							admin_url( 'options-general.php?page=' . $this->_options_page ) ),
