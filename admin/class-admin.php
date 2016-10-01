@@ -224,7 +224,7 @@ class Multilocale_Admin {
 
 		$screen = get_current_screen();
 
-		if ( $screen->id === 'options-permalink' && ! empty( get_option( 'permalink_structure' ) ) ) {
+		if ( 'options-permalink' === $screen->id  && ! empty( get_option( 'permalink_structure' ) ) ) {
 
 			printf(
 				'
@@ -288,7 +288,7 @@ class Multilocale_Admin {
 
 		$current_screen = get_current_screen();
 
-		if ( $current_screen && $current_screen->base === 'settings_page_' . $this->_options_page ) {
+		if ( $current_screen && 'settings_page_' . $this->_options_page === $current_screen->base ) {
 
 			if ( ! function_exists( 'add_term_meta' ) ) {
 				echo $this->get_admin_notice_wp_version_requirement(); // WPCS: XSS ok.
