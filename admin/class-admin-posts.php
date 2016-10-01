@@ -784,7 +784,7 @@ class Multilocale_Admin_Posts {
 	 */
 	public function filter_admin_menu_links_for_posts() {
 
-		global $submenu, $menu;
+		global $submenu;
 
 		$array = array();
 		$default_locale_slug = multilocale_get_default_locale()->slug;
