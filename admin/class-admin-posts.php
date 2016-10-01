@@ -150,7 +150,7 @@ class Multilocale_Admin_Posts {
 	 * @since 0.0.1
 	 *
 	 * @access private
-	 * @param int $term Term ID.
+	 * @param int    $term Term ID.
 	 * @param string $taxonomy Taxonomy Name.
 	 * @return void
 	 */
@@ -421,7 +421,6 @@ class Multilocale_Admin_Posts {
 	 */
 	public function edit_form_advanced_tabs( $post ) {
 
-
 		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
 			return;
 		}
@@ -544,11 +543,10 @@ class Multilocale_Admin_Posts {
 		}
 
 		// Could also just query for a post with translation_id and locale_id?
-
 		$translations = multilocale_get_posts_by_translation_group_id( $_GET['translation_id'] );
 
 		if ( $translations ) {
-			foreach( $translations as $translation ) {
+			foreach ( $translations as $translation ) {
 				$translation_locale = multilocale_get_post_locale( $translation->ID );
 				if ( (int) $_GET['locale_id'] === (int) $translation_locale->term_id ) {
 					wp_redirect( get_edit_post_link( $translation->ID, '' ) );
@@ -798,13 +796,13 @@ class Multilocale_Admin_Posts {
 			}
 		}
 
-		foreach( $array as $old_key ) {
+		foreach ( $array as $old_key ) {
 
 			$new_key = add_query_arg( array( 'locale' => $default_locale_slug ), $old_key );
 
 			if ( array_key_exists( $old_key, $submenu ) ) {
 
-				foreach( $submenu[ $old_key ] as $key => $value ) {
+				foreach ( $submenu[ $old_key ] as $key => $value ) {
 					if ( $old_key === $value[2] ) {
 						$submenu[ $old_key ][ $key ][2] = $new_key;
 					}
