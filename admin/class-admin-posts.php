@@ -135,6 +135,9 @@ class Multilocale_Admin_Posts {
 		// Modify page parent dropdown in "Page Attributes" meta box.
 		// Todo: Temporarily disabled, fix!
 		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'filter_page_attributes_dropdown_pages_args' ), 10, 2 );
+
+		// Show post list in the default locale by default.
+		add_action( 'admin_menu', array( $this, 'filter_admin_menu_links_for_posts' ) );
 	}
 
 	/**
@@ -769,6 +772,44 @@ class Multilocale_Admin_Posts {
 		);
 
 		return array_merge( $dropdown_args, $new_dropdown_args );
+	}
+
+	/**
+	 * Show post list in the default locale by default by linking to a filtered list in the admin menu.
+	 *
+	 * @todo Make user configurable.
+	 *
+	 * @since 1.0.0
+	 */
+	public function filter_admin_menu_links_for_posts() {
+
+		global $submenu, $menu;
+
+		$array = array();
+		$default_locale_slug = multilocale_get_default_locale()->slug;
+
+		foreach ( get_post_types_by_support( 'multilocale' ) as $post_type ) {
+
+			if ( 'post' === $post_type ) {
+				$array[] = 'edit.php';
+			} else {
+				$array[] = 'edit.php?post_type=' . $post_type;
+			}
+		}
+
+		foreach( $array as $old_key ) {
+
+			$new_key = add_query_arg( array( 'locale' => $default_locale_slug ), $old_key );
+
+			if ( array_key_exists( $old_key, $submenu ) ) {
+
+				foreach( $submenu[ $old_key ] as $key => $value ) {
+					if ( $old_key === $value[2] ) {
+						$submenu[ $old_key ][ $key ][2] = $new_key;
+					}
+				}
+			}
+		}
 	}
 
 	/**
