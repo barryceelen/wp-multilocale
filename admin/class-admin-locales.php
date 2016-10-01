@@ -384,7 +384,7 @@ class Multilocale_Admin_Locales {
 
 					multilocale_delete_locale( $post_data['locale_id'] );
 
-					wp_redirect( admin_url( 'options-general.php?page=' . $this->_options_page ) );
+					wp_safe_redirect( admin_url( 'options-general.php?page=' . $this->_options_page ) );
 					exit();
 				}
 				break;
