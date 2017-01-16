@@ -131,13 +131,6 @@ class Multilocale_Admin_Locales {
 
 		// Delete core, theme and plugin language packs and preferences when deleting a locale.
 		add_action( 'pre_delete_term' , array( $this, 'delete_language_packs_and_user_preferences' ), 10, 2 );
-
-		// Add a locale selection dropdown to the profile edit page.
-		add_action( 'personal_options', array( $this, 'personal_options' ) );
-
-		// Save the user admin locale preference.
-		add_action( 'personal_options_update', array( $this, 'save_user_admin_locale' ) );
-		add_action( 'edit_user_profile_update', array( $this, 'save_user_admin_locale' ) );
 	}
 
 	/**
@@ -647,78 +640,6 @@ class Multilocale_Admin_Locales {
 		}
 
 		return $term_id;
-	}
-
-	/**
-	 * Add a locale selection dropdown to the admin user profile page.
-	 *
-	 * @since 0.0.1
-	 *
-	 * @todo Delete user admin_locale preference when deleting its language files.
-	 *
-	 * @access private
-	 * @param WP_User $profileuser The current WP_User object.
-	 * @return void
-	 */
-	public function personal_options( $profileuser ) {
-
-		$available_languages = get_available_languages();
-
-		if ( ! empty( $available_languages ) ) {
-
-			$available_languages[] = 'en_US';
-			sort( $available_languages );
-
-			$admin_locale = get_user_meta( $profileuser->ID, 'admin_locale', true );
-
-			if ( empty( $admin_locale ) ) {
-				$admin_locale = get_locale();
-			}
-
-			require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
-			$translations = wp_get_available_translations();
-			$options = array();
-
-			foreach ( $available_languages as $language ) {
-				if ( 'en_US' === $language ) {
-					$label = 'English (United States)';
-				} elseif ( array_key_exists( $language, $translations ) ) {
-					$label = $translations[ $language ]['native_name'];
-				} else {
-					$label = $language;
-				}
-				$selected = selected( $admin_locale, $language, false );
-				$options[] = "<option value='{$language}' {$selected}>{$label}</option>";
-			}
-
-			printf(
-				'<tr><th scope="row"><label for"admin_locale">%s</label></th><td>%s<select name="admin_locale">%s</select></td></tr>',
-				esc_html__( 'Admin Locale', 'multilocale' ),
-				wp_nonce_field( 'save-user-admin-locale', 'user-admin-locale-nonce', false ),
-				wp_kses( implode( '', $options ), array( 'option' => array( 'value' => array(), 'selected' => array() ) ) )
-			);
-		}
-	}
-
-	/**
-	 * Save the user admin locale preference.
-	 *
-	 * @since 0.0.1
-	 *
-	 * @access private
-	 * @param int $user_id User ID.
-	 */
-	public function save_user_admin_locale( $user_id ) {
-
-		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			return;
-		}
-
-		if ( empty( $_POST['user-admin-locale-nonce'] ) || ! wp_verify_nonce( $_POST['user-admin-locale-nonce'], 'save-user-admin-locale' ) || empty( $_POST['admin_locale'] ) ) {
-			return;
-		}
-
-		update_user_meta( $user_id, 'admin_locale', wp_unslash( $_POST['admin_locale'] ) ); // WPCS: input var okay.
 	}
 
 	/**
