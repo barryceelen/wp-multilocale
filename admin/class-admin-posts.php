@@ -785,7 +785,11 @@ class Multilocale_Admin_Posts {
 		global $submenu;
 
 		$array = array();
-		$default_locale_slug = multilocale_get_default_locale()->slug;
+		$default_locale = multilocale_get_default_locale();
+
+		if ( ! $default_locale ) {
+			return;
+		}
 
 		foreach ( get_post_types_by_support( 'multilocale' ) as $post_type ) {
 
@@ -798,7 +802,7 @@ class Multilocale_Admin_Posts {
 
 		foreach ( $array as $old_key ) {
 
-			$new_key = add_query_arg( array( 'locale' => $default_locale_slug ), $old_key );
+			$new_key = add_query_arg( array( 'locale' => $default_locale->slug ), $old_key );
 
 			if ( array_key_exists( $old_key, $submenu ) ) {
 
