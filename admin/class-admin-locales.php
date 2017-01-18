@@ -332,7 +332,7 @@ class Multilocale_Admin_Locales {
 
 				if ( ! empty( $post_data['date_format'] )
 					&& isset( $post_data['date_format_custom'] )
-					&& '\c\u\s\t\o\m' === wp_unslash( $post_data['date_format'] )
+					&& 'custom' === wp_unslash( $post_data['date_format'] )
 				) {
 					update_term_meta( absint( $post_data['locale_id'] ), 'date_format', $post_data['date_format_custom'] );
 				} else {
@@ -341,7 +341,7 @@ class Multilocale_Admin_Locales {
 
 				if ( ! empty( $post_data['time_format'] )
 					&& isset( $post_data['time_format_custom'] )
-					&& '\c\u\s\t\o\m' === wp_unslash( $post_data['time_format'] )
+					&& 'custom' === wp_unslash( $post_data['time_format'] )
 				) {
 					update_term_meta( absint( $post_data['locale_id'] ), 'time_format', $post_data['time_format_custom'] );
 				} else {
