@@ -64,9 +64,9 @@ function multilocale_update_post_locale( $post = null, $locale_id ) {
  *
  * @since 0.0.1
  *
- * @param int|WP_Post $post    Post ID or post object.
- * @param string      $status  Post translation status.
- * @param bool        $exclude Exclude the post we're getting the translations of.
+ * @param int|WP_Post  $post    Post ID or post object.
+ * @param string|array $status  Post translation status.
+ * @param bool         $exclude Exclude the post we're getting the translations of.
  * @return array Array of posts where key is post locale or an empty array.
  */
 function multilocale_get_post_translations( $post = null, $status = 'any', $exclude = true ) {
