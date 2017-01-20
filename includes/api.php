@@ -379,3 +379,41 @@ function multilocale_page_is_front_page( $post, $siblings_only = false ) {
 
 	return false;
 }
+
+/**
+ * Check if the current page or a page in its translation group is 'page_for_posts'.
+ *
+ * @since 1.0.0
+ * @param WP_Post $post          The post in question.
+ * @param bool    $siblings_only Only look at post translations, ignore the current post.
+ * @return bool True if the current page or a page in its translation group is 'page_on_front'.
+ */
+function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
+
+	$_post = get_post( $post );
+
+	if ( ! $_post ) {
+		return false;
+	}
+
+	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
+
+		$page_for_posts = get_option( 'page_for_posts' );
+
+		if ( ! $siblings_only && $_post->ID == $page_for_posts ) {
+			return true;
+		}
+
+		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
+
+			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
+			$ids           = wp_list_pluck( $translations, 'ID' );
+
+			if ( in_array( (int) $page_for_posts, $ids, true ) ) {
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
