@@ -368,7 +368,7 @@ function multilocale_page_is_front_page( $post, $siblings_only = false ) {
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$translations  = multilocale_get_post_translations( $post, $siblings_only );
+			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
 			$ids           = wp_list_pluck( $translations, 'ID' );
 
 			if ( in_array( (int) $page_on_front, $ids, true ) ) {
