@@ -695,12 +695,26 @@ class Multilocale_Admin_Posts {
 		$_post = get_post( $post );
 
 		if ( is_admin() && post_type_supports( $_post->post_type, 'multilocale' ) ) {
-			$options = get_option( 'plugin_multilocale' );
-			$post_locale = multilocale_get_post_locale( $_post );
+
+			$options        = get_option( 'plugin_multilocale' );
+			$post_locale    = multilocale_get_post_locale( $_post );
+
 			if ( $post_locale && $post_locale->term_id !== $options['default_locale_id'] ) {
+
 				// Todo: Use user_trailingslashit?
-				$home_url = trailingslashit( get_home_url() );
+				$home_url  = trailingslashit( get_home_url() );
 				$post_link = $home_url . $post_locale->slug  . '/' . str_replace( $home_url, '', $post_link );
+
+				if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
+
+					$page_on_front = get_option( 'page_on_front' );
+					$translations  = multilocale_get_post_translations( $post, false );
+					$ids           = wp_list_pluck( $translations, 'ID' );
+
+					if ( in_array( (int) $page_on_front, $ids, true ) ) {
+						$post_link = $home_url . $post_locale->slug;
+					}
+				}
 			}
 		}
 		return $post_link;
