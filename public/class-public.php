@@ -66,6 +66,7 @@ class Multilocale_Public {
 		add_filter( 'option_blogdescription', array( $this, 'filter_options' ), 10, 2 );
 		add_filter( 'option_date_format', array( $this, 'filter_options' ), 10, 2 );
 		add_filter( 'option_time_format', array( $this, 'filter_options' ), 10, 2 );
+		add_action( 'pre_get_posts', array( $this, 'show_translated_page_if_page_on_front' ) );
 	}
 
 	/**
@@ -163,6 +164,46 @@ class Multilocale_Public {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * A nicely convoluted action to load the correct translation if page_on_front is set.
+	 *
+	 * @since 1.0.0
+	 * @param WP_Query $query The WP_Query instance (passed by reference).
+	 */
+	function show_translated_page_if_page_on_front( $query ) {
+
+		if ( is_admin() ) {
+			return;
+		}
+
+		if ( ! $query->is_main_query() ) {
+			return;
+		}
+
+		if ( ! $query->is_page ) {
+			return;
+		}
+
+		$show_on_front = get_option( 'show_on_front' );
+		$page_on_front = get_option( 'page_on_front' );
+
+		if ( 'page' === $show_on_front && post_type_supports( 'page', 'multilocale' ) && $page_on_front === $query->query_vars['page_id'] ) {
+
+			$default_locale_obj = multilocale_get_default_locale();
+
+			if ( get_locale() !== $default_locale_obj->description ) {
+
+				// Todo: Add multilocale_get_post_translation( $locale ) function.
+				$translations = multilocale_get_post_translations( $page_on_front, true );
+				$locale_obj   = multilocale_get_locale_object();
+
+				if ( ! empty( $translations[ $locale_obj->term_id ] ) ) {
+					$query->query_vars['page_id'] = $translations[ $locale_obj->term_id ]->ID;
+				}
+			}
+		}
 	}
 }
 
