@@ -248,3 +248,96 @@ function multilocale_get_locale_unsupported_post_url( $post, $locale ) {
 	global $multilocale_public_posts;
 	return $multilocale_public_posts->get_locale_unsupported_post_url( $post, $locale );
 }
+
+/**
+ * Get localized home url.
+ *
+ * @since 1.0.0
+ * @param [type] $locale [description]
+ * @return [type] [description]
+ */
+function multilocale_get_localized_home_url( $locale ) {
+
+	global $multilocale_public;
+	return $multilocale_public->get_localized_home_url( $locale );
+}
+
+/**
+ * Retrieves the localized permalink for a post type archive.
+ *
+ * @since 1.0.0
+ *
+ * @global WP_Rewrite $wp_rewrite
+ *
+ * @param string $post_type Post type.
+ * @param string|object $locale Locale.
+ * @return string|false The post type archive permalink.
+ */
+function multilocale_get_localized_post_type_archive_link( $post_type, $locale ) {
+
+	global $wp_rewrite;
+
+	if ( ! $post_type_obj = get_post_type_object( $post_type ) ) {
+		return false;
+	}
+
+	if ( 'post' === $post_type ) {
+		$show_on_front = get_option( 'show_on_front' );
+		$page_for_posts  = get_option( 'page_for_posts' );
+
+		if ( 'page' == $show_on_front && $page_for_posts ) {
+			if ( multilocale_get_default_locale_id() === (int) $locale->term_id ) {
+				$link = get_permalink( $page_for_posts );
+			} else {
+				$translations = multilocale_get_post_translations( $page_for_posts, 'publish', true );
+				if ( ! empty( $translations[ $locale->term_id ] ) ) {
+					$link = get_permalink( $translations[ $locale->term_id ] );
+				} else {
+					$link = multilocale_get_localized_home_url( $locale );
+				}
+			}
+		} else {
+			$link = multilocale_get_localized_home_url( $locale );
+		}
+
+		/**
+		 * Filters the localized post type archive permalink.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $link      The localized post type archive permalink.
+		 * @param string $post_type Post type name.
+		 */
+		return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
+	}
+
+	if ( ! $post_type_obj->has_archive ) {
+		return false;
+	}
+
+	if ( get_option( 'permalink_structure' ) && is_array( $post_type_obj->rewrite ) ) {
+
+		$struct = ( true === $post_type_obj->has_archive ) ? $post_type_obj->rewrite['slug'] : $post_type_obj->has_archive;
+
+		if ( $post_type_obj->rewrite['with_front'] ) {
+			$struct = $wp_rewrite->front . $struct;
+		} else {
+			$struct = $wp_rewrite->root . $struct;
+		}
+
+		$link = multilocale_get_localized_home_url( $locale ) . '/' . ltrim( user_trailingslashit( $struct, 'post_type_archive' ), '/' );
+
+	} else {
+		$link = multilocale_get_localized_home_url( $locale ) . '/' . '?post_type=' . $post_type;
+	}
+
+	/**
+	 * Filters the localized post type archive permalink.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $link      The localized post type archive permalink.
+	 * @param string $post_type Post type name.
+	 */
+	return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
+}
