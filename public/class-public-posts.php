@@ -194,6 +194,7 @@ class Multilocale_Public_Posts {
 	 * Maybe add locale slug to post permalink.
 	 *
 	 * @todo Rethink.
+	 * @todo What if a static home page is set.
 	 * @todo Use user_trailingslashit()?
 	 *
 	 * @param string  $permalink The post's permalink.
