@@ -105,6 +105,9 @@ class Multilocale_Admin_Posts {
 		add_action( 'manage_pages_custom_column', array( $this, 'manage_post_columns_content' ), 10, 2 );
 		add_action( 'manage_posts_custom_column', array( $this, 'manage_post_columns_content' ), 10, 2 );
 
+		// Maybe add states for translations of pages used as static front page and posts page.
+		add_filter( 'display_post_states', array( $this, 'filter_post_states' ), 10, 2 );
+
 		// Add locale tabs to post edit screen.
 		add_action( 'edit_form_top', array( $this, 'edit_form_advanced_tabs' ), 10, 1 );
 
@@ -409,6 +412,28 @@ class Multilocale_Admin_Posts {
 		}
 
 		echo $content; // WPCS: XSS ok.
+	}
+
+	/**
+	 * Maybe add states for translations of pages used as static front page and posts page.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param array   $post_states An array of post display states.
+	 * @param WP_Post $post        The current post object.
+	 * @return array An array of post display states.
+	 */
+	public function filter_post_states( $post_states, $post ) {
+
+		if ( multilocale_page_is_front_page( $post, true ) ) {
+			$post_states['page_on_front'] = __( 'Front Page' );
+		}
+
+		if ( multilocale_page_is_page_for_posts( $post, true ) ) {
+			$post_states['page_for_posts'] = __( 'Posts Page' );
+		}
+
+		return $post_states;
 	}
 
 	/**
