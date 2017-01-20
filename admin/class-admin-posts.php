@@ -705,15 +705,8 @@ class Multilocale_Admin_Posts {
 				$home_url  = trailingslashit( get_home_url() );
 				$post_link = $home_url . $post_locale->slug  . '/' . str_replace( $home_url, '', $post_link );
 
-				if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
-
-					$page_on_front = get_option( 'page_on_front' );
-					$translations  = multilocale_get_post_translations( $post, false );
-					$ids           = wp_list_pluck( $translations, 'ID' );
-
-					if ( in_array( (int) $page_on_front, $ids, true ) ) {
-						$post_link = $home_url . $post_locale->slug;
-					}
+				if ( multilocale_page_is_front_page( $post ) ) {
+					$post_link = $home_url . $post_locale->slug;
 				}
 			}
 		}
