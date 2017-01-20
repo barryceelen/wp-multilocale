@@ -235,10 +235,10 @@ class Multilocale_Posts {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param int|WP_Post $post    Post ID or post object.
-	 * @param string      $status  Post translation status.
-	 * @param bool        $exclude Exclude the post we're getting the translations of.
-	 * @return array Array of posts where key is post locale or an empty array.
+	 * @param int|WP_Post  $post    Post ID or post object.
+	 * @param string|array $status  Post translation status.
+	 * @param bool         $exclude Exclude the post we're getting the translations of.
+	 * @return array Array of posts where key is post locale id or an empty array.
 	 */
 	public function get_post_translations( $post = null, $status = 'any', $exclude = true ) {
 
@@ -352,9 +352,9 @@ class Multilocale_Posts {
 	 * @since 0.0.1
 	 *
 	 * @param string       $id          Term ID.
-	 * @param string       $post_status Post status.
+	 * @param string|array $post_status Post status.
 	 * @param string|array $exclude     ID or list of IDs to exclude.
-	 * @return array Array of posts where key is post locale or empty array.
+	 * @return array Array of posts where key is post locale id or empty array.
 	 */
 	public function get_posts_by_translation_group_id( $id, $post_status = 'any', $exclude = false ) {
 
