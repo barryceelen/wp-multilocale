@@ -103,7 +103,7 @@ class Multilocale_Public {
 	 * @param WP_Term $locale The locale in question.
 	 * @return string Home URL for the specified locale.
 	 */
-	public function get_locale_home_url( $locale ) {
+	public function get_localized_home_url( $locale ) {
 
 		$url = $this->get_default_home_url();
 
