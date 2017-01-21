@@ -84,6 +84,11 @@ class Multilocale_Public_Locale {
 	 */
 	private function __construct() {
 
+		// Prevent error if loaded as mu-plugin.
+		if ( wp_installing() ) {
+			return;
+		}
+
 		// No locales? Stop that train, I'm leavin'.
 		if ( empty( $this->get_locales() ) ) {
 			return;
