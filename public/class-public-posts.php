@@ -83,6 +83,9 @@ class Multilocale_Public_Posts {
 
 		// Modify main query for fun and profit.
 		add_action( 'pre_get_posts', array( $this, 'filter_main_query' ) );
+
+		// Filter page_for_posts option.
+		add_filter( 'option_page_for_posts', array( $this, 'filter_option_page_for_posts' ) );
 	}
 
 	/**
@@ -296,6 +299,37 @@ class Multilocale_Public_Posts {
 		);
 
 		return $where;
+	}
+
+	/**
+	 * Filter page_for_posts option.
+	 *
+	 * If a translation is present for the page_for_posts page, return the ID of the translation.
+	 *
+	 * Note: Assumes the page_for_posts is in the default language.
+	 *
+	 * @since 1.0.0
+	 * @param mixed $value Value of the option.
+	 * @return mixed Page ID or empty string if no page is set as 'page_for_posts'.
+	 */
+	function filter_option_page_for_posts( $value ) {
+
+		if ( empty( $value ) ) {
+			return $value;
+		}
+
+		$locale = multilocale_get_locale_object();
+
+		if ( $locale->term_id !== multilocale_get_default_locale_id() ) {
+
+			$translations = multilocale_get_post_translations( (int) $value, 'publish', false );
+
+			if ( array_key_exists( $locale->term_id, $translations ) ) {
+				$value = $translations[ $locale->term_id ]->ID;
+			}
+		}
+
+		return $value;
 	}
 }
 
