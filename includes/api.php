@@ -233,7 +233,7 @@ function multilocale_locale_id_exists( $id ) {
 /**
  * Get localized slug for unsupported post types.
  *
- * @see Multilocale_Public_Post->get_locale_unsupported_post_url()
+ * @see Multilocale_Public_Post->get_localized_unsupported_post_permalink()
  *
  * @since 0.0.1
  *
@@ -241,12 +241,12 @@ function multilocale_locale_id_exists( $id ) {
  * @param WP_Term     $locale The locale in question.
  * @return string Localized url.
  */
-function multilocale_get_locale_unsupported_post_url( $post, $locale ) {
+function multilocale_get_localized_unsupported_post_permalink( $post, $locale ) {
 	if ( is_admin() ) {
 		return new WP_Error( 'not_in_admin', __( 'Function not available in admin', 'multilocale' ) );
 	}
 	global $multilocale_public_posts;
-	return $multilocale_public_posts->get_locale_unsupported_post_url( $post, $locale );
+	return $multilocale_public_posts->get_localized_unsupported_post_permalink( $post, $locale );
 }
 
 /**

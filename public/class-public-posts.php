@@ -68,7 +68,7 @@ class Multilocale_Public_Posts {
 		add_action( 'template_redirect', array( $this, 'redirect_to_localized_post_url' ) );
 
 		// Filter public facing post permalinks.
-		// Note: Filter also removed and set in get_locale_unsupported_post_url().
+		// Note: Filter also removed and set in get_localized_unsupported_post_permalink().
 		add_filter( 'post_link', array( $this, 'filter_post_link' ), 10, 2 );
 		add_filter( 'page_link', array( $this, 'filter_post_link' ), 10, 2 );
 
@@ -103,7 +103,7 @@ class Multilocale_Public_Posts {
 	 * @param  WP_Term     $locale The slug for the locale in question.
 	 * @return string|bool False if the post does not exist, localized permalink if the post does not support multilocale, else the permalink.
 	 */
-	public function get_locale_unsupported_post_url( $post, $locale ) {
+	public function get_localized_unsupported_post_permalink( $post, $locale ) {
 
 		$_post = get_post( $post );
 
