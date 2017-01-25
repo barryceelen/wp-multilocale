@@ -58,8 +58,6 @@ class Multilocale_Public_Posts {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @todo Filter custom post type links: add_filter( 'post_type_link', array( $this, 'filter_post_link' ), 10, 2 );
-	 *
 	 * @access private
 	 */
 	private function add_actions_and_filters() {
@@ -71,6 +69,7 @@ class Multilocale_Public_Posts {
 		// Note: Filter also removed and set in get_localized_unsupported_post_permalink().
 		add_filter( 'post_link', array( $this, 'filter_post_link' ), 10, 2 );
 		add_filter( 'page_link', array( $this, 'filter_post_link' ), 10, 2 );
+		add_filter( 'post_type_link', array( $this, 'filter_post_link' ), 10, 2 );
 
 		// Filter next and previous post link join. Uses the get_{$adjacent}_post_join hook.
 		// Todo: Fix prev next links.
@@ -89,9 +88,6 @@ class Multilocale_Public_Posts {
 
 		// Filter page_on_front option.
 		add_filter( 'option_page_on_front', array( $this, 'filter_option_page_for_posts' ) );
-
-
-
 	}
 
 	/**
@@ -203,7 +199,6 @@ class Multilocale_Public_Posts {
 	 * Maybe add locale slug to post permalink.
 	 *
 	 * @todo Rethink.
-	 * @todo What if a static home page is set.
 	 * @todo Use user_trailingslashit()?
 	 *
 	 * @param string  $permalink The post's permalink.
