@@ -86,6 +86,12 @@ class Multilocale_Public_Posts {
 
 		// Filter page_for_posts option.
 		add_filter( 'option_page_for_posts', array( $this, 'filter_option_page_for_posts' ) );
+
+		// Filter page_on_front option.
+		add_filter( 'option_page_on_front', array( $this, 'filter_option_page_for_posts' ) );
+
+
+
 	}
 
 	/**
@@ -302,9 +308,9 @@ class Multilocale_Public_Posts {
 	}
 
 	/**
-	 * Filter page_for_posts option.
+	 * Filter page_for_posts and page_on_front option.
 	 *
-	 * If a translation is present for the page_for_posts page, return the ID of the translation.
+	 * If a translation is present for the page_for_posts or page_on_front page, return the ID of the translation.
 	 *
 	 * Note: Assumes the page_for_posts is in the default language.
 	 *
