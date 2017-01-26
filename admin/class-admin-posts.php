@@ -736,7 +736,7 @@ class Multilocale_Admin_Posts {
 
 				// Todo: Use user_trailingslashit?
 				$home_url  = trailingslashit( get_home_url() );
-				$post_link = $home_url . $post_locale->slug  . '/' . str_replace( $home_url, '', $post_link );
+				$post_link = $home_url . $post_locale->slug . '/' . str_replace( $home_url, '', $post_link );
 
 				if ( multilocale_page_is_front_page( $post ) ) {
 					$post_link = $home_url . $post_locale->slug;
