@@ -596,11 +596,11 @@ class Multilocale_Admin_Posts {
 	public function action_save_post_locale_and_translation_group( $post_id, $post ) {
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return $post_id;
+			return;
 		}
 
 		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
-			return $post_id;
+			return;
 		}
 
 		// Get the post type object.
@@ -608,7 +608,7 @@ class Multilocale_Admin_Posts {
 
 		// Check if the current user has permission to edit this post.
 		if ( ! current_user_can( $post_type->cap->edit_post, $post_id ) ) {
-			return $post_id;
+			return;
 		}
 
 		/*
@@ -682,8 +682,6 @@ class Multilocale_Admin_Posts {
 				);
 			}
 		}
-
-		return $post_id;
 	}
 
 	/**
