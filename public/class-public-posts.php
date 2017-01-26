@@ -319,14 +319,14 @@ class Multilocale_Public_Posts {
 			return $value;
 		}
 
-		$locale = multilocale_get_locale_object();
+		$option = substr( current_filter(), 7 );
 
-		if ( $locale->term_id !== multilocale_get_default_locale_id() ) {
+		if ( $this->_locale_obj->term_id !== multilocale_get_default_locale_id() ) {
 
-			$translations = multilocale_get_post_translations( (int) $value, 'publish', false );
+			$options = get_option( 'plugin_multilocale' );
 
-			if ( array_key_exists( $locale->term_id, $translations ) ) {
-				$value = $translations[ $locale->term_id ]->ID;
+			if ( ! empty( $options[ $option . '_' . $this->_locale_obj->term_id ] ) ) {
+				return $options[ $option . '_' . $this->_locale_obj->term_id ];
 			}
 		}
 

@@ -141,6 +141,16 @@ class Multilocale_Admin_Posts {
 
 		// Show post list in the default locale by default.
 		add_action( 'admin_menu', array( $this, 'filter_admin_menu_links_for_posts' ) );
+
+		// Save page_for_posts and page_on_front options per locale.
+		add_action( 'update_option_page_for_posts', array( $this, 'localize_page_for_posts_and_page_on_front_options' ), 10, 3 );
+		add_action( 'update_option_page_on_front', array( $this, 'localize_page_for_posts_and_page_on_front_options' ), 10, 3 );
+
+		// Maybe save page_for_posts and page_on_front option when saving a post.
+		add_action( 'save_post', array( $this, 'update_localized_page_for_posts_and_page_on_front' ), 10, 2 );
+
+		// Maybe remove page_for_posts and page_on_front option when saving a post.
+		add_action( 'delete_post', array( $this, 'delete_localized_page_for_posts_and_page_on_front' ) );
 	}
 
 	/**
@@ -920,6 +930,113 @@ class Multilocale_Admin_Posts {
 		}
 
 		return $posts;
+	}
+
+	/**
+	 * Save page_for_posts and page_on_front options per locale.
+	 *
+	 * @todo Also update this option when adding or removing translations.
+	 *
+	 * @since 1.0.0
+	 * @param mixed  $old_value The old option value.
+	 * @param mixed  $value     The new option value.
+	 * @param string $option    Option name.
+	 */
+	public function localize_page_for_posts_and_page_on_front_options( $old_value, $value, $option ) {
+
+		if ( ! post_type_supports( 'page', 'multilocale' ) ) {
+			return;
+		}
+
+		$options = get_option( 'plugin_multilocale' );
+		$locales = multilocale_get_locales();
+
+		if ( empty( $value ) ) {
+			foreach ( $locales as $locale ) {
+				$options[ $option . '_' . $locale->term_id ] = '';
+			}
+		} else {
+
+			$translations = multilocale_get_post_translations( (int) $value, 'all', false );
+
+			foreach ( $locales as $locale ) {
+				if ( array_key_exists( $locale->term_id, $translations ) ) {
+					$options[ $option . '_' . $locale->term_id ] = $translations[ $locale->term_id ]->ID;
+				} else {
+					$options[ $option . '_' . $locale->term_id ] = '';
+				}
+			}
+		}
+
+		update_option( 'plugin_multilocale', $options );
+	}
+
+	/**
+	 * Maybe save page_for_posts and page_on_front option when saving a post.
+	 *
+	 * @since 1.0.0
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 */
+	function update_localized_page_for_posts_and_page_on_front( $post_id, $post ) {
+
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
+			return;
+		}
+
+		$options = get_option( 'plugin_multilocale' );
+
+		if ( multilocale_page_is_page_for_posts( $post ) ) {
+
+			$post_locale = multilocale_get_post_locale( $post );
+
+			if ( $options[ 'page_for_posts_' . $post_locale->term_id ] !== $post_id ) {
+				$options[ 'page_for_posts_' . $post_locale->term_id ] = $post_id;
+				update_option( 'plugin_multilocale', $options );
+			}
+
+			return;
+		}
+
+		if ( multilocale_page_is_front_page( $post ) ) {
+
+			$post_locale = multilocale_get_post_locale( $post );
+
+			if ( $options[ 'page_on_front_' . $post_locale->term_id ] !== $post_id ) {
+				$options[ 'page_on_front_' . $post_locale->term_id ] = $post_id;
+				update_option( 'plugin_multilocale', $options );
+			}
+
+			return;
+		}
+	}
+
+	/**
+	 * Maybe remove page_for_posts and page_on_front option when saving a post.
+	 *
+	 * @since 1.0.0
+	 * @param int     $post_id Post ID.
+	 * @param WP_Post $post    Post object.
+	 */
+	function delete_localized_page_for_posts_and_page_on_front( $post_id ) {
+
+		$_post = get_post( $post_id );
+
+		if ( ! post_type_supports( $_post->post_type, 'multilocale' ) ) {
+			return;
+		}
+
+		$post_locale = multilocale_get_post_locale( $_post );
+		$options = get_option( 'plugin_multilocale' );
+
+		if ( $options[ 'page_for_posts_' . $post_locale->term_id ] === $post_id ) {
+			$options[ 'page_for_posts_' . $post_locale->term_id ] = '';
+			update_option( 'plugin_multilocale', $options );
+		}
 	}
 }
 
