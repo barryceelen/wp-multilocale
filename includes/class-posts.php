@@ -363,7 +363,6 @@ class Multilocale_Posts {
 		$args = array(
 			'posts_per_page' => 100, // Make PHP Code Sniffer happy.
 			'post_type' => get_post_types_by_support( 'multilocale' ),
-			'fields'    => 'ids',
 			'post_status' => $post_status,
 			'tax_query' => array(
 				array(
@@ -379,23 +378,14 @@ class Multilocale_Posts {
 			$args['post__not_in'] = (array) $exclude;
 		}
 
-		$id_query = new WP_Query( $args );
+		$query = new WP_Query( $args );
 
-		if ( $id_query->have_posts() ) {
-			$args = array(
-				'posts_per_page' => $id_query->found_posts,
-				'post__in' => $id_query->posts
-			);
+		if ( $query->have_posts() ) {
 
-			$query = new WP_Query( $args );
-
-			if ( $query->have_posts() ) {
-
-				foreach ( $query->posts as $post ) {
-					$post_locale = $this->get_post_locale( $post );
-					if ( $post_locale ) {
-						$result[ $post_locale->term_id ] = $post;
-					}
+			foreach ( $query->posts as $post ) {
+				$post_locale = $this->get_post_locale( $post );
+				if ( $post_locale ) {
+					$result[ $post_locale->term_id ] = $post;
 				}
 			}
 		}
