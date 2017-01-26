@@ -1020,7 +1020,6 @@ class Multilocale_Admin_Posts {
 	 *
 	 * @since 1.0.0
 	 * @param int     $post_id Post ID.
-	 * @param WP_Post $post    Post object.
 	 */
 	function delete_localized_page_for_posts_and_page_on_front( $post_id ) {
 
