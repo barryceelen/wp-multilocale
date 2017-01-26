@@ -960,7 +960,7 @@ class Multilocale_Admin_Posts {
 			$translations = multilocale_get_post_translations( (int) $value, 'all', false );
 
 			foreach ( $locales as $locale ) {
-				if ( array_key_exists( $locale->term_id, $translations ) ) {
+				if ( array_key_exists( $locale->term_id, $translations ) && in_array( $translations[ $locale->term_id ]->post_status, array( 'publish', 'private' ), true ) ) {
 					$options[ $option . '_' . $locale->term_id ] = $translations[ $locale->term_id ]->ID;
 				} else {
 					$options[ $option . '_' . $locale->term_id ] = '';
@@ -973,6 +973,8 @@ class Multilocale_Admin_Posts {
 
 	/**
 	 * Maybe save page_for_posts and page_on_front option when saving a post.
+	 *
+	 * @todo On unpublish, remove setting.
 	 *
 	 * @since 1.0.0
 	 * @param int     $post_id Post ID.
@@ -994,7 +996,7 @@ class Multilocale_Admin_Posts {
 
 			$post_locale = multilocale_get_post_locale( $post );
 
-			if ( $options[ 'page_for_posts_' . $post_locale->term_id ] !== $post_id ) {
+			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_for_posts_' . $post_locale->term_id ] !== $post_id ) {
 				$options[ 'page_for_posts_' . $post_locale->term_id ] = $post_id;
 				update_option( 'plugin_multilocale', $options );
 			}
@@ -1006,7 +1008,7 @@ class Multilocale_Admin_Posts {
 
 			$post_locale = multilocale_get_post_locale( $post );
 
-			if ( $options[ 'page_on_front_' . $post_locale->term_id ] !== $post_id ) {
+			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_on_front_' . $post_locale->term_id ] !== $post_id ) {
 				$options[ 'page_on_front_' . $post_locale->term_id ] = $post_id;
 				update_option( 'plugin_multilocale', $options );
 			}
