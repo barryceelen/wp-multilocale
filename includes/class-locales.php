@@ -89,7 +89,7 @@ class Multilocale_Locales {
 			'show_ui'           => false,
 			'show_admin_column' => true,
 			'query_var'         => 'locale',
-			'rewrite'           => array( 'slug' => 'locale' ),
+			'rewrite'           => false,
 		);
 
 		register_taxonomy(

@@ -105,7 +105,7 @@ class Multilocale_Posts {
 			'show_ui'           => false,
 			'show_admin_column' => false,
 			'query_var'         => true,
-			'rewrite'           => array( 'slug' => 'translation' ),
+			'rewrite'           => false,
 		);
 
 		register_taxonomy(
