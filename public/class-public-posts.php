@@ -81,7 +81,7 @@ class Multilocale_Public_Posts {
 		add_filter( 'get_previous_post_where', array( $this, 'filter_get_previous_next_post_where' ), 20, 5 );
 
 		// Modify main query for fun and profit.
-		add_action( 'parse_tax_query', array( $this, 'localize_main_query' ), 9999 );
+		add_action( 'pre_get_posts', array( $this, 'localize_main_query' ), 9999 );
 
 		// Filter page_for_posts option.
 		add_filter( 'option_page_for_posts', array( $this, 'filter_option_page_for_posts' ) );
