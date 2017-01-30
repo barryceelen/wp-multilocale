@@ -81,7 +81,7 @@ class Multilocale_Public_Posts {
 		add_filter( 'get_previous_post_where', array( $this, 'filter_get_previous_next_post_where' ), 20, 5 );
 
 		// Modify main query for fun and profit.
-		add_action( 'pre_get_posts', array( $this, 'filter_main_query' ) );
+		add_action( 'parse_tax_query', array( $this, 'localize_main_query' ), 9999 );
 
 		// Filter page_for_posts option.
 		add_filter( 'option_page_for_posts', array( $this, 'filter_option_page_for_posts' ) );
@@ -140,32 +140,33 @@ class Multilocale_Public_Posts {
 	 * @access private
 	 * @param WP_Query $wp_query The WP_Query instance (passed by reference).
 	 */
-	public function filter_main_query( $wp_query ) {
+	public function localize_main_query( $wp_query ) {
 
 		if ( ! $wp_query->is_main_query() || $wp_query->is_singular() ) {
-			return $wp_query;
+			return;
 		}
 
 		$post_type = empty( $wp_query->query_vars['post_type'] ) ? 'post' : sanitize_key( $wp_query->query_vars['post_type'] );
 
 		if ( ! post_type_supports( $post_type, 'multilocale' ) ) {
-			return $wp_query;
+			return;
 		}
 
-		// Todo: What's up if we're already querying terms in one or more other taxonomies?
 		$tax_query = array(
-			array(
-				'taxonomy' => 'locale',
-				'field'    => 'id',
-				'terms'    => array( $this->_locale_obj->term_id ),
-				'operator' => 'IN',
-			),
+			'taxonomy' => 'locale',
+			'field'    => 'id',
+			'terms'    => array( $this->_locale_obj->term_id ),
+			'operator' => 'IN',
+			'include_children' => false
 		);
 
-		$wp_query->set( 'tax_query', $tax_query );
-
-		return $wp_query;
+		if ( empty( $wp_query->tax_query->queries ) ) {
+			$wp_query->set( 'tax_query', array( $tax_query ) );
+		} else {
+			$wp_query->tax_query->queries[] = $tax_query;
+		}
 	}
+
 
 	/**
 	 * Redirect to the localized url of a post if a non-localized version is opened.
