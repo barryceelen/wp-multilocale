@@ -350,7 +350,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
  * @param bool    $siblings_only Only look at post translations, ignore the current post.
  * @return bool True if the current page or a page in its translation group is 'page_on_front'.
  */
-function multilocale_page_is_front_page( $post, $siblings_only = false ) {
+function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 
 	$_post = get_post( $post );
 
@@ -368,10 +368,9 @@ function multilocale_page_is_front_page( $post, $siblings_only = false ) {
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-			$ids           = wp_list_pluck( $translations, 'ID' );
+			$options = get_option( 'plugin_multilocale' );
 
-			if ( in_array( (int) $page_on_front, $ids, true ) ) {
+			if ( ! empty( $options['page_on_front'] ) && in_array( (int) $page_on_front, (array) $options['page_on_front'], true ) ) {
 				return true;
 			}
 		}
@@ -406,10 +405,9 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-			$ids           = wp_list_pluck( $translations, 'ID' );
+			$options = get_option( 'plugin_multilocale' );
 
-			if ( in_array( (int) $page_for_posts, $ids, true ) ) {
+			if ( ! empty( $options['page_for_posts'] ) && in_array( (int) $page_on_front, (array) $options['page_for_posts'], true ) ) {
 				return true;
 			}
 		}

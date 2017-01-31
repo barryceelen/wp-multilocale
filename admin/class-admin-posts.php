@@ -435,7 +435,7 @@ class Multilocale_Admin_Posts {
 	 */
 	public function filter_post_states( $post_states, $post ) {
 
-		if ( multilocale_page_is_front_page( $post, true ) ) {
+		if ( multilocale_page_is_page_on_front( $post, true ) ) {
 			$post_states['page_on_front'] = __( 'Front Page' );
 		}
 
@@ -738,7 +738,7 @@ class Multilocale_Admin_Posts {
 				$home_url  = trailingslashit( get_home_url() );
 				$post_link = $home_url . $post_locale->slug . '/' . str_replace( $home_url, '', $post_link );
 
-				if ( multilocale_page_is_front_page( $post ) ) {
+				if ( multilocale_page_is_page_on_front( $post ) ) {
 					$post_link = $home_url . $post_locale->slug;
 				}
 			}
@@ -935,7 +935,7 @@ class Multilocale_Admin_Posts {
 	/**
 	 * Save page_for_posts and page_on_front options per locale.
 	 *
-	 * @todo Also update this option when adding or removing translations.
+	 * @todo Also update this option when adding, removing or changing status of translations.
 	 *
 	 * @since 1.0.0
 	 * @param mixed  $old_value The old option value.
@@ -953,7 +953,7 @@ class Multilocale_Admin_Posts {
 
 		if ( empty( $value ) ) {
 			foreach ( $locales as $locale ) {
-				$options[ $option . '_' . $locale->term_id ] = '';
+				$options[ $option ][ $locale->term_id ] = '';
 			}
 		} else {
 
@@ -961,9 +961,9 @@ class Multilocale_Admin_Posts {
 
 			foreach ( $locales as $locale ) {
 				if ( array_key_exists( $locale->term_id, $translations ) && in_array( $translations[ $locale->term_id ]->post_status, array( 'publish', 'private' ), true ) ) {
-					$options[ $option . '_' . $locale->term_id ] = $translations[ $locale->term_id ]->ID;
+					$options[ $option ][ $locale->term_id ] = $translations[ $locale->term_id ]->ID;
 				} else {
-					$options[ $option . '_' . $locale->term_id ] = '';
+					$options[ $option ][ $locale->term_id ] = '';
 				}
 			}
 		}
@@ -992,24 +992,27 @@ class Multilocale_Admin_Posts {
 
 		$options = get_option( 'plugin_multilocale' );
 
-		if ( multilocale_page_is_page_for_posts( $post ) ) {
+		if ( $this->page_is_page_for_posts( $post ) ) {
 
 			$post_locale = multilocale_get_post_locale( $post );
 
-			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_for_posts_' . $post_locale->term_id ] !== $post_id ) {
-				$options[ 'page_for_posts_' . $post_locale->term_id ] = $post_id;
+			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) ) {
+				$options['page_for_posts'][ $post_locale->term_id ] = $post_id;
+				update_option( 'plugin_multilocale', $options );
+			} else {
+				$options['page_for_posts'][ $post_locale->term_id ] = '';
 				update_option( 'plugin_multilocale', $options );
 			}
 
 			return;
 		}
 
-		if ( multilocale_page_is_front_page( $post ) ) {
+		if ( $this->page_is_front_page( $post ) ) {
 
 			$post_locale = multilocale_get_post_locale( $post );
 
-			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_on_front_' . $post_locale->term_id ] !== $post_id ) {
-				$options[ 'page_on_front_' . $post_locale->term_id ] = $post_id;
+			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_on_front '][ $post_locale->term_id ] !== $post_id ) {
+				$options['page_on_front'][ $post_locale->term_id ] = $post_id;
 				update_option( 'plugin_multilocale', $options );
 			}
 
@@ -1034,10 +1037,90 @@ class Multilocale_Admin_Posts {
 		$post_locale = multilocale_get_post_locale( $_post );
 		$options = get_option( 'plugin_multilocale' );
 
-		if ( $options[ 'page_for_posts_' . $post_locale->term_id ] === $post_id ) {
-			$options[ 'page_for_posts_' . $post_locale->term_id ] = '';
+		if ( ! empty( $options['page_for_posts'][ $post_locale->term_id ] ) && $options['page_for_posts'][ $post_locale->term_id ] === $post_id ) {
+			$options['page_for_posts'][ $post_locale->term_id ] = '';
 			update_option( 'plugin_multilocale', $options );
 		}
+	}
+
+	/**
+	 * Check if the current page or a page in its translation group is 'page_on_front'.
+	 *
+	 * Note: Prefer using get_option[ 'plugin_multilocale' ][ 'front_page' ].
+	 *
+	 * @since 1.0.0
+	 * @param WP_Post $post          The post in question.
+	 * @param bool    $siblings_only Only look at post translations, ignore the current post.
+	 * @return bool True if the current page or a page in its translation group is 'page_on_front'.
+	 */
+	private function page_is_front_page( $post, $siblings_only = false ) {
+
+		$_post = get_post( $post );
+
+		if ( ! $_post ) {
+			return false;
+		}
+
+		if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
+
+			$page_on_front = get_option( 'page_on_front' );
+
+			if ( ! $siblings_only && $_post->ID == $page_on_front ) {
+				return true;
+			}
+
+			if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
+
+				$translations  = multilocale_get_post_translations( $_post, $siblings_only );
+				$ids           = wp_list_pluck( $translations, 'ID' );
+
+				if ( in_array( (int) $page_on_front, $ids, true ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Check if the current page or a page in its translation group is 'page_for_posts'.
+	 *
+	 * Note: Prefer using get_option[ 'plugin_multilocale' ][ 'page_for_posts' ].
+	 *
+	 * @since 1.0.0
+	 * @param WP_Post $post          The post in question.
+	 * @param bool    $siblings_only Only look at post translations, ignore the current post.
+	 * @return bool True if the current page or a page in its translation group is 'page_on_front'.
+	 */
+	private function page_is_page_for_posts( $post, $siblings_only = false ) {
+
+		$_post = get_post( $post );
+
+		if ( ! $_post ) {
+			return false;
+		}
+
+		if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
+
+			$page_for_posts = get_option( 'page_for_posts' );
+
+			if ( ! $siblings_only && $_post->ID == $page_for_posts ) {
+				return true;
+			}
+
+			if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
+
+				$translations  = multilocale_get_post_translations( $_post, $siblings_only );
+				$ids           = wp_list_pluck( $translations, 'ID' );
+
+				if ( in_array( (int) $page_for_posts, $ids, true ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 }
 
