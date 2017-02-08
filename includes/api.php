@@ -360,19 +360,19 @@ function multilocale_page_is_front_page( $post, $siblings_only = false ) {
 
 	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
 
-		$page_on_front = get_option( 'page_on_front' );
-
-		if ( ! $siblings_only && $_post->ID == $page_on_front ) {
+		if ( ! $siblings_only && $_post->ID === (int) get_option( 'page_on_front' ) ) {
 			return true;
 		}
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-			$ids           = wp_list_pluck( $translations, 'ID' );
+			$options = get_option( 'plugin_multilocale' );
+			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( in_array( (int) $page_on_front, $ids, true ) ) {
-				return true;
+			if ( $post_locale && ! empty( $options['page_on_front_' . $post_locale->term_id ] ) ) {
+				if ( $_post->ID === (int) $options['page_on_front_' . $post_locale->term_id ] ) {
+					return true;
+				}
 			}
 		}
 	}
@@ -398,19 +398,19 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 
 	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
 
-		$page_for_posts = get_option( 'page_for_posts' );
-
-		if ( ! $siblings_only && $_post->ID == $page_for_posts ) {
+		if ( ! $siblings_only && $_post->ID === (int) get_option( 'page_for_posts' ) ) {
 			return true;
 		}
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-			$ids           = wp_list_pluck( $translations, 'ID' );
+			$options = get_option( 'plugin_multilocale' );
+			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( in_array( (int) $page_for_posts, $ids, true ) ) {
-				return true;
+			if ( $post_locale && ! empty( $options['page_for_posts_' . $post_locale->term_id ] ) ) {
+				if ( $_post->ID === (int) $options['page_for_posts_' . $post_locale->term_id ] ) {
+					return true;
+				}
 			}
 		}
 	}
