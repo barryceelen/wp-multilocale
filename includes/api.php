@@ -350,7 +350,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
  * @param bool    $siblings_only Only look at post translations, ignore the current post.
  * @return bool True if the current page or a page in its translation group is 'page_on_front'.
  */
-function multilocale_page_is_front_page( $post, $siblings_only = false ) {
+function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 
 	$_post = get_post( $post );
 
@@ -359,6 +359,8 @@ function multilocale_page_is_front_page( $post, $siblings_only = false ) {
 	}
 
 	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
+
+		$page_on_front = get_option( 'page_on_front' );
 
 		if ( ! $siblings_only && $_post->ID === (int) get_option( 'page_on_front' ) ) {
 			return true;

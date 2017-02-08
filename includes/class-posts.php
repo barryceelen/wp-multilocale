@@ -362,7 +362,7 @@ class Multilocale_Posts {
 
 		$args = array(
 			'posts_per_page' => 100, // Make PHP Code Sniffer happy.
-			'post_type' => get_post_types_by_support( 'multilocale' ),
+			'post_type' => get_post_types_by_support( 'multilocale' ), // Defining only one post type saves one query.
 			'post_status' => $post_status,
 			'tax_query' => array(
 				array(
