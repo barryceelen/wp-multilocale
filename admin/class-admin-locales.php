@@ -588,19 +588,6 @@ class Multilocale_Admin_Locales {
 			wp_delete_file( $file );
 		}
 
-		// Delete admin locale user preference.
-		$wpdb->delete(
-			$wpdb->usermeta,
-			array(
-				'meta_key' => 'admin_locale',
-				'meta_value' => $term->description,
-			),
-			array(
-				'%s',
-				'%s',
-			)
-		); // WPCS: cache ok, db call ok.
-
 		return $term_id;
 	}
 

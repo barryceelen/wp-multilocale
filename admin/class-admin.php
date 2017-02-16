@@ -95,9 +95,6 @@ class Multilocale_Admin {
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . 'multilocale.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_plugin_action_link' ) );
 
-		// Filter the locale so we show the admin in the locale set in the user preferences.
-		add_filter( 'locale', array( $this, 'filter_admin_locale' ) );
-
 		// Prevent setting the permalink option to 'Plain'.
 		add_action( 'admin_footer', array( $this, 'disable_plain_permalink_option' ) );
 		add_filter( 'pre_update_option_permalink_structure', array( $this, 'pre_update_option_permalink_structure' ), 10, 2 );
@@ -187,28 +184,6 @@ class Multilocale_Admin {
 		}
 
 		return $links;
-	}
-
-	/**
-	 * Filter admin locale.
-	 *
-	 * Switch the admin locale depending on user preference.
-	 *
-	 * @since  0.0.1
-	 *
-	 * @access private
-	 * @param string $locale The locale ID.
-	 * @return string Locale, eg. 'de_DE'.
-	 */
-	public function filter_admin_locale( $locale ) {
-
-		$user_admin_locale = get_user_meta( get_current_user_id(), 'admin_locale', true );
-
-		if ( ! empty( $user_admin_locale ) ) {
-			return $user_admin_locale;
-		}
-
-		return $locale;
 	}
 
 	/**
