@@ -31,11 +31,6 @@ if (
 do_action( 'multilocale_before_uninstall_plugin' );
 
 /*
- * Remove user preferences.
- */
-$wpdb->delete( $wpdb->usermeta, array( 'meta_key' => 'admin_locale' ) );
-
-/*
  * Remove options.
  *
  * Note: Do this last, the options might be needed for handling other stuff.
