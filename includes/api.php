@@ -253,8 +253,8 @@ function multilocale_get_localized_unsupported_post_permalink( $post, $locale ) 
  * Get localized home url.
  *
  * @since 1.0.0
- * @param [type] $locale [description]
- * @return [type] [description]
+ * @param WP_Term $locale The locale in question.
+ * @return string Home URL for the specified locale.
  */
 function multilocale_get_localized_home_url( $locale ) {
 
@@ -269,7 +269,7 @@ function multilocale_get_localized_home_url( $locale ) {
  *
  * @global WP_Rewrite $wp_rewrite
  *
- * @param string $post_type Post type.
+ * @param string        $post_type Post type.
  * @param string|object $locale Locale.
  * @return string|false The post type archive permalink.
  */
@@ -285,7 +285,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
 		$show_on_front = get_option( 'show_on_front' );
 		$page_for_posts  = get_option( 'page_for_posts' );
 
-		if ( 'page' == $show_on_front && $page_for_posts ) {
+		if ( 'page' === $show_on_front && $page_for_posts ) {
 			if ( multilocale_get_default_locale_id() === (int) $locale->term_id ) {
 				$link = get_permalink( $page_for_posts );
 			} else {
@@ -328,7 +328,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
 		$link = multilocale_get_localized_home_url( $locale ) . '/' . ltrim( user_trailingslashit( $struct, 'post_type_archive' ), '/' );
 
 	} else {
-		$link = multilocale_get_localized_home_url( $locale ) . '/' . '?post_type=' . $post_type;
+		$link = multilocale_get_localized_home_url( $locale ) . '/?post_type=' . $post_type;
 	}
 
 	/**
@@ -362,7 +362,7 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 
 		$page_on_front = get_option( 'page_on_front' );
 
-		if ( ! $siblings_only && $_post->ID === (int) get_option( 'page_on_front' ) ) {
+		if ( ! $siblings_only && (int) get_option( 'page_on_front' ) === $_post->ID  ) {
 			return true;
 		}
 
@@ -371,8 +371,8 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( $post_locale && ! empty( $options['page_on_front_' . $post_locale->term_id ] ) ) {
-				if ( $_post->ID === (int) $options['page_on_front_' . $post_locale->term_id ] ) {
+			if ( $post_locale && ! empty( $options[ 'page_on_front_' . $post_locale->term_id ] ) ) {
+				if ( $_post->ID === (int) $options[ 'page_on_front_' . $post_locale->term_id ] ) {
 					return true;
 				}
 			}
@@ -400,7 +400,7 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 
 	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
 
-		if ( ! $siblings_only && $_post->ID === (int) get_option( 'page_for_posts' ) ) {
+		if ( ! $siblings_only &&  (int) get_option( 'page_for_posts' ) === $_post->ID ) {
 			return true;
 		}
 
@@ -409,8 +409,8 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( $post_locale && ! empty( $options['page_for_posts_' . $post_locale->term_id ] ) ) {
-				if ( $_post->ID === (int) $options['page_for_posts_' . $post_locale->term_id ] ) {
+			if ( $post_locale && ! empty( $options[ 'page_for_posts_' . $post_locale->term_id ] ) ) {
+				if ( $_post->ID === (int) $options[ 'page_for_posts_' . $post_locale->term_id ] ) {
 					return true;
 				}
 			}

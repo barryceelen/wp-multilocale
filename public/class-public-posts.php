@@ -157,7 +157,7 @@ class Multilocale_Public_Posts {
 			'field'    => 'id',
 			'terms'    => array( $this->_locale_obj->term_id ),
 			'operator' => 'IN',
-			'include_children' => false
+			'include_children' => false,
 		);
 
 		if ( empty( $wp_query->tax_query->queries ) ) {
@@ -322,7 +322,7 @@ class Multilocale_Public_Posts {
 
 		$option = substr( current_filter(), 7 );
 
-		if ( $this->_locale_obj->term_id !== multilocale_get_default_locale_id() ) {
+		if ( multilocale_get_default_locale_id() !== $this->_locale_obj->term_id ) {
 
 			$options = get_option( 'plugin_multilocale' );
 

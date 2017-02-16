@@ -170,16 +170,15 @@ class Multilocale_Public_Locale {
 			if ( (int) $this->_options['default_locale_id'] === (int) $locales[ $slug ] ) {
 
 				// The default locale is not supposed to have a slug, let's just redirect here.
-
 				global $is_IIS;
 
-				if ( ! $is_IIS && PHP_SAPI != 'cgi-fcgi' ) {
-					status_header(301); // This causes problems on IIS and some FastCGI setups
+				if ( ! $is_IIS && PHP_SAPI !== 'cgi-fcgi' ) {
+					status_header( 301 ); // This causes problems on IIS and some FastCGI setups.
 				}
 
 				$location = $this->_home_url . implode( '/', $req_uri_array );
 
-				header("Location: $location", true, 301);
+				header( "Location: $location", true, 301 );
 				exit;
 
 			} else {

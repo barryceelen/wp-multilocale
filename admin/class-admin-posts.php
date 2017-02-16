@@ -173,7 +173,7 @@ class Multilocale_Admin_Posts {
 			return;
 		}
 
-		if ( ! wp_verify_nonce( $_POST['multilocale_settings'], 'multilocale_settings' ) ) {
+		if ( ! wp_verify_nonce( wp_unslash( $_POST['multilocale_settings'] ), 'multilocale_settings' ) ) {
 			return;
 		}
 
@@ -183,7 +183,7 @@ class Multilocale_Admin_Posts {
 
 				$args = array(
 					'post_type' => get_post_types_by_support( 'multilocale' ),
-					'tax_query' => array(
+					'tax_query' => array( // WPCS: tax_query ok.
 						array(
 							'taxonomy' => $this->_locale_taxonomy,
 							'field'    => 'term_id',
@@ -221,7 +221,7 @@ class Multilocale_Admin_Posts {
 		global $wpdb;
 
 		foreach ( $tt_ids as $tt_id ) {
-			$tt = $wpdb->get_row( $wpdb->prepare( "SELECT taxonomy, count FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d ", $tt_id ) ); // WPCS: db call ok.
+			$tt = $wpdb->get_row( $wpdb->prepare( "SELECT taxonomy, count FROM $wpdb->term_taxonomy WHERE term_taxonomy_id = %d ", $tt_id ) ); // WPCS: db call ok, cache ok.
 			if ( $tt && $this->_post_translation_taxonomy === $tt->taxonomy && 0 === absint( $tt->count ) ) {
 				wp_delete_term( $tt_id, $this->_post_translation_taxonomy );
 			}
@@ -578,13 +578,13 @@ class Multilocale_Admin_Posts {
 		}
 
 		// Could also just query for a post with translation_id and locale_id?
-		$translations = multilocale_get_posts_by_translation_group_id( $_GET['translation_id'] );
+		$translations = multilocale_get_posts_by_translation_group_id( (int) wp_unslash( $_GET['translation_id'] ) );
 
 		if ( $translations ) {
 			foreach ( $translations as $translation ) {
 				$translation_locale = multilocale_get_post_locale( $translation->ID );
 				if ( (int) $_GET['locale_id'] === (int) $translation_locale->term_id ) {
-					wp_redirect( get_edit_post_link( $translation->ID, '' ) );
+					wp_safe_redirect( get_edit_post_link( $translation->ID, '' ) );
 					exit;
 				}
 			}
@@ -666,7 +666,7 @@ class Multilocale_Admin_Posts {
 			 * Maybe there are posts in the translation group.
 			 * Does the group even exist?
 			 */
-			$translations = multilocale_get_posts_by_translation_group_id( $_REQUEST['translation_id'] );
+			$translations = multilocale_get_posts_by_translation_group_id( (int) wp_unslash( $_REQUEST['translation_id'] ) );
 
 			if ( ! $translations ) {
 				multilocale_insert_post_translation_group( $post->ID );
@@ -792,7 +792,7 @@ class Multilocale_Admin_Posts {
 		$args = array(
 			'post_type' => $dropdown_args['post_type'],
 			'fields' => 'ids',
-			'tax_query' => array(
+			'tax_query' => array( // WPCS: tax_query ok.
 				array(
 					'taxonomy' => $this->_locale_taxonomy,
 					'field' => 'term_id',
@@ -911,7 +911,7 @@ class Multilocale_Admin_Posts {
 
 				$args = array(
 					'post_type' => get_post_types_by_support( 'multilocale' ),
-					'tax_query' => array(
+					'tax_query' => array( // WPCS: tax_query ok.
 						array(
 							'taxonomy' => $this->_locale_taxonomy,
 							'terms' => $terms,
@@ -1011,7 +1011,7 @@ class Multilocale_Admin_Posts {
 
 			$post_locale = multilocale_get_post_locale( $post );
 
-			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options[ 'page_on_front '][ $post_locale->term_id ] !== $post_id ) {
+			if ( in_array( $post->post_status, array( 'publish', 'private' ), true ) && $options['page_on_front'][ $post_locale->term_id ] !== $post_id ) {
 				$options['page_on_front'][ $post_locale->term_id ] = $post_id;
 				update_option( 'plugin_multilocale', $options );
 			}
@@ -1024,7 +1024,7 @@ class Multilocale_Admin_Posts {
 	 * Maybe remove page_for_posts and page_on_front option when saving a post.
 	 *
 	 * @since 1.0.0
-	 * @param int     $post_id Post ID.
+	 * @param int $post_id Post ID.
 	 */
 	function delete_localized_page_for_posts_and_page_on_front( $post_id ) {
 
@@ -1065,7 +1065,7 @@ class Multilocale_Admin_Posts {
 
 			$page_on_front = get_option( 'page_on_front' );
 
-			if ( ! $siblings_only && $_post->ID == $page_on_front ) {
+			if ( ! $siblings_only && absint( $page_on_front ) === $_post->ID ) {
 				return true;
 			}
 
@@ -1105,7 +1105,7 @@ class Multilocale_Admin_Posts {
 
 			$page_for_posts = get_option( 'page_for_posts' );
 
-			if ( ! $siblings_only && $_post->ID == $page_for_posts ) {
+			if ( ! $siblings_only && absint( $page_for_posts ) === $_post->ID ) {
 				return true;
 			}
 

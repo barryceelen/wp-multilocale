@@ -520,7 +520,7 @@ class Multilocale_Admin_Locales {
 			}
 		}
 
-		printf(
+		printf( // WPCS: XSS ok.
 			'<tr><th scope="row"><label for="select_locale" />%s</label></th><td>%s</td></tr>',
 			esc_html__( 'Default Locale', 'multilocale' ), // Todo: Get label via tax object.
 			$this->get_locale_dropdown( array( 'selected' => array( $native_name ) ) )
