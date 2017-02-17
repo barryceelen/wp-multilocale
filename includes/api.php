@@ -271,7 +271,7 @@ function multilocale_get_localized_home_url( $locale ) {
  *
  * @param string        $post_type Post type.
  * @param string|object $locale Locale.
- * @return string|false The post type archive permalink.
+ * @return string|false|WP_Error The post type archive permalink.
  */
 function multilocale_get_localized_post_type_archive_link( $post_type, $locale ) {
 
@@ -279,6 +279,17 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
 
 	if ( ! $post_type_obj = get_post_type_object( $post_type ) ) {
 		return false;
+	}
+
+	if ( ! is_object( $locale ) ) {
+		if ( is_int( $locale ) ) {
+			$locale = get_term( $locale, 'locale' );
+		} else {
+			$locale = get_term_by( 'slug', $locale, 'locale' );
+		}
+		if ( ! $locale || is_wp_error( $locale ) ) {
+			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
+		}
 	}
 
 	if ( 'post' === $post_type ) {
@@ -340,6 +351,43 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
 	 * @param string $post_type Post type name.
 	 */
 	return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
+}
+
+/**
+ * Retrieves the localized permalink for a term archive.
+ *
+ * Todo: Could do with improvement, just inserting a locale slug for now.
+ *
+ * @since 1.0.0
+ *
+ * @global $multilocale_public
+ *
+ * @param object|int|string $term   The term object, ID, or slug whose link will be retrieved.
+ * @param string|object     $locale Locale.
+ * @return string|WP_Error  The term permalink.
+ */
+function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
+
+	$link = get_term_link( $term, $taxonomy );
+
+	if ( is_wp_error( $link ) ) {
+		return $link;
+	}
+
+	if ( ! is_object( $locale ) ) {
+		if ( is_int( $locale ) ) {
+			$locale = get_term( $locale, 'locale' );
+		} else {
+			$locale = get_term_by( 'slug', $locale, 'locale' );
+		}
+		if ( ! $locale || is_wp_error( $locale ) ) {
+			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
+		}
+	}
+
+	// Oohh this is all so crude...
+	$link = str_replace( trailingslashit( get_home_url() ), '', $link );
+	return trailingslashit( multilocale_get_localized_home_url( $locale ) ) . $link;
 }
 
 /**
