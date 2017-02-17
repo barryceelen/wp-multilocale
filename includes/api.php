@@ -362,7 +362,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale )
  *
  * @global $multilocale_public
  *
- * @param object|int|string $term     PThe term object, ID, or slug whose link will be retrieved.
+ * @param object|int|string $term     The term object, ID, or slug whose link will be retrieved.
  * @param string            $taxonomy Optional. Taxonomy. Default empty.
  * @param string|object     $locale Locale.
  * @return string|WP_Error  The term permalink.
