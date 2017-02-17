@@ -265,32 +265,23 @@ class Multilocale_Locales {
 	 */
 	public function get_locales() {
 
-		if ( ! $results = wp_cache_get( 'multilocale_locales' ) ) {
+		if ( ! $terms = wp_cache_get( 'multilocale_locales' ) ) {
 
-			global $wpdb;
+			$args = array(
+				'taxonomy' => $this->_locale_taxonomy,
+			);
 
-			$results = $wpdb->get_results(
-				$wpdb->prepare(
-					"
-						SELECT *
-						FROM $wpdb->terms AS t1
-						LEFT JOIN $wpdb->term_taxonomy AS t2
-						ON t1.term_id = t2.term_id
-						WHERE t2.taxonomy = '%s'
-						ORDER BY t2.description
-					",
-					$this->_locale_taxonomy
-				)
-			); // WPCS: db call ok.
+			$term_query = new WP_Term_Query();
+			$terms = $term_query->query( $args );
 
-			if ( count( $results ) ) {
-				wp_cache_add( 'multilocale_locales', $results );
+			if ( count( $terms ) ) {
+				wp_cache_add( 'multilocale_locales', $terms );
 			} else {
-				$results = false;
+				$terms = false;
 			}
 		}
 
-		return $results;
+		return $terms;
 	}
 
 	/**
