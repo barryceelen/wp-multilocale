@@ -27,7 +27,12 @@ function multilocale_get_locales() {
  * @return object Current locale.
  */
 function multilocale_get_locale_object() {
-	return multilocale_locale()->locale_obj;
+
+	if ( ! is_admin() ) {
+		return multilocale_locale()->locale_obj;
+	} else {
+		return multilocale_get_default_locale();
+	}
 }
 
 /**
