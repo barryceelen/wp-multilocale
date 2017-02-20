@@ -90,6 +90,17 @@ class Multilocale_Locales {
 			'show_admin_column' => true,
 			'query_var'         => 'locale',
 			'rewrite'           => false,
+
+			/*
+			 * Add support for the YARPP plugin.
+			 *
+			 * Make YARPP only consider posts in the same locale:
+			 *
+			 * - Open the YARPP plugin options page.
+			 * - Find the "Relatedness" options.
+			 * - Select the 'Require at least one locale in common' option for the 'Locale' taxonomy.
+			 */
+			'yarpp_support'     => true, // Add support for the YARPP plugin.
 		);
 
 		register_taxonomy(
@@ -293,12 +304,7 @@ class Multilocale_Locales {
 	 * @return boolean
 	 */
 	public function locale_id_exists( $id ) {
-		if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
-			return wpcom_vip_get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
-		} else {
-			return get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
-		}
-
+		return wpcom_vip_get_term_by( 'id', absint( $id ), $this->_locale_taxonomy );
 	}
 }
 
