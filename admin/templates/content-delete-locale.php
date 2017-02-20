@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<form name="multilocale-edit-locale" id="multilocale-edit-locale" method="post" action="">
 
 			<?php wp_nonce_field( 'multilocale_settings', 'multilocale_settings' ); ?>
-			<input type="hidden" name="locale_id" value="<?php esc_attr_e( $locale_id ); ?>" />
+			<input type="hidden" name="locale_id" value="<?php echo esc_attr( $locale_id ); ?>" />
 			<input type="hidden" name="action" value="delete_locale">
 
 			<ul>
