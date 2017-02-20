@@ -40,12 +40,13 @@ function multilocale_get_locale_object() {
  *
  * @see Multilocale_Posts->get_post_locale()
  *
- * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
+ * @param int|WP_Post|null $post  Optional. Post ID or post object. Defaults to global $post.
+ * @param bool             $cache Do not use cache if set to true.
  * @return obj|null Locale object on success or null on failure.
  */
-function multilocale_get_post_locale( $post ) {
+function multilocale_get_post_locale( $post, $cache = true ) {
 	global $multilocale_posts;
-	return $multilocale_posts->get_post_locale( $post );
+	return $multilocale_posts->get_post_locale( $post, $cache );
 }
 
 /**

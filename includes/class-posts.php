@@ -135,9 +135,10 @@ class Multilocale_Posts {
 	 * @see get_the_terms()
 	 *
 	 * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
+	 * @param bool             $cache Do not use cache if set to true.
 	 * @return obj|false Locale object on success or false on failure.
 	 */
-	public function get_post_locale( $post = null ) {
+	public function get_post_locale( $post = null, $cache = true ) {
 
 		$_post = get_post( $post );
 
