@@ -426,10 +426,14 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( $post_locale && ! empty( $options[ 'page_on_front_' . $post_locale->term_id ] ) ) {
-				if ( $_post->ID === (int) $options[ 'page_on_front_' . $post_locale->term_id ] ) {
-					return true;
-				}
+			if (
+				$post_locale
+				&&
+				! empty( $options[ 'page_on_front' ][ $post_locale->term_id ] )
+				&&
+				$_post->ID === (int) $options[ 'page_on_front' ][ $post_locale->term_id ]
+			) {
+				return true;
 			}
 		}
 	}
@@ -464,10 +468,14 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 			$options = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
-			if ( $post_locale && ! empty( $options[ 'page_for_posts_' . $post_locale->term_id ] ) ) {
-				if ( $_post->ID === (int) $options[ 'page_for_posts_' . $post_locale->term_id ] ) {
-					return true;
-				}
+			if (
+				$post_locale
+				&&
+				! empty( $options[ 'page_for_posts' ][ $post_locale->term_id ] )
+				&&
+				$_post->ID === (int) $options[ 'page_for_posts' ][ $post_locale->term_id ]
+			) {
+				return true;
 			}
 		}
 	}

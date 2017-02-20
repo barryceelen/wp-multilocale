@@ -326,8 +326,8 @@ class Multilocale_Public_Posts {
 
 			$options = get_option( 'plugin_multilocale' );
 
-			if ( ! empty( $options[ $option . '_' . $this->_locale_obj->term_id ] ) ) {
-				return $options[ $option . '_' . $this->_locale_obj->term_id ];
+			if ( ! empty( $options[ $option ][ $this->_locale_obj->term_id ] ) ) {
+				return $options[ $option ][ $this->_locale_obj->term_id ];
 			}
 		}
 
