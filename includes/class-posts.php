@@ -150,7 +150,7 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		if ( ! $results = wp_cache_get( 'post_locale_' . $_post->ID ) ) {
+		if ( false === $cache || ! $results = wp_cache_get( 'post_locale_' . $_post->ID ) ) {
 
 			$terms = get_the_terms( $_post->ID, $this->locale_taxonomy );
 
@@ -188,7 +188,7 @@ class Multilocale_Posts {
 			return new WP_Error( 'locale_not_found', sprintf( __( 'Locale with id %d not found.', 'multilocale' ), $locale_id ) );
 		}
 
-		$post_locale = $this->get_post_locale( $post );
+		$post_locale = $this->get_post_locale( $post, false );
 
 		if ( $post_locale && (int) $post_locale->term_id === (int) $locale_id ) {
 			return $locale_id;
