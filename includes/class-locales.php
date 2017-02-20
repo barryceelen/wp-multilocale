@@ -99,6 +99,12 @@ class Multilocale_Locales {
 			 * - Open the YARPP plugin options page.
 			 * - Find the "Relatedness" options.
 			 * - Select the 'Require at least one locale in common' option for the 'Locale' taxonomy.
+			 *
+			 * Note that post types without 'multilocale' support will not be included in the default
+			 * relatedness consideration, as they do not use the 'locale' taxonomy.
+			 *
+			 * To display related posts without locale support, use your own call to yarp_related()
+			 * and set 'require_tax' => array().
 			 */
 			'yarpp_support'     => true, // Add support for the YARPP plugin.
 		);
