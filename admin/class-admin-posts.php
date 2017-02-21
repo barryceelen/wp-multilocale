@@ -1037,7 +1037,7 @@ class Multilocale_Admin_Posts {
 		$post_locale = multilocale_get_post_locale( $_post );
 		$options = get_option( 'plugin_multilocale' );
 
-		if ( ! empty( $options['page_for_posts'][ $post_locale->term_id ] ) && $options['page_for_posts'][ $post_locale->term_id ] === $post_id ) {
+		if ( $post_locale && ! empty( $options['page_for_posts'][ $post_locale->term_id ] ) && $options['page_for_posts'][ $post_locale->term_id ] === $post_id ) {
 			$options['page_for_posts'][ $post_locale->term_id ] = '';
 			update_option( 'plugin_multilocale', $options );
 		}
