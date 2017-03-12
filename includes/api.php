@@ -429,9 +429,9 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 			if (
 				$post_locale
 				&&
-				! empty( $options[ 'page_on_front' ][ $post_locale->term_id ] )
+				! empty( $options['page_on_front'][ $post_locale->term_id ] )
 				&&
-				$_post->ID === (int) $options[ 'page_on_front' ][ $post_locale->term_id ]
+				$_post->ID === (int) $options['page_on_front'][ $post_locale->term_id ]
 			) {
 				return true;
 			}
@@ -471,9 +471,9 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 			if (
 				$post_locale
 				&&
-				! empty( $options[ 'page_for_posts' ][ $post_locale->term_id ] )
+				! empty( $options['page_for_posts'][ $post_locale->term_id ] )
 				&&
-				$_post->ID === (int) $options[ 'page_for_posts' ][ $post_locale->term_id ]
+				$_post->ID === (int) $options['page_for_posts'][ $post_locale->term_id ]
 			) {
 				return true;
 			}
