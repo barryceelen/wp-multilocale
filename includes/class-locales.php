@@ -212,7 +212,7 @@ class Multilocale_Locales {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @return bool|WP_Term Term object or false.
+	 * @return false|WP_Term Term object or false.
 	 */
 	public function get_default_locale() {
 
