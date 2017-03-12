@@ -59,11 +59,9 @@ class Multilocale_Admin_Posts {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
-
-		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-		$this->_options_page = $multilocale->options_page;
-		$this->_post_translation_taxonomy = $multilocale->post_translation_taxonomy;
+		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->_options_page = multilocale()->options_page;
+		$this->_post_translation_taxonomy = multilocale()->post_translation_taxonomy;
 
 		$this->add_actions_and_filters();
 	}

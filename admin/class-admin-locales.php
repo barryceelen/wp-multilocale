@@ -59,10 +59,8 @@ class Multilocale_Admin_Locales {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
-
-		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-		$this->_options_page = $multilocale->options_page;
+		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->_options_page = multilocale()->options_page;
 
 		$this->_error_messages = array(
 			'db_insert_error'        => __( 'Could not insert locale into the database' ,'multilocale' ),
