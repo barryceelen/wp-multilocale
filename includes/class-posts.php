@@ -34,10 +34,8 @@ class Multilocale_Posts {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
-
-		$this->locale_taxonomy = $multilocale->locale_taxonomy;
-		$this->post_translation_taxonomy = $multilocale->post_translation_taxonomy;
+		$this->locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->post_translation_taxonomy = multilocale()->post_translation_taxonomy;
 
 		$this->add_actions_and_filters();
 	}
