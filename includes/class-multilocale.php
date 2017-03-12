@@ -113,4 +113,43 @@ class Multilocale {
 		unregister_widget( 'WP_Widget_Recent_Posts' );
 		unregister_widget( 'WP_Widget_Tag_Cloud' );
 	}
+
+	/**
+	 * Get current locale object.
+	 *
+	 * @since 0.0.1
+	 * @return false|WP_Term Locale taxonomy term object or false if no locales defined.
+	 */
+	public function get_current_locale_object() {
+
+		if ( is_admin() ) {
+
+			return multilocale_locale()->get_default_locale();
+
+		} else {
+
+			global $wp_locale_switcher;
+
+			if ( $wp_locale_switcher ) {
+
+				// Equivalent of $wp_locale_switcher->is_switched() but with returned value if switched.
+				$switched_locale = $wp_locale_switcher->filter_locale( false );
+
+				if ( $switched_locale ) {
+
+					$locales = multilocale_get_locales();
+
+					foreach ( $locales as $locale ) {
+						if ( $switched_locale === $locale->description ) {
+							return $locale;
+							break;
+						}
+					}
+				}
+			} else {
+
+				return multilocale_locale()->locale_obj;
+			}
+		}
+	}
 }
