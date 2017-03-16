@@ -34,7 +34,7 @@ class Multilocale_Locales {
 
 		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
 
-		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 99 );
+		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 0 );
 		add_action( 'init', array( $this, 'register_locale_term_meta' ) );
 	}
 
