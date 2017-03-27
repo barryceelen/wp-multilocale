@@ -216,13 +216,13 @@ class Multilocale_Locales {
 	 */
 	public function get_default_locale() {
 
-		$default_locale = false;
-		$options        = get_option( 'plugin_multilocale' );
-		$locales        = $this->get_locales();
+		$default_locale    = false;
+		$default_locale_id = $this->get_default_locale_id();
+		$locales           = $this->get_locales();
 
 		if ( $locales ) {
 			foreach ( $locales as $locale ) {
-				if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
+				if ( $default_locale_id === (int) $locale->term_id ) {
 					$default_locale = $locale;
 					break;
 				}
@@ -241,14 +241,14 @@ class Multilocale_Locales {
 	 */
 	public function get_default_locale_id() {
 
-		$default_locale_id = false;
-		$default_locale = $this->get_default_locale();
+		$id      = false;
+		$options = get_option( 'plugin_multilocale' );
 
-		if ( $default_locale ) {
-			$default_locale_id = $default_locale->term_id;
+		if ( ! empty( $options['default_locale_id'] ) ) {
+			$id = (int) $options['default_locale_id'];
 		}
 
-		return apply_filters( 'multilocale_default_locale_id', $default_locale_id );
+		return apply_filters( 'multilocale_default_locale_id', $id );
 	}
 
 	/**
