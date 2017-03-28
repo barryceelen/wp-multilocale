@@ -346,6 +346,8 @@ class Multilocale_Posts {
 	/**
 	 * Get all posts in a translation group by term_id.
 	 *
+	 * @todo Add post_type parameter.
+	 *
 	 * @see get_posts()
 	 *
 	 * @since 0.0.1
