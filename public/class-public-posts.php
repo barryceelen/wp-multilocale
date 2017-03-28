@@ -41,13 +41,15 @@ class Multilocale_Public_Posts {
 	 */
 	public function __construct() {
 
-		$this->_locale_obj = multilocale()->get_current_locale_object();
+		$this->_locale_obj = multilocale_locale()->locale_obj;
 
 		if ( empty( $this->_locale_obj ) ) {
 			return;
 		}
 
-		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
+		$multilocale = multilocale();
+
+		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
 		$this->add_actions_and_filters();
 	}
 

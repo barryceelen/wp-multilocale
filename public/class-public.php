@@ -17,6 +17,15 @@
 class Multilocale_Public {
 
 	/**
+	 * Locale object.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @var string
+	 */
+	private $_locale_obj;
+
+	/**
 	 * Home URL.
 	 *
 	 * @since 0.0.1
@@ -31,6 +40,12 @@ class Multilocale_Public {
 	 * @since 0.0.1
 	 */
 	public function __construct() {
+
+		$this->_locale_obj = multilocale_locale()->locale_obj;
+
+		if ( empty( $this->_locale_obj ) ) {
+			return false;
+		}
 
 		$this->_home_url = get_home_url();
 
@@ -69,17 +84,12 @@ class Multilocale_Public {
 			return $url;
 		}
 
-		$options    = get_option( 'plugin_multilocale' );
-		$locale_obj = multilocale()->get_current_locale_object();
+		$options = get_option( 'plugin_multilocale' );
 
-		if ( ! $locale_obj ) {
-			return $url;
-		}
-
-		if ( (int) $options['default_locale_id'] !== (int) $locale_obj->term_id ) {
+		if ( (int) $options['default_locale_id'] !== (int) $this->_locale_obj->term_id ) {
 			$home = trailingslashit( $this->_home_url );
 			$url  = trailingslashit( $url );
-			$url  = $home . $locale_obj->slug . '/' . str_replace( $home, '', $url );
+			$url  = $home . $this->_locale_obj->slug . '/' . str_replace( $home, '', $url );
 		}
 
 		return $url;
@@ -133,24 +143,22 @@ class Multilocale_Public {
 	 */
 	public function filter_options( $value, $option ) {
 
-		$locale_obj = multilocale()->get_current_locale_object();
-
-		if ( ! $locale_obj ) {
+		if ( ! $this->_locale_obj ) {
 			return $value;
 		}
 
 		switch ( $option ) {
 			case 'blogname' :
-				$value = get_term_meta( $locale_obj->term_id, 'blogname', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'blogname', true );
 				break;
 			case 'blogdescription' :
-				$value = get_term_meta( $locale_obj->term_id, 'blogdescription', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'blogdescription', true );
 				break;
 			case 'date_format' :
-				$value = get_term_meta( $locale_obj->term_id, 'date_format', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'date_format', true );
 				break;
 			case 'time_format' :
-				$value = get_term_meta( $locale_obj->term_id, 'time_format', true );
+				$value = get_term_meta( $this->_locale_obj->term_id, 'time_format', true );
 				break;
 		}
 
