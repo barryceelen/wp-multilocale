@@ -97,7 +97,7 @@ class Multilocale_Public {
 
 		$url = $this->get_default_home_url();
 
-		if ( multilocale_get_default_locale_id() !== $locale->term_id ) {
+		if ( (int) multilocale_get_default_locale_id() !== (int) $locale->term_id ) {
 			$url = trailingslashit( $url ) . $locale->slug;
 		}
 
