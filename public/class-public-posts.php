@@ -241,10 +241,6 @@ class Multilocale_Public_Posts {
  	 */
 	public function filter_post_type_archive_link( $link, $post_type ) {
 
-		if ( ! post_type_supports( 'multilocale' ) ) {
-			return $link;
-		}
-
 		$locale_obj = multilocale_get_locale_object();
 
 		if ( ! $locale_obj || multilocale_get_default_locale_id() === (int) $locale_obj->term_id ) {
@@ -267,7 +263,7 @@ class Multilocale_Public_Posts {
 	 */
 	function get_localized_post_type_archive_link( $post_type, $locale = null ) {
 
-		if ( is_admin() || ! post_type_supports( 'multilocale' ) ) {
+		if ( is_admin() ) {
 			return get_post_type_archive_link( $post_type );
 		}
 
