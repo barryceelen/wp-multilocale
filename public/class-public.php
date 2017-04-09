@@ -62,10 +62,19 @@ class Multilocale_Public {
 	private function add_actions_and_filters() {
 
 		add_filter( 'home_url', array( $this, 'filter_home_url' ), 10, 2 );
-		add_filter( 'option_blogname', array( $this, 'filter_options' ), 10, 2 );
-		add_filter( 'option_blogdescription', array( $this, 'filter_options' ), 10, 2 );
-		add_filter( 'option_date_format', array( $this, 'filter_options' ), 10, 2 );
-		add_filter( 'option_time_format', array( $this, 'filter_options' ), 10, 2 );
+
+		$options = array(
+			'blogname',
+			'blogdescription',
+			'date_format',
+			'time_format',
+			'page_for_posts',
+			'page_on_front',
+		);
+
+		foreach ( $options as $option ) {
+			add_filter( 'option_' . $option, array( $this, 'filter_options' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -159,6 +168,18 @@ class Multilocale_Public {
 				break;
 			case 'time_format' :
 				$value = get_term_meta( $this->_locale_obj->term_id, 'time_format', true );
+				break;
+			case 'page_for_posts' :
+				$option = get_option( 'plugin_multilocale' );
+				if ( ! empty( $option['page_for_posts'][ $this->_locale_obj->term_id ] ) ) {
+					return (int) $option['page_for_posts'][ $this->_locale_obj->term_id ];
+				}
+				break;
+			case 'page_on_front' :
+				$option = get_option( 'plugin_multilocale' );
+				if ( ! empty( $option['page_on_front'][ $this->_locale_obj->term_id ] ) ) {
+					return (int) $option['page_on_front'][ $this->_locale_obj->term_id ];
+				}
 				break;
 		}
 
