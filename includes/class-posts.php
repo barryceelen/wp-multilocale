@@ -66,7 +66,7 @@ class Multilocale_Posts {
 	private function add_actions_and_filters() {
 
 		// Register the post translation taxonomy.
-		add_action( 'init', array( $this, 'register_post_translation_taxonomy' ) );
+		add_action( 'init', array( $this, 'register_post_translation_taxonomy' ), 999 );
 
 		// Add support to 'post' and 'page' post types.
 		add_action( 'registered_post_type', array( $this, 'add_post_type_support' ), 10, 1 );
