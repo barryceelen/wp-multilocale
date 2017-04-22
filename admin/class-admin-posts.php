@@ -345,6 +345,13 @@ class Multilocale_Admin_Posts {
 			return $columns;
 		}
 
+		$date_column = false;
+
+		if ( array_key_exists( 'date', $columns ) ) {
+			$date_column = $columns['date'];
+			unset( $columns['date'] );
+		}
+
 		$new_columns = array();
 		$tax_obj = get_taxonomy( $this->_post_translation_taxonomy );
 
@@ -358,6 +365,10 @@ class Multilocale_Admin_Posts {
 		} else {
 			$new_columns = $columns;
 			$new_columns['translations'] = $tax_obj->labels->name;
+		}
+
+		if ( $date_column ) {
+			$new_columns['date'] = $date_column;
 		}
 
 		return apply_filters( 'multilocale_manage_post_columns', $new_columns );
