@@ -34,8 +34,8 @@ class Multilocale_Locales {
 
 		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
 
-		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 0 );
-		add_action( 'init', array( $this, 'register_locale_term_meta' ) );
+		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 11 ); // Late to allow post types to register support.
+		add_action( 'init', array( $this, 'register_locale_term_meta' ), 11 );
 	}
 
 	/**
