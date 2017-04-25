@@ -216,20 +216,21 @@ class Multilocale_Locales {
 	 */
 	public function get_default_locale() {
 
-		$default_locale    = false;
 		$default_locale_id = $this->get_default_locale_id();
-		$locales           = $this->get_locales();
+		$_term = false;
 
-		if ( $locales ) {
-			foreach ( $locales as $locale ) {
-				if ( $default_locale_id === (int) $locale->term_id ) {
-					$default_locale = $locale;
-					break;
-				}
-			}
+		if ( $default_locale_id ) {
+			$_term = WP_Term::get_instance( (int) $default_locale_id , $this->_locale_taxonomy );
 		}
 
-		return apply_filters( 'multilocale_default_locale', $default_locale );
+		/**
+		 * Filters the default locale WP_Term object.
+		 *
+		 * @since 0.0.1
+		 *
+		 * @param false|WP_Term Term object or false.
+		 */
+		return apply_filters( 'multilocale_default_locale', $_term );
 	}
 
 	/**
