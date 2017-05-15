@@ -52,10 +52,8 @@ class Multilocale_Admin {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
-
-		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-		$this->_options_page = $multilocale->options_page;
+		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->_options_page = multilocale()->options_page;
 
 		$this->add_actions_and_filters();
 	}
@@ -153,7 +151,6 @@ class Multilocale_Admin {
 
 		global $multilocale_locales;
 
-		$multilocale = Multilocale::get_instance();
 		$active_locales = $multilocale_locales->get_locales();
 
 		if ( empty( $active_locales ) ) {

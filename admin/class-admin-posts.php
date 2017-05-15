@@ -59,11 +59,9 @@ class Multilocale_Admin_Posts {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
-
-		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-		$this->_options_page = $multilocale->options_page;
-		$this->_post_translation_taxonomy = $multilocale->post_translation_taxonomy;
+		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->_options_page = multilocale()->options_page;
+		$this->_post_translation_taxonomy = multilocale()->post_translation_taxonomy;
 
 		$this->add_actions_and_filters();
 	}
@@ -347,6 +345,13 @@ class Multilocale_Admin_Posts {
 			return $columns;
 		}
 
+		$date_column = false;
+
+		if ( array_key_exists( 'date', $columns ) ) {
+			$date_column = $columns['date'];
+			unset( $columns['date'] );
+		}
+
 		$new_columns = array();
 		$tax_obj = get_taxonomy( $this->_post_translation_taxonomy );
 
@@ -360,6 +365,10 @@ class Multilocale_Admin_Posts {
 		} else {
 			$new_columns = $columns;
 			$new_columns['translations'] = $tax_obj->labels->name;
+		}
+
+		if ( $date_column ) {
+			$new_columns['date'] = $date_column;
 		}
 
 		return apply_filters( 'multilocale_manage_post_columns', $new_columns );

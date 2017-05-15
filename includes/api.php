@@ -271,6 +271,8 @@ function multilocale_get_localized_home_url( $locale ) {
 /**
  * Retrieves the localized permalink for a post type archive.
  *
+ * @see Multilocale_Public_Post->get_localized_post_type_archive_link()
+ *
  * @since 1.0.0
  *
  * @global WP_Rewrite $wp_rewrite
@@ -279,84 +281,14 @@ function multilocale_get_localized_home_url( $locale ) {
  * @param string|object $locale Locale.
  * @return string|false|WP_Error The post type archive permalink.
  */
-function multilocale_get_localized_post_type_archive_link( $post_type, $locale ) {
+function multilocale_get_localized_post_type_archive_link( $post_type, $locale = null ) {
 
-	global $wp_rewrite;
-
-	if ( ! $post_type_obj = get_post_type_object( $post_type ) ) {
-		return false;
+	if ( ! $locale ) {
+		$locale = multilocale_get_locale_object();
 	}
 
-	if ( ! is_object( $locale ) ) {
-		if ( is_int( $locale ) ) {
-			$locale = get_term( $locale, 'locale' );
-		} else {
-			$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
-		}
-		if ( ! $locale || is_wp_error( $locale ) ) {
-			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
-		}
-	}
-
-	if ( 'post' === $post_type ) {
-		$show_on_front = get_option( 'show_on_front' );
-		$page_for_posts  = get_option( 'page_for_posts' );
-
-		if ( 'page' === $show_on_front && $page_for_posts ) {
-			if ( multilocale_get_default_locale_id() === (int) $locale->term_id ) {
-				$link = get_permalink( $page_for_posts );
-			} else {
-				$translations = multilocale_get_post_translations( $page_for_posts, 'publish', true );
-				if ( ! empty( $translations[ $locale->term_id ] ) ) {
-					$link = get_permalink( $translations[ $locale->term_id ] );
-				} else {
-					$link = multilocale_get_localized_home_url( $locale );
-				}
-			}
-		} else {
-			$link = multilocale_get_localized_home_url( $locale );
-		}
-
-		/**
-		 * Filters the localized post type archive permalink.
-		 *
-		 * @since 1.0.0
-		 *
-		 * @param string $link      The localized post type archive permalink.
-		 * @param string $post_type Post type name.
-		 */
-		return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
-	}
-
-	if ( ! $post_type_obj->has_archive ) {
-		return false;
-	}
-
-	if ( get_option( 'permalink_structure' ) && is_array( $post_type_obj->rewrite ) ) {
-
-		$struct = ( true === $post_type_obj->has_archive ) ? $post_type_obj->rewrite['slug'] : $post_type_obj->has_archive;
-
-		if ( $post_type_obj->rewrite['with_front'] ) {
-			$struct = $wp_rewrite->front . $struct;
-		} else {
-			$struct = $wp_rewrite->root . $struct;
-		}
-
-		$link = multilocale_get_localized_home_url( $locale ) . '/' . ltrim( user_trailingslashit( $struct, 'post_type_archive' ), '/' );
-
-	} else {
-		$link = multilocale_get_localized_home_url( $locale ) . '/?post_type=' . $post_type;
-	}
-
-	/**
-	 * Filters the localized post type archive permalink.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $link      The localized post type archive permalink.
-	 * @param string $post_type Post type name.
-	 */
-	return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
+	global $multilocale_public_posts;
+	return $multilocale_public_posts->get_localized_post_type_archive_link( $post_type, $locale );
 }
 
 /**
@@ -429,9 +361,9 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 			if (
 				$post_locale
 				&&
-				! empty( $options[ 'page_on_front' ][ $post_locale->term_id ] )
+				! empty( $options['page_on_front'][ $post_locale->term_id ] )
 				&&
-				$_post->ID === (int) $options[ 'page_on_front' ][ $post_locale->term_id ]
+				$_post->ID === (int) $options['page_on_front'][ $post_locale->term_id ]
 			) {
 				return true;
 			}
@@ -471,9 +403,9 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 			if (
 				$post_locale
 				&&
-				! empty( $options[ 'page_for_posts' ][ $post_locale->term_id ] )
+				! empty( $options['page_for_posts'][ $post_locale->term_id ] )
 				&&
-				$_post->ID === (int) $options[ 'page_for_posts' ][ $post_locale->term_id ]
+				$_post->ID === (int) $options['page_for_posts'][ $post_locale->term_id ]
 			) {
 				return true;
 			}

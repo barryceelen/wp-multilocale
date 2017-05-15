@@ -70,6 +70,7 @@ class Multilocale_Public_Posts {
 		add_filter( 'post_link', array( $this, 'filter_post_link' ), 10, 2 );
 		add_filter( 'page_link', array( $this, 'filter_post_link' ), 10, 2 );
 		add_filter( 'post_type_link', array( $this, 'filter_post_link' ), 10, 2 );
+		add_filter( 'post_type_archive_link', array( $this, 'filter_post_type_archive_link' ), 10, 2 );
 
 		// Filter next and previous post link join. Uses the get_{$adjacent}_post_join hook.
 		// Todo: Fix prev next links.
@@ -242,6 +243,123 @@ class Multilocale_Public_Posts {
 		}
 
 		return $permalink;
+	}
+
+ 	/**
+ 	 * Filters the post type archive link.
+ 	 *
+ 	 * @since 1.0.0
+	 * @param string $link      The post type archive permalink.
+	 * @param string $post_type Post type name.
+ 	 */
+	public function filter_post_type_archive_link( $link, $post_type ) {
+
+		$locale_obj = multilocale_get_locale_object();
+
+		if ( ! $locale_obj || multilocale_get_default_locale_id() === (int) $locale_obj->term_id ) {
+			return $link;
+		}
+
+		return $this->get_localized_post_type_archive_link( $post_type, $locale_obj );
+	}
+
+	/**
+	 * Retrieves the localized permalink for a post type archive.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @global WP_Rewrite $wp_rewrite
+	 *
+	 * @param string        $post_type Post type.
+	 * @param string|object $locale Locale.
+	 * @return string|false|WP_Error The post type archive permalink.
+	 */
+	function get_localized_post_type_archive_link( $post_type, $locale = null ) {
+
+		if ( is_admin() ) {
+			return get_post_type_archive_link( $post_type );
+		}
+
+		if ( ! $locale ) {
+			$locale = multilocale_get_locale_object();
+		}
+
+		global $wp_rewrite;
+
+		if ( ! $post_type_obj = get_post_type_object( $post_type ) ) {
+			return false;
+		}
+
+		if ( ! is_object( $locale ) ) {
+			if ( is_int( $locale ) ) {
+				$locale = get_term( $locale, 'locale' );
+			} else {
+				$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
+			}
+			if ( ! $locale || is_wp_error( $locale ) ) {
+				return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
+			}
+		}
+
+		if ( $locale->term_id === multilocale_get_default_locale_id() ) {
+			return get_post_type_archive_link( $post_type );
+		}
+
+		if ( 'post' === $post_type ) {
+			$show_on_front = get_option( 'show_on_front' );
+			$page_for_posts = get_option( 'page_for_posts' );
+
+			if ( 'page' === $show_on_front && $page_for_posts ) {
+				$translations = multilocale_get_post_translations( $page_for_posts, 'publish', true );
+				if ( ! empty( $translations[ $locale->term_id ] ) ) {
+					$link = get_permalink( $translations[ $locale->term_id ] );
+				} else {
+					$link = multilocale_get_localized_home_url( $locale );
+				}
+			} else {
+				$link = multilocale_get_localized_home_url( $locale );
+			}
+
+			/**
+			 * Filters the localized post type archive permalink.
+			 *
+			 * @since 1.0.0
+			 *
+			 * @param string $link      The localized post type archive permalink.
+			 * @param string $post_type Post type name.
+			 */
+			return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
+		}
+
+		if ( ! $post_type_obj->has_archive ) {
+			return false;
+		}
+
+		if ( get_option( 'permalink_structure' ) && is_array( $post_type_obj->rewrite ) ) {
+
+			$struct = ( true === $post_type_obj->has_archive ) ? $post_type_obj->rewrite['slug'] : $post_type_obj->has_archive;
+
+			if ( $post_type_obj->rewrite['with_front'] ) {
+				$struct = $wp_rewrite->front . $struct;
+			} else {
+				$struct = $wp_rewrite->root . $struct;
+			}
+
+			$link = multilocale_get_localized_home_url( $locale ) . '/' . ltrim( user_trailingslashit( $struct, 'post_type_archive' ), '/' );
+
+		} else {
+			$link = multilocale_get_localized_home_url( $locale ) . '/?post_type=' . $post_type;
+		}
+
+		/**
+		 * Filters the localized post type archive permalink.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param string $link      The localized post type archive permalink.
+		 * @param string $post_type Post type name.
+		 */
+		return apply_filters( 'multilocale_localized_post_type_archive_link', $link, $post_type );
 	}
 
 	/**

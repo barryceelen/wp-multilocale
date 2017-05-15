@@ -305,7 +305,7 @@ class Multilocale_Public_Locale {
 	}
 
 	/**
-	 * Get the locale term object depending on the current locale.
+	 * Get the locale term object depending on the current url-based locale.
 	 *
 	 * @return object|false
 	 */

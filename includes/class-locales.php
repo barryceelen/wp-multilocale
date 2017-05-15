@@ -32,12 +32,10 @@ class Multilocale_Locales {
 	 */
 	private function __construct() {
 
-		$multilocale = multilocale();
+		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
 
-		$this->_locale_taxonomy = $multilocale->locale_taxonomy;
-
-		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 99 );
-		add_action( 'init', array( $this, 'register_locale_term_meta' ) );
+		add_action( 'init', array( $this, 'register_locale_taxonomy' ), 11 ); // Late to allow post types to register support.
+		add_action( 'init', array( $this, 'register_locale_term_meta' ), 11 );
 	}
 
 	/**
@@ -214,22 +212,25 @@ class Multilocale_Locales {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @return bool|WP_Term Term object or false.
+	 * @return false|WP_Term Term object or false.
 	 */
 	public function get_default_locale() {
 
-		$default_locale = false;
-		$options        = get_option( 'plugin_multilocale' );
-		$locales        = $this->get_locales();
+		$default_locale_id = $this->get_default_locale_id();
+		$_term = false;
 
-		foreach ( $locales as $locale ) {
-			if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
-				$default_locale = $locale;
-				break;
-			}
+		if ( $default_locale_id ) {
+			$_term = WP_Term::get_instance( (int) $default_locale_id , $this->_locale_taxonomy );
 		}
 
-		return apply_filters( 'multilocale_default_locale', $default_locale );
+		/**
+		 * Filters the default locale WP_Term object.
+		 *
+		 * @since 0.0.1
+		 *
+		 * @param false|WP_Term Term object or false.
+		 */
+		return apply_filters( 'multilocale_default_locale', $_term );
 	}
 
 	/**
@@ -241,14 +242,14 @@ class Multilocale_Locales {
 	 */
 	public function get_default_locale_id() {
 
-		$default_locale_id = false;
-		$default_locale = $this->get_default_locale();
+		$id      = false;
+		$options = get_option( 'plugin_multilocale' );
 
-		if ( $default_locale ) {
-			$default_locale_id = $default_locale->term_id;
+		if ( ! empty( $options['default_locale_id'] ) ) {
+			$id = (int) $options['default_locale_id'];
 		}
 
-		return apply_filters( 'multilocale_default_locale_id', $default_locale_id );
+		return apply_filters( 'multilocale_default_locale_id', $id );
 	}
 
 	/**
