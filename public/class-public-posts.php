@@ -209,7 +209,8 @@ class Multilocale_Public_Posts {
 	public function filter_post_link( $permalink, $post ) {
 
 		// The page_link filter sends the post id as the second parameter.
-		$_post = get_post( $post );
+		$_post   = get_post( $post );
+		$options = get_option( 'multilocale' );
 
 		if ( ! is_admin() && post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
@@ -217,15 +218,25 @@ class Multilocale_Public_Posts {
 			$post_locale = multilocale_get_post_locale( $post );
 
 			if ( $post_locale ) {
+				if (
+					'page' === $_post->post_type
+					&&
+					! empty( $options['page_on_front'][ $post_locale->term_id ] )
+					&&
+					(int) $_post->ID === (int) $options['page_on_front'][ $post_locale->term_id ] )
+				{
+					$permalink = multilocale_get_localized_home_url( $post_locale );
+				} else {
 
-				$http     = is_ssl() ? 'https://' : 'http://';
-				$home_url = trailingslashit( get_home_url() );
-				$str      = str_replace( $http, '', $home_url );
-				$array    = explode( '/', trim( $str, '/' ) );
+					$http     = is_ssl() ? 'https://' : 'http://';
+					$home_url = trailingslashit( get_home_url() );
+					$str      = str_replace( $http, '', $home_url );
+					$array    = explode( '/', trim( $str, '/' ) );
 
-				if ( ! empty( $array[1] ) && $array[1] !== $post_locale->slug || (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) {
-					$slug = ( (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) ? $post_locale->slug . '/' : '';
-					$permalink = $http . $array[0] . '/' . $slug . str_replace( trailingslashit( $home_url ), '', $permalink );
+					if ( ! empty( $array[1] ) && $array[1] !== $post_locale->slug || (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) {
+						$slug = ( (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) ? $post_locale->slug . '/' : '';
+						$permalink = $http . $array[0] . '/' . $slug . str_replace( trailingslashit( $home_url ), '', $permalink );
+					}
 				}
 			}
 		}
