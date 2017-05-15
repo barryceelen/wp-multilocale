@@ -12,7 +12,7 @@
 /**
  * Admin related meta functionality.
  *
- * @since 0.0.1
+ * @since 1.0.2
  */
 class Multilocale_Admin_Meta {
 
