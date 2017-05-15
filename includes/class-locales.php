@@ -222,12 +222,10 @@ class Multilocale_Locales {
 		$options        = get_option( 'plugin_multilocale' );
 		$locales        = $this->get_locales();
 
-		if ( $locales ) {
-			foreach ( $locales as $locale ) {
-				if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
-					$default_locale = $locale;
-					break;
-				}
+		foreach ( $locales as $locale ) {
+			if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
+				$default_locale = $locale;
+				break;
 			}
 		}
 
@@ -278,7 +276,7 @@ class Multilocale_Locales {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @return object|false Object with active locales or false.
+	 * @return array List of WP_Term objects.
 	 */
 	public function get_locales() {
 
@@ -294,7 +292,7 @@ class Multilocale_Locales {
 			if ( count( $terms ) ) {
 				wp_cache_add( 'multilocale_locales', $terms );
 			} else {
-				$terms = false;
+				$terms = array();
 			}
 		}
 

@@ -272,7 +272,7 @@ class Multilocale_Public_Locale {
 	 * @since 0.0.1
 	 *
 	 * @access private
-	 * @return object|false Object with terms in the locale taxonomy or false.
+	 * @return array List of WP_Term objects.
 	 */
 	private function get_locales() {
 
@@ -297,7 +297,7 @@ class Multilocale_Public_Locale {
 			if ( count( $results ) ) {
 				wp_cache_add( 'multilocale_locales', $results );
 			} else {
-				$results = false;
+				$results = array();
 			}
 		}
 
@@ -314,12 +314,10 @@ class Multilocale_Public_Locale {
 		$locales    = $this->get_locales();
 		$locale_obj = false;
 
-		if ( $locales ) {
-			foreach ( $locales as $locale ) {
-				if ( $this->_locale === $locale->description ) {
-					$locale_obj = $locale;
-					break;
-				}
+		foreach ( $locales as $locale ) {
+			if ( $this->_locale === $locale->description ) {
+				$locale_obj = $locale;
+				break;
 			}
 		}
 

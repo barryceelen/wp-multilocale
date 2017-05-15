@@ -13,7 +13,7 @@
  * Get locales.
  *
  * @since 0.0.1
- * @return array List of locale taxonomy terms.
+ * @return array List of WP_Term objects.
  */
 function multilocale_get_locales() {
 	global $multilocale_locales;
