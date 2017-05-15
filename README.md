@@ -19,7 +19,7 @@ The Multilocale plugin offers a tiny toolset for publishing content in multiple 
 - [ ] Use Automattic [wp-cldr](https://github.com/Automattic/wp-cldr) plugin if it is available
 - [ ] Translate terms
 - [ ] Translate attachments
-- [ ] Use rewrite rules in stead of modifying \***yikes**\* $_SERVER['REQUEST_URI']
+- [ ] Use rewrite rules in stead of modifying \***yikes**\* $_SERVER['REQUEST_URI']😱
 
 ### Also
 
