@@ -12,14 +12,14 @@
 /**
  * Admin related meta functionality.
  *
- * @since 1.0.2
+ * @since 0.0.3
  */
 class Multilocale_Admin_Meta {
 
 	/**
 	 * Instance of this class.
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 *
 	 * @var object
 	 */
@@ -28,7 +28,7 @@ class Multilocale_Admin_Meta {
 	/**
 	 * Initialize.
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 */
 	private function __construct() {
 		/*
@@ -42,7 +42,7 @@ class Multilocale_Admin_Meta {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 *
 	 * @return object A single instance of this class.
 	 */
@@ -57,7 +57,7 @@ class Multilocale_Admin_Meta {
 	/**
 	 * Defines the meta keys we want to propagate between translations and add hooks.
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 */
 	public function propagate_post_meta_keys() {
 
@@ -84,7 +84,7 @@ class Multilocale_Admin_Meta {
 	 *
 	 * @todo What is with $unique?
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 * @param int    $mid         The meta ID after successful update.
 	 * @param int    $object_id   Object ID.
 	 * @param string $meta_key    Meta key.
@@ -121,7 +121,7 @@ class Multilocale_Admin_Meta {
 	 *
 	 * @todo What is with $unique?
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 *
 	 * @param int    $meta_id     ID of updated metadata entry.
 	 * @param int    $object_id   Object ID.
@@ -157,7 +157,7 @@ class Multilocale_Admin_Meta {
 	/**
 	 * Propagate deleted post meta to all members of translation group.
 	 *
-	 * @since 1.0.2
+	 * @since 0.0.3
 	 * @param array  $meta_ids    An array of metadata entry IDs to delete.
 	 * @param int    $object_id   Object ID.
 	 * @param string $meta_key    Meta key.

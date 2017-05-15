@@ -11,7 +11,7 @@
  * Plugin Name: Multilocale
  * Plugin URI:  https://github.com/barryceelen/wp-multilocale
  * Description: Publish content in multiple locales.
- * Version:     0.0.2
+ * Version:     0.0.3
  * Author:      Barry Ceelen
  * Author URI:  https://barryceelen.github.com/
  * Text Domain: multilocale
