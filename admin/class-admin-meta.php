@@ -31,7 +31,6 @@ class Multilocale_Admin_Meta {
 	 * @since 1.0.2
 	 */
 	private function __construct() {
-
 		/*
 		 * Defines the meta keys we want to propagate between translations.
 		 *
@@ -86,10 +85,10 @@ class Multilocale_Admin_Meta {
 	 * @todo What is with $unique?
 	 *
 	 * @since 1.0.2
-	 * @param int    $mid        The meta ID after successful update.
-	 * @param int    $object_id  Object ID.
-	 * @param string $meta_key   Meta key.
-	 * @param mixed  $meta_value Meta value.
+	 * @param int    $mid         The meta ID after successful update.
+	 * @param int    $object_id   Object ID.
+	 * @param string $meta_key    Meta key.
+	 * @param mixed  $_meta_value Meta value.
 	 */
 	public function propagate_added_post_meta( $mid, $object_id, $meta_key, $_meta_value ) {
 
@@ -124,10 +123,10 @@ class Multilocale_Admin_Meta {
 	 *
 	 * @since 1.0.2
 	 *
-	 * @param int    $meta_id    ID of updated metadata entry.
-	 * @param int    $object_id  Object ID.
-	 * @param string $meta_key   Meta key.
-	 * @param mixed  $meta_value Meta value.
+	 * @param int    $meta_id     ID of updated metadata entry.
+	 * @param int    $object_id   Object ID.
+	 * @param string $meta_key    Meta key.
+	 * @param mixed  $_meta_value Meta value.
 	 */
 	public function propagate_updated_post_meta( $meta_id, $object_id, $meta_key, $_meta_value ) {
 
@@ -159,10 +158,10 @@ class Multilocale_Admin_Meta {
 	 * Propagate deleted post meta to all members of translation group.
 	 *
 	 * @since 1.0.2
-	 * @param array  $meta_ids   An array of metadata entry IDs to delete.
-	 * @param int    $object_id  Object ID.
-	 * @param string $meta_key   Meta key.
-	 * @param mixed  $meta_value Meta value.
+	 * @param array  $meta_ids    An array of metadata entry IDs to delete.
+	 * @param int    $object_id   Object ID.
+	 * @param string $meta_key    Meta key.
+	 * @param mixed  $_meta_value Meta value.
 	 */
 	public function propagate_deleted_post_meta( $meta_ids, $object_id, $meta_key, $_meta_value ) {
 
