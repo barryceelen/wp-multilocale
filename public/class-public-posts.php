@@ -97,8 +97,8 @@ class Multilocale_Public_Posts {
 	 * @since 0.0.1
 	 *
 	 * @param  int|WP_Post $post   The post in question.
-	 * @param  WP_Term     $locale The slug for the locale in question.
-	 * @return string|bool False if the post does not exist, localized permalink if the post does not support multilocale, else the permalink.
+	 * @param  int|WP_Term $locale ID or WP_Term object for the locale in question.
+	 * @return false|string False if the post does not exist, localized permalink if the post does not support multilocale, else the permalink.
 	 */
 	public function get_localized_unsupported_post_permalink( $post, $locale ) {
 
@@ -113,6 +113,12 @@ class Multilocale_Public_Posts {
 		}
 
 		global $multilocale_public;
+
+		$locale = get_term( $locale, $this->_locale_taxonomy );
+
+		if ( ! $locale || is_wp_error( $locale ) ) {
+			return false;
+		}
 
 		remove_filter( 'home_url', array( $multilocale_public, 'filter_home_url' ), 10 );
 
@@ -224,8 +230,8 @@ class Multilocale_Public_Posts {
 					&&
 					! empty( $options['page_on_front'][ $post_locale->term_id ] )
 					&&
-					(int) $_post->ID === (int) $options['page_on_front'][ $post_locale->term_id ] )
-				{
+					(int) $_post->ID === (int) $options['page_on_front'][ $post_locale->term_id ]
+				) {
 					$permalink = multilocale_get_localized_home_url( $post_locale );
 				} else {
 
@@ -245,13 +251,13 @@ class Multilocale_Public_Posts {
 		return $permalink;
 	}
 
- 	/**
- 	 * Filters the post type archive link.
- 	 *
- 	 * @since 1.0.0
+	/**
+	 * Filters the post type archive link.
+	 *
+	 * @since 1.0.0
 	 * @param string $link      The post type archive permalink.
 	 * @param string $post_type Post type name.
- 	 */
+	 */
 	public function filter_post_type_archive_link( $link, $post_type ) {
 
 		$locale_obj = multilocale_get_locale_object();
@@ -286,7 +292,9 @@ class Multilocale_Public_Posts {
 
 		global $wp_rewrite;
 
-		if ( ! $post_type_obj = get_post_type_object( $post_type ) ) {
+		$post_type_obj = get_post_type_object( $post_type );
+
+		if ( ! $post_type_obj ) {
 			return false;
 		}
 
@@ -297,11 +305,12 @@ class Multilocale_Public_Posts {
 				$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
 			}
 			if ( ! $locale || is_wp_error( $locale ) ) {
+				/* translators: %s: locale name */
 				return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
 			}
 		}
 
-		if ( $locale->term_id === multilocale_get_default_locale_id() ) {
+		if ( multilocale_get_default_locale_id() === $locale->term_id ) {
 			return get_post_type_archive_link( $post_type );
 		}
 
