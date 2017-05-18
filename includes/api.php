@@ -243,9 +243,9 @@ function multilocale_locale_id_exists( $id ) {
  *
  * @since 0.0.1
  *
- * @param int|WP_Post $post   The post in question.
- * @param WP_Term     $locale The locale in question.
- * @return string Localized url.
+ * @param  int|WP_Post $post   The post in question.
+ * @param  int|WP_Term $locale ID or WP_Term object for the locale in question.
+ * @return false|string False if the post does not exist, localized permalink if the post does not support multilocale, else the permalink.
  */
 function multilocale_get_localized_unsupported_post_permalink( $post, $locale ) {
 	if ( is_admin() ) {
@@ -320,6 +320,7 @@ function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
 			$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
 		}
 		if ( ! $locale || is_wp_error( $locale ) ) {
+			/* translators: %s: locale name */
 			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
 		}
 	}
@@ -349,7 +350,7 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 
 		$page_on_front = get_option( 'page_on_front' );
 
-		if ( ! $siblings_only && (int) get_option( 'page_on_front' ) === $_post->ID  ) {
+		if ( ! $siblings_only && (int) get_option( 'page_on_front' ) === $_post->ID ) {
 			return true;
 		}
 
