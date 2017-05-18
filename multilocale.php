@@ -11,7 +11,7 @@
  * Plugin Name: Multilocale
  * Plugin URI:  https://github.com/barryceelen/wp-multilocale
  * Description: Publish content in multiple locales.
- * Version:     0.0.1
+ * Version:     0.0.3
  * Author:      Barry Ceelen
  * Author URI:  https://barryceelen.github.com/
  * Text Domain: multilocale
@@ -91,6 +91,7 @@ if ( is_admin() ) {
 	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin.php';
 	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-locales.php';
 	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-posts.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-meta.php';
 } else {
 	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-public.php';
 	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-public-posts.php';

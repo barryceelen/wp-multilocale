@@ -191,6 +191,7 @@ class Multilocale_Admin_Locales {
 				 */
 				$this->add_settings_error(
 					'locale_unknown',
+					/* translators: %s: link to add new locale screen */
 					sprintf( __( 'Unknown locale. %s', 'multilocale' ), '<a href="#">Add custom locale</a>' )
 				);
 				return;
@@ -222,10 +223,16 @@ class Multilocale_Admin_Locales {
 					$this->add_settings_error(
 						'default_locale_added',
 						sprintf(
+							/* translators: %1$s: locale taxonomy name, %2$s: locale term edit url, %3$s: locale term edit label  */
 							__( 'Default %1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
-							$edit_url = add_query_arg( array( 'action' => 'edit_locale', 'locale_id' => $term['term_id'] ),
-							admin_url( 'options-general.php?page=' . $this->_options_page ) ),
+							add_query_arg(
+								array(
+									'action' => 'edit_locale',
+									'locale_id' => $term['term_id'],
+								),
+								admin_url( 'options-general.php?page=' . $this->_options_page )
+							),
 							$locale_taxonomy_obj->labels->edit_item
 						),
 						'updated'
@@ -239,7 +246,7 @@ class Multilocale_Admin_Locales {
 					 * @param string $term['term_id'] Default locale term ID.
 					 */
 					do_action( 'multilocale_init', $term['term_id'] );
-				}
+				} // End if().
 				break;
 			case 'insert_locale' :
 
@@ -257,10 +264,16 @@ class Multilocale_Admin_Locales {
 					$this->add_settings_error(
 						'default_locale_added',
 						sprintf(
+							/* translators: %1$s: locale taxonomy name, %2$s: locale term edit url, %3$s: locale term edit label  */
 							__( '%1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
-							$edit_url = add_query_arg( array( 'action' => 'edit_locale', 'locale_id' => $term['term_id'] ),
-							admin_url( 'options-general.php?page=' . $this->_options_page ) ),
+							$edit_url = add_query_arg(
+								array(
+									'action' => 'edit_locale',
+									'locale_id' => $term['term_id'],
+								),
+								admin_url( 'options-general.php?page=' . $this->_options_page )
+							),
 							$locale_taxonomy_obj->labels->edit_item
 						),
 						'updated'
@@ -275,8 +288,8 @@ class Multilocale_Admin_Locales {
 				 * The locale name, eg. "Deutsch".
 				 */
 				if ( isset( $post_data['name'] ) ) {
-					$term_exists = term_exists( $post_data['name'], $this->_locale_taxonomy );
-					if ( $term_exists && (int) $term_exists['term_id'] !== (int) $post_data['locale_id']  ) {
+					$term_exists = wpcom_vip_term_exists( $post_data['name'], $this->_locale_taxonomy );
+					if ( $term_exists && (int) $term_exists['term_id'] !== (int) $post_data['locale_id'] ) {
 						$this->add_settings_error( 'term_exists' );
 					} else {
 						$args['name'] = $post_data['name'];
@@ -315,6 +328,7 @@ class Multilocale_Admin_Locales {
 							$this->add_settings_error(
 								'duplicate_term_slug',
 								sprintf(
+									/* translators: locale slug P*/
 									__( 'The slug &#8220;%s&#8221; is already in use by another locale', 'multilocale' ),
 									esc_html( $post_data['slug'] )
 								)
@@ -347,7 +361,7 @@ class Multilocale_Admin_Locales {
 				}
 
 				if ( ! empty( $post_data['default_locale'] ) ) {
-					$term = get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
+					$term = wpcom_vip_get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
 					if ( $term && ! is_wp_error( $term ) ) {
 						multilocale_set_default_locale( $term->term_id );
 					}
@@ -379,7 +393,7 @@ class Multilocale_Admin_Locales {
 					exit();
 				}
 				break;
-		}
+		} // End switch().
 	}
 
 	/**
@@ -464,13 +478,18 @@ class Multilocale_Admin_Locales {
 				// Todo: There is a wp function taking care of this, use it.
 				$last_label = array_pop( $post_type_names );
 				$labels     = implode( ', ', $post_type_names );
+				/* translators: %s: comma-separated list of post types */
 				$labels     = sprintf( _x( '%1$s and %2$s', 'A comma-separated list where "and" comes before the last element, eg. Dutch, English and French', 'multilocale' ), esc_html( $labels ), esc_html( $last_label ) );
 			}
+			/* translators: %s: comma-separated list of post types */
 			$messages[] = sprintf( _x( 'Select your default locale. Existing content (%s) will be automatically assigned to the default locale.', 'Refers to a comma separated list of supported post types', 'multilocale' ), esc_html( $labels ) );
-		}
+		} // End if().
 
 		foreach ( $messages as $message ) {
-			echo '<p>' . wp_kses( $message, array( 'strong' => array() ) ) . '</p>';
+			$allowed_html = array(
+				'strong' => array(),
+			);
+			echo '<p>' . wp_kses( $message, $allowed_html ) . '</p>';
 		}
 	}
 
@@ -521,7 +540,11 @@ class Multilocale_Admin_Locales {
 		printf( // WPCS: XSS ok.
 			'<tr><th scope="row"><label for="select_locale" />%s</label></th><td>%s</td></tr>',
 			esc_html__( 'Default Locale', 'multilocale' ), // Todo: Get label via tax object.
-			$this->get_locale_dropdown( array( 'selected' => array( $native_name ) ) )
+			$this->get_locale_dropdown(
+				array(
+					'selected' => array( $native_name ),
+				)
+			)
 		);
 	}
 
