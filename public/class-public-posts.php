@@ -248,17 +248,17 @@ class Multilocale_Public_Posts {
 					$array    = explode( '/', trim( $str, '/' ) );
 
 					if (
-						! empty( $array[1] )
-						&&
-						$array[1] !== $post_locale->slug
+						! empty( $array[1] ) && $array[1] !== $post_locale->slug
 						||
 						(int) $post_locale->term_id !== (int) $options['default_locale_id']
 					) {
-						$permalink = $http . $array[0] . '/' . $post_locale->slug . '/' .str_replace( trailingslashit( $home_url ), '', $permalink );
+
+						$slug = ( (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) ? $post_locale->slug . '/' : '';
+						$permalink = $http . $array[0] . '/' . $slug . str_replace( trailingslashit( $home_url ), '', $permalink );
 					}
 				}
 			}
-		}
+		} // End if().
 
 		return $permalink;
 	}
