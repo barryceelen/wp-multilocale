@@ -328,7 +328,7 @@ class Multilocale_Posts {
 		}
 
 		$term_name = uniqid( $_post->ID );
-		$term = wp_insert_term( $term_name, $this->post_translation_taxonomy, $args = array() );
+		$term = wp_insert_term( $term_name, $this->post_translation_taxonomy );
 
 		if ( is_wp_error( $term ) ) {
 			return $term;
