@@ -171,9 +171,9 @@ class Multilocale_Public_Posts {
 			$wp_query->set( 'tax_query', array( $tax_query ) );
 		} else {
 			$wp_query->tax_query->queries[] = $tax_query;
+			$wp_query->set( 'tax_query', $wp_query->tax_query->queries );
 		}
 	}
-
 
 	/**
 	 * Redirect to the localized url of a post if a non-localized version is opened.
