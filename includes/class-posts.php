@@ -248,7 +248,7 @@ class Multilocale_Posts {
 		}
 
 		$posts = array();
-		$translation_group = $this->get_post_translation_group( $post );
+		$translation_group = $this->get_post_translation_group( $_post );
 
 		if ( $translation_group ) {
 			if ( $exclude ) {
