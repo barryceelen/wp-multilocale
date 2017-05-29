@@ -97,13 +97,14 @@ class Multilocale_Posts {
 		);
 
 		$args = array(
-			'hierarchical'      => false,
-			'labels'            => $labels,
-			'public'            => false,
-			'show_ui'           => false,
-			'show_admin_column' => false,
-			'query_var'         => true,
-			'rewrite'           => false,
+			'hierarchical'          => false,
+			'labels'                => $labels,
+			'public'                => false,
+			'show_ui'               => false,
+			'show_admin_column'     => false,
+			'query_var'             => true,
+			'rewrite'               => false,
+			'update_count_callback' => '_update_generic_term_count',
 		);
 
 		register_taxonomy(
