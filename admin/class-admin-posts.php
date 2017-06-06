@@ -458,6 +458,8 @@ class Multilocale_Admin_Posts {
 	/**
 	 * Add tabs for each locale to the post edit screen.
 	 *
+	 * @todo Create tabs class.
+	 *
 	 * @since 0.0.1
 	 *
 	 * @access private
@@ -507,9 +509,6 @@ class Multilocale_Admin_Posts {
 
 			if ( (int) $post_locale->term_id === (int) $locale->term_id ) {
 				$classes[] = 'current';
-			}
-
-			if ( (int) $locale->term_id === (int) $post_locale->term_id ) {
 				$current_post = $post;
 			} elseif ( array_key_exists( $locale->term_id, $translations ) ) {
 				$current_post = $translations[ $locale->term_id ];
