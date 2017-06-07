@@ -68,14 +68,14 @@ class Multilocale_Admin_Meta {
 		 */
 		$this->post_meta_keys = apply_filters( 'multilocale_propagate_post_meta_keys', array() );
 
-		if ( empty( $this->post_meta_keys ) ) {
-			return;
-		} else {
+		if ( ! empty( $this->post_meta_keys ) ) {
 
-			// Propagate selected post meta to all members of translation group.
 			add_action( 'added_post_meta', array( $this, 'propagate_added_post_meta' ), 10, 4 );
 			add_action( 'updated_post_meta', array( $this, 'propagate_updated_post_meta' ), 10, 4 );
 			add_action( 'deleted_post_meta', array( $this, 'propagate_deleted_post_meta' ), 10, 4 );
+
+			// Propagate post meta when inserting a new translation.
+			add_action( 'save_post', array( $this, 'propagate_new_post' ), 11, 3 );
 		}
 	}
 
@@ -186,6 +186,55 @@ class Multilocale_Admin_Meta {
 			}
 
 			add_action( 'deleted_post_meta', array( $this, 'propagate_deleted_post_meta' ), 10, 4 );
+		}
+	}
+
+	/**
+	 * Propagate post meta when inserting a new translation.
+	 *
+	 * @since 0.0.3
+	 * @param int     $post_ID Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated or not.
+	 */
+	function propagate_new_post( $post_id, $post, $update ) {
+
+		if ( $update ) {
+			return;
+		}
+
+		if ( ! post_type_supports( $post->post_type, 'multilocale' ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return;
+		}
+
+		$translations = multilocale_get_post_translations( $post_id );
+
+		if ( empty( $translations ) ) {
+			error_log( var_export( 'no translations', true )  . PHP_EOL, 3, ini_get( 'error_log' ) ); // Debug
+		}
+
+		$translation = current( $translations );
+
+		if ( ! empty( $translation ) ) {
+
+			remove_action( 'added_post_meta', array( $this, 'propagate_added_post_meta' ), 10 );
+
+			$meta = get_post_meta( $translation->ID );
+
+			foreach ( $meta as $meta_key => $meta_value_array ) {
+
+				if ( in_array( $meta_key, $this->post_meta_keys ) ) {
+					foreach ( $meta_value_array as $meta_value ) {
+						add_metadata( 'post', $post_id, $meta_key, maybe_unserialize( $meta_value ), false ); // Bypasses wp_is_post_revision() check.
+					}
+				}
+			}
+
+			add_action( 'added_post_meta', array( $this, 'propagate_added_post_meta' ), 10, 4 );
 		}
 	}
 }
