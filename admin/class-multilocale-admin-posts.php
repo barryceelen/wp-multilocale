@@ -891,7 +891,7 @@ class Multilocale_Admin_Posts {
 
 				foreach ( $submenu[ $old_key ] as $key => $value ) {
 					if ( $old_key === $value[2] ) {
-						$submenu[ $old_key ][ $key ][2] = $new_key;
+						$submenu[ $old_key ][ $key ][2] = $new_key; // WPCS: override ok.
 					}
 				}
 			}
