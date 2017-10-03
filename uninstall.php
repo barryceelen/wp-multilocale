@@ -35,12 +35,12 @@ do_action( 'multilocale_before_uninstall_plugin' );
  *
  * Note: Do this last, the options might be needed for handling other stuff.
  */
-$option_names = array(
+$multilocale_uninstall_option_names = array(
 	'plugin_multilocale',
 	'plugin_multilocale_version',
 );
 
-foreach ( $option_names as $option ) {
+foreach ( $multilocale_uninstall_option_names as $option ) {
 	delete_option( $option_name );
 	delete_site_option( $option_name );
 }

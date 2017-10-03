@@ -21,14 +21,6 @@ defined( 'ABSPATH' ) || die();
 
 <?php else : ?>
 
-	<?php
-	$locale_id           = (int) $_REQUEST['locale_id'];
-	$options             = get_option( 'plugin_multilocale' );
-	$locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
-	$locale_obj          = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
-	$active_locales      = multilocale_get_locales();
-	?>
-
 	<?php if ( ! $locale_obj ) : ?>
 
 		<p><?php echo esc_html( $this->error_messages['invalid_term'] ); ?></p>

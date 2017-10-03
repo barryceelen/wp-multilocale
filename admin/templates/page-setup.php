@@ -49,8 +49,7 @@ defined( 'ABSPATH' ) || die();
 		 * @since 0.0.1
 		 */
 		do_action( 'multilocale_init_form' );
-		$other_attributes = function_exists( 'add_term_meta' ) ? null : 'disabled';
-		submit_button( __( 'Confirm', 'multilocale' ), 'primary', 'submit', true, $other_attributes );
+		submit_button( __( 'Confirm', 'multilocale' ), 'primary', 'submit', true, $submit_button_attr );
 		?>
 	</form>
 </div>

@@ -16,13 +16,6 @@
 // Don't load directly.
 defined( 'ABSPATH' ) || die();
 
-global $post;
-
-require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
-
-$locales = multilocale_get_locales();
-$labels = get_post_type_labels( get_post_type_object( $post->post_type ) );
-$label = sprintf( _x( 'Select %s Locale', 'Post type singular name', 'multilocale' ), $labels->singular_name );
 ?>
 <?php if ( ! empty( $locales ) ) : ?>
 

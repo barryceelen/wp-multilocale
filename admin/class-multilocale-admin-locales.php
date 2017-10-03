@@ -568,14 +568,98 @@ class Multilocale_Admin_Locales {
 	 * @param string $action Current action, eg. 'edit_locale'.
 	 */
 	public function render_settings_page_content( $action ) {
+
+		$options = get_option( 'plugin_multilocale' );
+		$locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
+
 		switch ( $action ) {
 			case 'locales':
+
+				$args = array(
+					'hide_empty' => false,
+					'orderby' => 'term_order',
+					'order' => 'ASC',
+				);
+
+				$locales = get_terms( $this->_locale_taxonomy, $args );
+				$base_url = admin_url( 'options-general.php?page=' . $this->_options_page );
+
+				foreach ( $locales as $locale ) {
+
+					$locale->multilocale_edit_url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'locale_id' => $locale->term_id,
+								'action' => 'edit_locale',
+							),
+							$base_url
+						),
+						-1,
+						'multilocale_settings_edit_locale'
+					);
+
+					$locale->multilocale_delete_url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'locale_id' => $locale->term_id,
+								'action' => 'delete_locale',
+							),
+							$base_url
+						),
+						-1,
+						'multilocale_settings_edit_locale'
+					);
+
+					if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
+						$locale->multilocale_view_url = get_home_url();
+					} else {
+						$locale->multilocale_view_url = trailingslashit( get_home_url( null, $locale->slug ) );
+					}
+				}
+
+				$manage_columns = array(
+					'name'  => __( 'Name', 'multilocale' ),
+					'slug'  => __( 'Slug', 'multilocale' ),
+					'code'  => __( 'WP Locale', 'multilocale' ),
+					'posts' => __( 'Count', 'multilocale' ),
+				);
+
+				/*
+				 * Todo: This is getting weird. How are we going to mark installed languages in the dropdown?
+				 *       For the time being only the locale name and slug must be unique.
+				 */
+				$active_locales = multilocale_get_locales();
+				$active_locale_names = wp_list_pluck( $active_locales, 'name' );
+
 				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-locales.php' );
 				break;
 			case 'edit_locale':
+				$locale_id          = (int) $_REQUEST['locale_id'];
+				$locale_obj         = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
+				$date_formats       = array_unique( apply_filters( 'date_formats', array( __( 'F j, Y', 'default' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ); // WPCS: prefix ok.
+				$custom_date        = true;
+				$locale_date_format = get_term_meta( $locale_obj->term_id, 'date_format', true );
+
+				if ( empty( $locale_date_format ) ) {
+					$locale_date_format = get_option( 'date_format' );
+				}
+
+				$time_formats       = array_unique( apply_filters( 'time_formats', array( __( 'g:i a', 'default' ), 'g:i A', 'H:i' ) ) ); // WPCS: prefix ok.
+				$custom_time        = true;
+				$locale_time_format = get_term_meta( $locale_obj->term_id, 'time_format', true );
+
 				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-edit-locale.php' );
 				break;
 			case 'delete_locale':
+				$locale_id      = (int) $_REQUEST['locale_id'];
+				$locale_obj     = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
+				$active_locales = multilocale_get_locales();
+
+
+				if ( empty( $locale_time_format ) ) {
+					$locale_time_format = get_option( 'time_format' );
+				}
+
 				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-delete-locale.php' );
 				break;
 		}

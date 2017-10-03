@@ -154,8 +154,26 @@ class Multilocale_Admin {
 		$active_locales = $multilocale_locales->get_locales();
 
 		if ( empty( $active_locales ) ) {
+
+			$submit_button_attr = function_exists( 'add_term_meta' ) ? null : 'disabled';
 			include_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-setup.php' );
+
 		} else {
+			/*
+			 * Register tabs for the options page by adding a filter to 'multilocale_options_page_tabs'.
+			 * Format: array( 'name' => 'string', 'action' => 'string' ).
+			 * If there is only one tab, we'll render it as the page title.
+			 */
+			$default_tabs = array(
+				'locales' => __( 'Locales', 'multilocale' ),
+			);
+			$tabs = apply_filters(
+				'multilocale_options_page_tabs',
+				$default_tabs
+			);
+
+			$current_action = empty( $_GET['action'] ) ? 'locales' : sanitize_key( wp_unslash( $_GET['action'] ) ); // WPCS: input var ok, CSRF ok.
+
 			include_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-options.php' );
 		}
 	}

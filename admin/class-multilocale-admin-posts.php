@@ -489,6 +489,13 @@ class Multilocale_Admin_Posts {
 		$post_locale = multilocale_get_post_locale( $post );
 
 		if ( ! $post_locale ) {
+
+			require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
+
+			$locales = multilocale_get_locales();
+			$labels  = get_post_type_labels( get_post_type_object( $post->post_type ) );
+			$label   = sprintf( _x( 'Select %s Locale', 'Post type singular name', 'multilocale' ), $labels->singular_name );
+
 			include( MULTILOCALE_PLUGIN_DIR . 'admin/templates/edit-form-advanced-select.php' );
 			return;
 
