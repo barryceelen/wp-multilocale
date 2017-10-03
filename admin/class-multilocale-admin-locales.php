@@ -154,8 +154,6 @@ class Multilocale_Admin_Locales {
 	/**
 	 * Handle post requests on the settings page.
 	 *
-	 * @todo Nonce.
-	 *
 	 * @since 0.0.1
 	 *
 	 * @access private
