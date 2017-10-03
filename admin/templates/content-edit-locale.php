@@ -37,7 +37,7 @@ do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj
 <form name="multilocale-edit-locale" id="multilocale-edit-locale" method="post" action="">
 
 	<?php wp_nonce_field( 'multilocale_settings', 'multilocale_settings' ); ?>
-	<input type="hidden" name="locale_id" value="<?php absint( $locale_obj->term_id ); ?>" />
+	<input type="hidden" name="locale_id" value="<?php echo absint( $locale_obj->term_id ); ?>" />
 	<input type="hidden" name="action" value="edit_locale">
 	<table class="form-table">
 		<tbody>
