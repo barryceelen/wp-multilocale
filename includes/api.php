@@ -122,7 +122,7 @@ function multilocale_get_posts_by_translation_group_id( $id, $post_status = 'any
  * @param int|WP_Post|null $post Optional. Post ID or post object. Defaults to global $post.
  * @return object|false Translation group term object on success or false on failure.
  */
-function get_post_translation_group( $post = null ) {
+function multilocale_get_post_translation_group( $post = null ) {
 	global $multilocale_posts;
 	return $multilocale_posts->get_post_translation_group( $post );
 }
