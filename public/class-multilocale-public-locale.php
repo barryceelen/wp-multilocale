@@ -276,7 +276,9 @@ class Multilocale_Public_Locale {
 	 */
 	private function get_locales() {
 
-		if ( ! $results = wp_cache_get( 'multilocale_locales' ) ) {
+		$results = wp_cache_get( 'multilocale_locales' );
+
+		if ( ! $results ) {
 
 			global $wpdb;
 
