@@ -307,7 +307,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale =
  */
 function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
 
-	if ( function_exists( 'wpcom_vip_get_term_link') ) {
+	if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
 		$link = wpcom_vip_get_term_link( $term, $taxonomy );
 	} else {
 		$link = get_term_link( $term, $taxonomy );
