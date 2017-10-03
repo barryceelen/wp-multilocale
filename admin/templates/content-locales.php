@@ -31,7 +31,7 @@ $locales = get_terms( $this->_locale_taxonomy, $args );
 $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 
 // Todo: fix this.
-// echo $page_title;
+// echo $page_title;.
 ?>
 <h1><?php echo esc_html( $locale_taxonomy_obj->labels->menu_name ); ?></h1>
 <br class="clear" />
@@ -75,7 +75,7 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 							<?php
 							printf(
 								'<p>%s: %s</p>',
-								esc_html__( 'Error' ),
+								esc_html__( 'Error', 'default' ),
 								esc_html( $locales->get_error_message() )
 							);
 							?>
@@ -85,8 +85,31 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 					<?php foreach ( $locales as $locale ) : ?>
 						<?php
 						$base_url = admin_url( 'options-general.php?page=' . $this->_options_page );
-						$edit_url = add_query_arg( array( 'action' => 'edit_locale', 'locale_id' => $locale->term_id ), $base_url );
-						$delete_url = add_query_arg( array( 'action' => 'delete_locale', 'locale_id' => $locale->term_id ), $base_url );
+						$edit_url = wp_nonce_url(
+							add_query_arg(
+								array(
+									'locale_id' => $locale->term_id,
+									'action' => 'edit_locale',
+								),
+								$base_url
+							),
+							-1,
+							'multilocale_settings_edit_locale'
+						);
+						$delete_url = wp_nonce_url(
+							add_query_arg(
+								array(
+									'locale_id' => $locale->term_id,
+									'action' => 'delete_locale',
+								),
+								$base_url
+							),
+							-1,
+							'multilocale_settings_edit_locale'
+						);
+
+
+
 						if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
 							$view_url = get_home_url();
 						} else {
@@ -95,11 +118,11 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 						?>
 						<tr>
 							<td class="column-locale-name name column-name">
-								<strong><a class="row-title" href="<?php echo $edit_url; ?>"><?php echo esc_html( $locale->name ); ?></a></strong><?php if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) { esc_html_e( ' &ndash; Default' ); } ?>
+								<strong><a class="row-title" href="<?php echo esc_url( $edit_url ); ?>"><?php echo esc_html( $locale->name ); ?></a></strong><?php if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) { esc_html_e( ' &ndash; Default', 'default' ); } ?>
 								<br>
 								<div class="row-actions">
 									<span class="edit">
-										<a href="<?php echo $edit_url; ?>"><?php _e( 'Edit' ) ?></a></span> | <span class="delete"><a href="<?php echo( $delete_url ); ?>"><?php esc_html_e( 'Delete' ); ?></a></span> | <span class="view"><a href="<?php echo $view_url ?>"><?php esc_html_e( 'View' ); ?></a>
+										<a href="<?php echo esc_url( $edit_url ); ?>"><?php esc_html_e( 'Edit', 'default' ); ?></a></span> | <span class="delete"><a href="<?php echo esc_url( $delete_url ); ?>"><?php esc_html_e( 'Delete', 'default' ); ?></a></span> | <span class="view"><a href="<?php echo esc_url( $view_url ); ?>"><?php esc_html_e( 'View', 'default' ); ?></a>
 									</span>
 								</div>
 							</td>
@@ -126,7 +149,7 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 			 *
 			 * @param string $locale_taxonomy The taxonomy name.
 			 */
-			do_action( "after-{$locale_taxonomy_obj->name}-table", $locale_taxonomy_obj );
+			do_action( "multilocale_after_{$locale_taxonomy_obj->name}_table", $locale_taxonomy_obj );
 			?>
 		</div>
 	</div>
@@ -140,7 +163,7 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 			 *
 			 * @param string $locale_taxonomy_obj->name The taxonomy slug.
 			 */
-			do_action( "{$locale_taxonomy_obj->name}_pre_add_form", $locale_taxonomy_obj->name );
+			do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_add_form", $locale_taxonomy_obj->name );
 			?>
 			<div class="form-wrap">
 
@@ -150,8 +173,16 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 					<?php wp_nonce_field( 'multilocale_settings', 'multilocale_settings' ); ?>
 					<input type="hidden" name="action" value="insert_locale">
 					<div class="form-field form-required">
-						<label for=""><?php printf( _x( 'Select %s', 'Select locale', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></label>
+						<label for="">
+							<?php
+							printf(
+								esc_html_x( 'Select %s', 'Select locale', 'multilocale' ),
+								esc_html( $locale_taxonomy_obj->labels->singular_name )
+							);
+							?>
+						</label>
 						<?php
+
 						/*
 						 * Todo: This is getting weird. How are we going to mark installed languages in the dropdown?
 						 *       For the time being only the locale name and slug must be unique.
@@ -159,7 +190,13 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 						$active_locales = multilocale_get_locales();
 						$active_locale_names = wp_list_pluck( $active_locales, 'name' );
 						?>
-						<?php echo $this->get_locale_dropdown( array( 'disabled' => $active_locale_names ) ); ?>
+						<?php
+						echo $this->get_locale_dropdown( // WPCS: XSS ok.
+							array(
+								'disabled' => $active_locale_names,
+							)
+						);
+						?>
 					</div>
 					<?php
 					/**
@@ -171,7 +208,7 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 					 *
 					 * @param string $locale_taxonomy_obj->name The taxonomy slug.
 					 */
-					do_action( "{$locale_taxonomy_obj->name}_add_form_fields", $locale_taxonomy_obj );
+					do_action( "multilocale_{$locale_taxonomy_obj->name}_add_form_fields", $locale_taxonomy_obj );
 
 					submit_button( $locale_taxonomy_obj->labels->add_new_item );
 
@@ -184,7 +221,7 @@ $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 					 *
 					 * @param string $locale_taxonomy The taxonomy slug.
 					 */
-					do_action( "{$locale_taxonomy_obj->name}_add_form", $locale_taxonomy_obj );
+					do_action( "multilocale_{$locale_taxonomy_obj->name}_add_form", $locale_taxonomy_obj );
 					?>
 				</form>
 			</div>

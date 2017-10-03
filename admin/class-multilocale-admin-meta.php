@@ -49,7 +49,7 @@ class Multilocale_Admin_Meta {
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -193,7 +193,7 @@ class Multilocale_Admin_Meta {
 	 * Propagate post meta when inserting a new translation.
 	 *
 	 * @since 0.0.3
-	 * @param int     $post_ID Post ID.
+	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post    Post object.
 	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
@@ -212,12 +212,7 @@ class Multilocale_Admin_Meta {
 		}
 
 		$translations = multilocale_get_post_translations( $post_id );
-
-		if ( empty( $translations ) ) {
-			error_log( var_export( 'no translations', true )  . PHP_EOL, 3, ini_get( 'error_log' ) ); // Debug
-		}
-
-		$translation = current( $translations );
+		$translation  = current( $translations );
 
 		if ( ! empty( $translation ) ) {
 
@@ -227,7 +222,7 @@ class Multilocale_Admin_Meta {
 
 			foreach ( $meta as $meta_key => $meta_value_array ) {
 
-				if ( in_array( $meta_key, $this->post_meta_keys ) ) {
+				if ( in_array( $meta_key, $this->post_meta_keys, true ) ) {
 					foreach ( $meta_value_array as $meta_value ) {
 						add_metadata( 'post', $post_id, $meta_key, maybe_unserialize( $meta_value ), false ); // Bypasses wp_is_post_revision() check.
 					}

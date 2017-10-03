@@ -48,7 +48,7 @@ class Multilocale_Locales {
 	public static function get_instance() {
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -125,16 +125,16 @@ class Multilocale_Locales {
 
 		$term_meta_keys = array(
 			'_locale_blogname' => array(
-				'description' => esc_html__( 'Site name for the locale' ),
+				'description' => esc_html__( 'Site name for the locale', 'multilocale' ),
 			),
 			'_locale_blogdescription' => array(
-				'description' => esc_html__( 'Site description' ),
+				'description' => esc_html__( 'Site description', 'default' ),
 			),
 			'_locale_date_format' => array(
-				'description' => esc_html__( 'Date format' ),
+				'description' => esc_html__( 'Date format', 'default' ),
 			),
 			'_locale_time_format' => array(
-				'description' => esc_html__( 'Time format' ),
+				'description' => esc_html__( 'Time format', 'default' ),
 			),
 		);
 
@@ -281,7 +281,9 @@ class Multilocale_Locales {
 	 */
 	public function get_locales() {
 
-		if ( ! $terms = wp_cache_get( 'multilocale_locales' ) ) {
+		$terms = wp_cache_get( 'multilocale_locales' );
+
+		if ( ! $terms ) {
 
 			$args = array(
 				'taxonomy' => $this->_locale_taxonomy,

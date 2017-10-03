@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || die();
 ?>
 
 <div class="wrap">
-	<h1><?php _e( 'Multilocale Setup', 'multilocale' ); ?></h1>
+	<h1><?php esc_html_e( 'Multilocale Setup', 'multilocale' ); ?></h1>
 	<?php
 	/**
 	 * Fires before the plugin setup form, but after the page title.

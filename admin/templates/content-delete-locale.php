@@ -13,10 +13,11 @@
 defined( 'ABSPATH' ) || die();
 ?>
 
+<h1><?php printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></h1>
+
 <?php if ( empty( $_REQUEST['locale_id'] ) ) : ?>
 
-	<h1><?php printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></h1>
-	<p><?php echo esc_html( $this->error_messages['invalid_term_id'] ) ?></p>
+	<p><?php echo esc_html( $this->error_messages['invalid_term_id'] ); ?></p>
 
 <?php else : ?>
 
@@ -30,13 +31,12 @@ defined( 'ABSPATH' ) || die();
 
 	<?php if ( ! $locale_obj ) : ?>
 
-		<h1><?php printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></h1>
-		<p><?php echo esc_html( $this->error_messages['invalid_term'] ) ?></p>
+		<p><?php echo esc_html( $this->error_messages['invalid_term'] ); ?></p>
 
 	<?php else : ?>
 
-		<h1><?php printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></h1>
 		<p><?php esc_html_e( 'You have specified this locale for deletion:', 'multilocale' ); ?></p>
+
 		<?php
 		// Todo: (handle in post admin class) If has content assigned, tell user we're deleting that content unless it is the last locale.
 		?>
@@ -84,7 +84,17 @@ defined( 'ABSPATH' ) || die();
 					</ul>
 				</fieldset>
 			<?php endif; ?>
-			<?php submit_button( __( 'Confirm Deletion' ), 'primary', 'submit', true, array( 'disabled' => 'disabled' ) ); ?>
+			<?php
+			submit_button(
+				__( 'Confirm Deletion', 'default' ),
+				'primary',
+				'submit',
+				true,
+				array(
+					'disabled' => 'disabled',
+				)
+			);
+			?>
 		</form>
 
 

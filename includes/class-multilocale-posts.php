@@ -51,7 +51,7 @@ class Multilocale_Posts {
 
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -149,7 +149,22 @@ class Multilocale_Posts {
 			return false;
 		}
 
-		if ( false === $cache || ! $results = wp_cache_get( 'post_locale_' . $_post->ID ) ) {
+		$refresh_cache = false;
+
+		if ( false === $cache ) {
+
+			$refresh_cache = true;
+
+		} else {
+
+			$results = wp_cache_get( 'post_locale_' . $_post->ID );
+
+			if ( ! $results ) {
+				$refresh_cache = true;
+			}
+		}
+
+		if ( $refresh_cache ) {
 
 			$terms = get_the_terms( $_post->ID, $this->locale_taxonomy );
 
@@ -366,7 +381,7 @@ class Multilocale_Posts {
 			'posts_per_page' => 100, // Make PHP Code Sniffer happy.
 			'post_type' => get_post_types_by_support( 'multilocale' ), // Defining only one post type saves one query.
 			'post_status' => $post_status,
-			'tax_query' => array( // WPCS: tax_query ok.
+			'tax_query' => array( // WPCS: slow query ok.
 				array(
 					'taxonomy'         => $this->post_translation_taxonomy,
 					'terms'            => absint( $id ),

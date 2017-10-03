@@ -15,6 +15,7 @@ defined( 'ABSPATH' ) || die();
 
 <div class="wrap">
 	<?php
+
 	/*
 	 * Register tabs for the options page by adding a filter to 'multilocale_options_page_tabs'.
 	 * Format: array( 'name' => 'string', 'action' => 'string' ).
@@ -28,9 +29,9 @@ defined( 'ABSPATH' ) || die();
 		$default_tabs
 	);
 
-	$current_action = ( empty( $_GET['action'] ) ) ? 'locales' : (string) $_GET['action'];
+	$current_action = empty( $_GET['action'] ) ? 'locales' : sanitize_key( wp_unslash( $_GET['action'] ) ); // WPCS: input var ok, CSRF ok.
 
-	if ( count( $tabs ) == 1 ) {
+	if ( count( $tabs ) === 1 ) {
 		foreach ( $tabs as $action => $title ) {
 			$page_title = sprintf( '<h1>%s</h1>', esc_html( $title ) );
 		}
@@ -39,14 +40,25 @@ defined( 'ABSPATH' ) || die();
 		foreach ( $tabs as $action => $title ) {
 			$html[] = sprintf(
 				'<a href="%s" class="nav-tab%s">%s</a>',
-				add_query_arg( array( 'action' => $action ) ),
-				( $action == $current_action ) ? ' nav-tab-active': '',
+				add_query_arg(
+					array(
+						'action' => $action,
+					)
+				),
+				( $action === $current_action ) ? ' nav-tab-active' : '',
 				esc_html( $title )
 			);
 		}
 		$page_title = sprintf( '<h1>Multilocale</h1><h2 class="nav-tab-wrapper">%s</h2>', implode( '', $html ) );
 	}
 
+	/**
+	 * Fires on the settings page content area.
+	 *
+	 * Use this hook to add content to the settings page.
+	 *
+	 * @since 0.0.1
+	 */
 	do_action( 'multilocale_settings_page_content', $current_action, $page_title );
 	?>
 </div>

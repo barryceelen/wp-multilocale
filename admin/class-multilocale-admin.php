@@ -69,7 +69,7 @@ class Multilocale_Admin {
 
 		// If the single instance hasn't been set, set it now.
 		if ( null === self::$instance ) {
-			self::$instance = new self;
+			self::$instance = new self();
 		}
 		return self::$instance;
 	}
@@ -177,7 +177,12 @@ class Multilocale_Admin {
 				admin_url( 'options-general.php?page=' . $this->_options_page ),
 				esc_html__( 'Settings', 'multilocale' )
 			);
-			$links = array_merge( array( 'settings' => $link ), $links );
+			$links = array_merge(
+				array(
+					'settings' => $link,
+				),
+				$links
+			);
 		}
 
 		return $links;
@@ -196,7 +201,7 @@ class Multilocale_Admin {
 
 		$screen = get_current_screen();
 
-		if ( 'options-permalink' === $screen->id  && ! empty( get_option( 'permalink_structure' ) ) ) {
+		if ( 'options-permalink' === $screen->id && ! empty( get_option( 'permalink_structure' ) ) ) {
 
 			printf(
 				'
@@ -238,7 +243,7 @@ class Multilocale_Admin {
 	 */
 	public function pre_update_option_permalink_structure( $new_value, $old_value ) {
 
-		if ( empty( $new_value )  ) {
+		if ( empty( $new_value ) ) {
 			return $old_value;
 		}
 

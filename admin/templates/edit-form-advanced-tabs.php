@@ -17,4 +17,4 @@ defined( 'ABSPATH' ) || die();
 
 <input type="hidden" name="locale_id" value="<?php echo absint( $post_locale->term_id ); ?>">
 <input type="hidden" name="translation_id" value="<?php echo absint( $translation_id ); ?>">
-<div class="wp-filter locale-tabs"><ul class="filter-links"><?php echo implode( $filter_links ); ?></ul></div>
+<div class="wp-filter locale-tabs"><ul class="filter-links"><?php echo implode( $filter_links ); // WPCS: XSS ok. ?></ul></div>
