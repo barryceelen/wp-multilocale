@@ -33,8 +33,6 @@ defined( 'ABSPATH' ) || die();
 		}
 	} else {
 
-		$html = array();
-
 		foreach ( $tabs as $action => $title ) {
 			$html[] = sprintf(
 				'<a href="%s" class="nav-tab%s">%s</a>',

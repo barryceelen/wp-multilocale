@@ -172,6 +172,8 @@ class Multilocale_Admin {
 				$default_tabs
 			);
 
+			$html = array();
+
 			$current_action = empty( $_GET['action'] ) ? 'locales' : sanitize_key( wp_unslash( $_GET['action'] ) ); // WPCS: input var ok, CSRF ok.
 
 			include_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-options.php' );
