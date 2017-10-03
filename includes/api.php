@@ -392,7 +392,7 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 
 	if ( 'page' === $_post->post_type && 'page' === get_option( 'show_on_front' ) ) {
 
-		if ( ! $siblings_only &&  (int) get_option( 'page_for_posts' ) === $_post->ID ) {
+		if ( ! $siblings_only && (int) get_option( 'page_for_posts' ) === $_post->ID ) {
 			return true;
 		}
 
