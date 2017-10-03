@@ -251,6 +251,8 @@ class Multilocale_Admin_Posts {
 		 * Todo: Temporary.
 		 *       Fix this stuff as it will break if there are more than a handful posts in the database.
 		 *
+		 * Todo: Offer user a choice as to what to do with existing content.
+		 *
 		 */
 		$args = array(
 			'post_type' => get_post_types_by_support( 'multilocale' ),
