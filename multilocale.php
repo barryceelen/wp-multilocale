@@ -32,7 +32,7 @@ define( 'MULTILOCALE_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
  * @since 0.0.1
  */
 function multilocale_activate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-multilocale-activator.php';
 	Multilocale_Activator::activate( plugin_basename( __FILE__ ) );
 }
 
@@ -45,7 +45,7 @@ function multilocale_activate() {
  * @since 0.0.1
  */
 function multilocale_deactivate() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-activator.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-multilocale-activator.php';
 	Multilocale_Activator::deactivate();
 }
 
@@ -54,7 +54,7 @@ register_deactivation_hook( __FILE__, 'multilocale_deactivate' );
 
 if ( ! is_admin() ) {
 
-	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-public-locale.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-multilocale-public-locale.php';
 
 	/**
 	 * Determine and set the requested locale depending on the url prefix.
@@ -84,17 +84,17 @@ function multilocale() {
 }
 multilocale();
 
-require_once MULTILOCALE_PLUGIN_DIR . 'includes/class-locales.php';
-require_once MULTILOCALE_PLUGIN_DIR . 'includes/class-posts.php';
+require_once MULTILOCALE_PLUGIN_DIR . 'includes/class-multilocale-locales.php';
+require_once MULTILOCALE_PLUGIN_DIR . 'includes/class-multilocale-posts.php';
 
 if ( is_admin() ) {
-	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin.php';
-	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-locales.php';
-	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-posts.php';
-	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-admin-meta.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-multilocale-admin.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-multilocale-admin-locales.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-multilocale-admin-posts.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'admin/class-multilocale-admin-meta.php';
 } else {
-	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-public.php';
-	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-public-posts.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-multilocale-public.php';
+	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-multilocale-public-posts.php';
 }
 
 require_once( MULTILOCALE_PLUGIN_DIR . 'includes/api.php' );
