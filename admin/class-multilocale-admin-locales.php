@@ -633,6 +633,10 @@ class Multilocale_Admin_Locales {
 				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-locales.php' );
 				break;
 			case 'edit_locale':
+				if ( ! isset( $_REQUEST['locale_id'] ) ) {
+					wp_die( esc_html( $this->_error_messages['invalid_term_id'] ) );
+				}
+
 				$locale_id          = (int) $_REQUEST['locale_id'];
 				$locale_obj         = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
 				$date_formats       = array_unique( apply_filters( 'date_formats', array( __( 'F j, Y', 'default' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ); // WPCS: prefix ok.
@@ -650,6 +654,10 @@ class Multilocale_Admin_Locales {
 				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-edit-locale.php' );
 				break;
 			case 'delete_locale':
+				if ( ! isset( $_REQUEST['locale_id'] ) ) {
+					wp_die( esc_html( $this->_error_messages['invalid_term_id'] ) );
+				}
+
 				$locale_id      = (int) $_REQUEST['locale_id'];
 				$locale_obj     = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
 				$active_locales = multilocale_get_locales();
