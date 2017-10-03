@@ -157,25 +157,25 @@ class Multilocale_Public {
 		}
 
 		switch ( $option ) {
-			case 'blogname' :
+			case 'blogname':
 				$value = get_term_meta( $this->_locale_obj->term_id, 'blogname', true );
 				break;
-			case 'blogdescription' :
+			case 'blogdescription':
 				$value = get_term_meta( $this->_locale_obj->term_id, 'blogdescription', true );
 				break;
-			case 'date_format' :
+			case 'date_format':
 				$value = get_term_meta( $this->_locale_obj->term_id, 'date_format', true );
 				break;
-			case 'time_format' :
+			case 'time_format':
 				$value = get_term_meta( $this->_locale_obj->term_id, 'time_format', true );
 				break;
-			case 'page_for_posts' :
+			case 'page_for_posts':
 				$option = get_option( 'plugin_multilocale' );
 				if ( ! empty( $option['page_for_posts'][ $this->_locale_obj->term_id ] ) ) {
 					return (int) $option['page_for_posts'][ $this->_locale_obj->term_id ];
 				}
 				break;
-			case 'page_on_front' :
+			case 'page_on_front':
 				$option = get_option( 'plugin_multilocale' );
 				if ( ! empty( $option['page_on_front'][ $this->_locale_obj->term_id ] ) ) {
 					return (int) $option['page_on_front'][ $this->_locale_obj->term_id ];
