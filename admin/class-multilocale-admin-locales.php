@@ -157,6 +157,7 @@ class Multilocale_Admin_Locales {
 	 * @since 0.0.1
 	 *
 	 * @todo Break this up, it's looooong.
+	 * @todo Validate data, see if required fields are present.
 	 *
 	 * @access private
 	 */
