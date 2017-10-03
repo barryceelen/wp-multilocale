@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || die();
 	} else {
 
 		foreach ( $tabs as $action => $title ) {
-			$html[] = sprintf(
+			$html[] = sprintf( // WPCS: prefix ok.
 				'<a href="%s" class="nav-tab%s">%s</a>',
 				add_query_arg(
 					array(
