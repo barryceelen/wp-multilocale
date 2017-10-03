@@ -1,6 +1,8 @@
 [Experimental] WordPress Multilocale Plugin
 ===========================================
 
+[![Build Status](https://travis-ci.org/barryceelen/wp-multilocale.svg?branch=master)](https://travis-ci.org/barryceelen/wp-multilocale)
+
 The Multilocale plugin offers a tiny toolset for publishing content in multiple locales. It is intentionally limited in scope, a custom built theme is a requirement, it does not offer localization of all core functionality and will most certainly **break your website** and forever make 🌈🌈double rainbows 🚫disappear.
 
 ## Incomplete Todo List
