@@ -157,7 +157,6 @@ class Multilocale_Admin_Locales {
 	 * @since 0.0.1
 	 *
 	 * @access private
-	 * @return void
 	 */
 	public function handle_post_request() {
 
