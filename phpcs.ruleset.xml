@@ -12,8 +12,9 @@
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
-			<property name="text_domain" type="array" value="multilocale"/>
+			<property name="text_domain" type="array" value="multilocale,default"/>
 		</properties>
 	</rule>
 	<exclude-pattern>*.min.js</exclude-pattern>
+	<exclude-pattern>admin/includes/vendor/*</exclude-pattern>
 </ruleset>
