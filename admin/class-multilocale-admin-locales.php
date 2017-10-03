@@ -284,7 +284,13 @@ class Multilocale_Admin_Locales {
 				 * The locale name, eg. "Deutsch".
 				 */
 				if ( isset( $post_data['name'] ) ) {
-					$term_exists = wpcom_vip_term_exists( $post_data['name'], $this->_locale_taxonomy );
+
+					if ( function_exists( 'wpcom_vip_term_exists' ) ) {
+						$term_exists = wpcom_vip_term_exists( $post_data['name'], $this->_locale_taxonomy );
+					} else {
+						$term_exists = term_exists( $post_data['name'], $this->_locale_taxonomy );
+					}
+
 					if ( $term_exists && (int) $term_exists['term_id'] !== (int) $post_data['locale_id'] ) {
 						$this->add_settings_error( 'term_exists' );
 					} else {
@@ -357,7 +363,11 @@ class Multilocale_Admin_Locales {
 				}
 
 				if ( ! empty( $post_data['default_locale'] ) ) {
-					$term = wpcom_vip_get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
+					if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
+						$term = wpcom_vip_get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
+					} else {
+						$term = get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
+					}
 					if ( $term && ! is_wp_error( $term ) ) {
 						multilocale_set_default_locale( $term->term_id );
 					}

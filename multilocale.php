@@ -69,7 +69,6 @@ if ( ! is_admin() ) {
 	multilocale_locale();
 }
 
-require_once MULTILOCALE_PLUGIN_DIR . 'includes/wpcomvip.php';
 require_once MULTILOCALE_PLUGIN_DIR . 'includes/class-multilocale.php';
 
 /**

@@ -314,7 +314,11 @@ class Multilocale_Public_Posts {
 			if ( is_int( $locale ) ) {
 				$locale = get_term( $locale, 'locale' );
 			} else {
-				$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
+				if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
+					$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
+				} else {
+					$locale = get_term_by( 'slug', $locale, 'locale' );
+				}
 			}
 			if ( ! $locale || is_wp_error( $locale ) ) {
 				/* translators: %s: locale name */
