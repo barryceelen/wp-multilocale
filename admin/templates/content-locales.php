@@ -65,7 +65,12 @@ defined( 'ABSPATH' ) || die();
 					<?php foreach ( $locales as $locale ) : ?>
 						<tr>
 							<td class="column-locale-name name column-name">
-								<strong><a class="row-title" href="<?php echo esc_url( $locale->multilocale_edit_url ); ?>"><?php echo esc_html( $locale->name ); ?></a></strong><?php if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) { esc_html_e( ' &ndash; Default', 'default' ); } ?>
+								<strong><a class="row-title" href="<?php echo esc_url( $locale->multilocale_edit_url ); ?>"><?php echo esc_html( $locale->name ); ?></a></strong>
+								<?php
+								if ( (int) $options['default_locale_id'] === (int) $locale->term_id ) {
+									esc_html_e( ' &ndash; Default', 'default' );
+								}
+								?>
 								<br>
 								<div class="row-actions">
 									<span class="edit">

@@ -65,7 +65,12 @@ do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj
 					<label for="description"><?php esc_html_e( 'WordPress Locale', 'multilocale' ); ?></label>
 				</th>
 				<td>
-					<input type="text" name="description" class="disabled" value="<?php if ( isset( $locale_obj->description ) ) { echo esc_html( $locale_obj->description ); } ?>" disabled />
+					<?php
+					printf(
+						'<input type="text" name="description" class="disabled" value="%s" disabled />',
+						isset( $locale_obj->description ) ? esc_html( $locale_obj->description ) : ''
+					);
+					?>
 					<p class="description"><?php esc_html_e( 'The code WordPress uses internally to indentify locales.', 'multilocale' ); ?></p>
 				</td>
 			</tr>
