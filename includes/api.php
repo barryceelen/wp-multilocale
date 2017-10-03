@@ -321,7 +321,7 @@ function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
 		}
 		if ( ! $locale || is_wp_error( $locale ) ) {
 			/* translators: %s: locale name */
-			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s' ), (string) $locale ) );
+			return new WP_Error( 'invalid_locale', sprintf( __( 'Invalid locale: %s', 'multilocale' ), (string) $locale ) );
 		}
 	}
 
