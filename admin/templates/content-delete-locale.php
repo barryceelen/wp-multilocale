@@ -10,9 +10,7 @@
  */
 
 // Don't load directly.
-if ( ! defined( 'ABSPATH' ) ) {
-	die( '-1' );
-}
+defined( 'ABSPATH' ) || die();
 ?>
 
 <?php if ( empty( $_REQUEST['locale_id'] ) ) : ?>

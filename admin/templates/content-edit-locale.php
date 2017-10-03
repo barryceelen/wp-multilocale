@@ -12,7 +12,7 @@
  */
 
 // Don't load directly.
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 $options             = get_option( 'plugin_multilocale' );
 $locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );

@@ -12,7 +12,7 @@
  */
 
 // Don't load directly.
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 ?>
 
 <input type="hidden" name="locale_id" value="<?php echo absint( $post_locale->term_id ); ?>">

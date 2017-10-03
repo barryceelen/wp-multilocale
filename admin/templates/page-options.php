@@ -10,7 +10,7 @@
  */
 
 // Don't load directly.
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 ?>
 
 <div class="wrap">

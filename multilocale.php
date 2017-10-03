@@ -21,7 +21,7 @@
  */
 
 // Don't load directly.
-defined( 'ABSPATH' ) or die();
+defined( 'ABSPATH' ) || die();
 
 define( 'MULTILOCALE_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MULTILOCALE_PLUGIN_URL', plugins_url( '/', __FILE__ ) );
