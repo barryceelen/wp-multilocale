@@ -695,7 +695,7 @@ class Multilocale_Admin_Posts {
 			 * Maybe there are posts in the translation group.
 			 * Does the group even exist?
 			 */
-			$translations = multilocale_get_posts_by_translation_group_id( (int) wp_unslash( $_REQUEST['translation_id'] ) );
+			$translations = multilocale_get_posts_by_translation_group_id( absint( wp_unslash( $_REQUEST['translation_id'] ) ) );
 
 			if ( ! $translations ) {
 				multilocale_insert_post_translation_group( $post->ID );
