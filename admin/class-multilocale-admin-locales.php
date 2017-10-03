@@ -12,6 +12,8 @@
 /**
  * Admin-related locales functionality.
  *
+ * @todo Break up in to smaller pieces, this sucks.
+ *
  * @since 0.0.1
  */
 class Multilocale_Admin_Locales {
