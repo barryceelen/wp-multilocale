@@ -574,7 +574,6 @@ class Multilocale_Admin_Locales {
 
 		switch ( $action ) {
 			case 'locales':
-
 				$args = array(
 					'hide_empty' => false,
 					'orderby' => 'term_order',
@@ -654,7 +653,6 @@ class Multilocale_Admin_Locales {
 				$locale_id      = (int) $_REQUEST['locale_id'];
 				$locale_obj     = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
 				$active_locales = multilocale_get_locales();
-
 
 				if ( empty( $locale_time_format ) ) {
 					$locale_time_format = get_option( 'time_format' );
