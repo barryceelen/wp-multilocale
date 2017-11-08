@@ -173,6 +173,10 @@ class Multilocale_Admin_Locales {
 			return;
 		}
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		
 		$post_data = wp_unslash( $_POST );  // WPCS: input var okay.
 
 		$locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
@@ -424,6 +428,10 @@ class Multilocale_Admin_Locales {
 			return;
 		}
 
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		
 		$get_data = wp_unslash( $_GET ); // WPCS: input var okay.
 
 		$action = ( empty( $get_data['action'] ) ) ? false : (string) $get_data['action'];
