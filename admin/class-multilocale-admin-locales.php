@@ -225,20 +225,21 @@ class Multilocale_Admin_Locales {
 
 					multilocale_set_default_locale( $term['term_id'] );
 
+					$edit_url = add_query_arg(
+						array(
+							'action' => 'edit_locale',
+							'locale_id' => $term['term_id'],
+						),
+						admin_url( 'options-general.php?page=' . $this->_options_page )
+					);
+
 					$this->add_settings_error(
 						'default_locale_added',
 						sprintf(
-							/* translators: %1$s: locale taxonomy name, %2$s: locale term edit url, %3$s: locale term edit label  */
-							__( 'Default %1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
-							$locale_taxonomy_obj->labels->singular_name,
-							add_query_arg(
-								array(
-									'action' => 'edit_locale',
-									'locale_id' => $term['term_id'],
-								),
-								admin_url( 'options-general.php?page=' . $this->_options_page )
-							),
-							$locale_taxonomy_obj->labels->edit_item
+							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
+							__( 'Default %1$s added. %2$s', 'multilocale' ),
+							$locale_taxonomy_obj->labels->singular_name
+							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
 					);
@@ -265,20 +266,21 @@ class Multilocale_Admin_Locales {
 					update_term_meta( $term['term_id'], '_blogname', get_option( 'blogname' ) );
 					update_term_meta( $term['term_id'], '_blogdescription', get_option( 'blogdescription' ) );
 
+					$edit_url = add_query_arg(
+						array(
+							'action' => 'edit_locale',
+							'locale_id' => $term['term_id'],
+						),
+						admin_url( 'options-general.php?page=' . $this->_options_page )
+					);
+
 					$this->add_settings_error(
-						'default_locale_added',
+						'locale_added',
 						sprintf(
-							/* translators: %1$s: locale taxonomy name, %2$s: locale term edit url, %3$s: locale term edit label  */
-							__( '%1$s added. <a href="%2$s">%3$s</a>', 'multilocale' ),
-							$locale_taxonomy_obj->labels->singular_name,
-							$edit_url = add_query_arg(
-								array(
-									'action' => 'edit_locale',
-									'locale_id' => $term['term_id'],
-								),
-								admin_url( 'options-general.php?page=' . $this->_options_page )
-							),
-							$locale_taxonomy_obj->labels->edit_item
+							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
+							__( '%1$s added. %2$s', 'multilocale' ),
+							$locale_taxonomy_obj->labels->singular_name
+							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
 					);
