@@ -121,7 +121,7 @@ class Multilocale_Posts {
 	 *
 	 * @param string $post_type Post type.
 	 */
-	function add_post_type_support( $post_type ) {
+	public function add_post_type_support( $post_type ) {
 		if ( in_array( $post_type, array( 'post', 'page' ), true ) ) {
 			add_post_type_support( $post_type, 'multilocale' );
 		}

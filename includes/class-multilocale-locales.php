@@ -220,7 +220,7 @@ class Multilocale_Locales {
 		$_term = false;
 
 		if ( $default_locale_id ) {
-			$_term = WP_Term::get_instance( (int) $default_locale_id , $this->_locale_taxonomy );
+			$_term = WP_Term::get_instance( (int) $default_locale_id, $this->_locale_taxonomy );
 		}
 
 		/**

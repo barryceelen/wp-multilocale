@@ -289,7 +289,7 @@ class Multilocale_Public_Locale {
 						FROM $wpdb->terms AS t1
 						LEFT JOIN $wpdb->term_taxonomy AS t2
 						ON t1.term_id = t2.term_id
-						WHERE t2.taxonomy = '%s'
+						WHERE t2.taxonomy = %s
 						ORDER BY t2.description
 					",
 					'locale' // Todo: How to get this from a variable without saving to options?

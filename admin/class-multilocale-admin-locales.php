@@ -65,14 +65,14 @@ class Multilocale_Admin_Locales {
 		$this->_options_page = multilocale()->options_page;
 
 		$this->_error_messages = array(
-			'db_insert_error'        => __( 'Could not insert locale into the database' ,'multilocale' ),
-			'empty_term_description' => __( 'The WordPress locale is required.', 'multilocale' ),
-			'empty_term_name'        => __( 'A name is required', 'multilocale' ),
-			'empty_term_slug'        => __( 'A slug is required', 'multilocale' ),
-			'invalid_taxonomy'       => __( 'Invalid locale taxonomy', 'multilocale' ),
-			'invalid_term'           => __( 'Locale not found', 'multilocale' ),
-			'invalid_term_id'        => __( 'Invalid locale term ID', 'multilocale' ),
-			'term_exists'            => __( 'A locale with the name provided already exists.', 'multilocale' ),
+			'db_insert_error'        => esc_html__( 'Could not insert locale into the database', 'multilocale' ),
+			'empty_term_description' => esc_html__( 'The WordPress locale is required.', 'multilocale' ),
+			'empty_term_name'        => esc_html__( 'A name is required', 'multilocale' ),
+			'empty_term_slug'        => esc_html__( 'A slug is required', 'multilocale' ),
+			'invalid_taxonomy'       => esc_html__( 'Invalid locale taxonomy', 'multilocale' ),
+			'invalid_term'           => esc_html__( 'Locale not found', 'multilocale' ),
+			'invalid_term_id'        => esc_html__( 'Invalid locale term ID', 'multilocale' ),
+			'term_exists'            => esc_html__( 'A locale with the name provided already exists.', 'multilocale' ),
 		);
 
 		$this->add_actions_and_filters();
@@ -127,10 +127,10 @@ class Multilocale_Admin_Locales {
 
 		// Install core language pack when inserting a locale.
 		// Todo: Install theme and plugin ones, or leave this to the updater?
-		add_action( "create_{$this->_locale_taxonomy}" , array( $this, 'install_language_pack' ) );
+		add_action( "create_{$this->_locale_taxonomy}", array( $this, 'install_language_pack' ) );
 
 		// Delete core, theme and plugin language packs and preferences when deleting a locale.
-		add_action( 'pre_delete_term' , array( $this, 'delete_language_packs_and_user_preferences' ), 10, 2 );
+		add_action( 'pre_delete_term', array( $this, 'delete_language_packs_and_user_preferences' ), 10, 2 );
 	}
 
 	/**
@@ -142,7 +142,7 @@ class Multilocale_Admin_Locales {
 	 * @param array $locales List of locales.
 	 * @return array
 	 */
-	function filter_update_check_locales( $locales ) {
+	public function filter_update_check_locales( $locales ) {
 
 		$installed_locales = multilocale_get_locales();
 
@@ -239,7 +239,7 @@ class Multilocale_Admin_Locales {
 							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
 							__( 'Default %1$s added. %2$s', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
-							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
+							'<a href="' . $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
 					);
@@ -280,7 +280,7 @@ class Multilocale_Admin_Locales {
 							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
 							__( '%1$s added. %2$s', 'multilocale' ),
 							$locale_taxonomy_obj->labels->singular_name,
-							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
+							'<a href="' . $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
 					);

@@ -1032,7 +1032,7 @@ class Multilocale_Admin_Posts {
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post    Post object.
 	 */
-	function update_localized_page_for_posts_and_page_on_front( $post_id, $post ) {
+	public function update_localized_page_for_posts_and_page_on_front( $post_id, $post ) {
 
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
@@ -1078,7 +1078,7 @@ class Multilocale_Admin_Posts {
 	 * @since 1.0.0
 	 * @param int $post_id Post ID.
 	 */
-	function delete_localized_page_for_posts_and_page_on_front( $post_id ) {
+	public function delete_localized_page_for_posts_and_page_on_front( $post_id ) {
 
 		$_post = get_post( $post_id );
 

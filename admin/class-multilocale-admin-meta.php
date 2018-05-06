@@ -197,7 +197,7 @@ class Multilocale_Admin_Meta {
 	 * @param WP_Post $post    Post object.
 	 * @param bool    $update  Whether this is an existing post being updated or not.
 	 */
-	function propagate_new_post( $post_id, $post, $update ) {
+	public function propagate_new_post( $post_id, $post, $update ) {
 
 		if ( $update ) {
 			return;

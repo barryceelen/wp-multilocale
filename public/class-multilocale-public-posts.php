@@ -292,7 +292,7 @@ class Multilocale_Public_Posts {
 	 * @param string|object $locale Locale.
 	 * @return string|false|WP_Error The post type archive permalink.
 	 */
-	function get_localized_post_type_archive_link( $post_type, $locale = null ) {
+	public function get_localized_post_type_archive_link( $post_type, $locale = null ) {
 
 		if ( is_admin() ) {
 			return get_post_type_archive_link( $post_type );
@@ -468,7 +468,7 @@ class Multilocale_Public_Posts {
 	 * @param mixed $value Value of the option.
 	 * @return mixed Page ID or empty string if no page is set as 'page_for_posts'.
 	 */
-	function filter_option_page_for_posts( $value ) {
+	public function filter_option_page_for_posts( $value ) {
 
 		if ( empty( $value ) ) {
 			return $value;
