@@ -176,7 +176,7 @@ class Multilocale_Admin_Locales {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
+
 		$post_data = wp_unslash( $_POST );  // WPCS: input var okay.
 
 		$locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
@@ -238,7 +238,7 @@ class Multilocale_Admin_Locales {
 						sprintf(
 							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
 							__( 'Default %1$s added. %2$s', 'multilocale' ),
-							$locale_taxonomy_obj->labels->singular_name
+							$locale_taxonomy_obj->labels->singular_name,
 							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
@@ -279,7 +279,7 @@ class Multilocale_Admin_Locales {
 						sprintf(
 							/* translators: %1$s: locale taxonomy name, %2$s: Locale edit link html tag */
 							__( '%1$s added. %2$s', 'multilocale' ),
-							$locale_taxonomy_obj->labels->singular_name
+							$locale_taxonomy_obj->labels->singular_name,
 							'<a href="'. $edit_url . '">' . $locale_taxonomy_obj->labels->edit_item . '</a>'
 						),
 						'updated'
@@ -433,7 +433,7 @@ class Multilocale_Admin_Locales {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
-		
+
 		$get_data = wp_unslash( $_GET ); // WPCS: input var okay.
 
 		$action = ( empty( $get_data['action'] ) ) ? false : (string) $get_data['action'];
