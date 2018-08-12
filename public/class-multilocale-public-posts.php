@@ -126,8 +126,8 @@ class Multilocale_Public_Posts {
 			$url = get_permalink( $_post );
 		} else {
 			$permalink = get_permalink( $_post );
-			$home_url = trailingslashit( get_home_url() );
-			$url = $home_url . $locale->slug . '/' . str_replace( $home_url, '', $permalink );
+			$home_url  = trailingslashit( get_home_url() );
+			$url       = $home_url . $locale->slug . '/' . str_replace( $home_url, '', $permalink );
 		}
 
 		add_filter( 'home_url', array( $multilocale_public, 'filter_home_url' ), 10, 2 );
@@ -160,10 +160,10 @@ class Multilocale_Public_Posts {
 		}
 
 		$tax_query = array(
-			'taxonomy' => 'locale',
-			'field'    => 'id',
-			'terms'    => array( $this->_locale_obj->term_id ),
-			'operator' => 'IN',
+			'taxonomy'         => 'locale',
+			'field'            => 'id',
+			'terms'            => array( $this->_locale_obj->term_id ),
+			'operator'         => 'IN',
 			'include_children' => false,
 		);
 
@@ -194,7 +194,7 @@ class Multilocale_Public_Posts {
 
 		global $post;
 
-		$locale = get_locale();
+		$locale      = get_locale();
 		$post_locale = multilocale_get_post_locale( $post );
 
 		if ( $post_locale && $locale !== $post_locale->description ) {
@@ -253,12 +253,12 @@ class Multilocale_Public_Posts {
 						(int) $post_locale->term_id !== (int) $options['default_locale_id']
 					) {
 
-						$slug = ( (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) ? $post_locale->slug . '/' : '';
+						$slug      = ( (int) $post_locale->term_id !== (int) $options['default_locale_id'] ) ? $post_locale->slug . '/' : '';
 						$permalink = $http . $array[0] . '/' . $slug . str_replace( trailingslashit( $home_url ), '', $permalink );
 					}
 				}
 			}
-		} // End if().
+		} // End if.
 
 		return $permalink;
 	}
@@ -327,7 +327,7 @@ class Multilocale_Public_Posts {
 		}
 
 		if ( 'post' === $post_type ) {
-			$show_on_front = get_option( 'show_on_front' );
+			$show_on_front  = get_option( 'show_on_front' );
 			$page_for_posts = get_option( 'page_for_posts' );
 
 			if ( 'page' === $show_on_front && $page_for_posts ) {

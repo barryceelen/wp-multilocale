@@ -65,8 +65,8 @@ class Multilocale_Activator {
 	public static function maybe_set_default_options() {
 
 		$options_version = '0.0.1';
-		$options  = get_option( 'plugin_multilocale' );
-		$defaults = array(
+		$options         = get_option( 'plugin_multilocale' );
+		$defaults        = array(
 			'default_locale' => '',
 		);
 

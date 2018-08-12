@@ -59,8 +59,8 @@ class Multilocale_Admin_Posts {
 	 */
 	private function __construct() {
 
-		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
-		$this->_options_page = multilocale()->options_page;
+		$this->_locale_taxonomy           = multilocale()->locale_taxonomy;
+		$this->_options_page              = multilocale()->options_page;
 		$this->_post_translation_taxonomy = multilocale()->post_translation_taxonomy;
 
 		$this->add_actions_and_filters();
@@ -313,7 +313,7 @@ class Multilocale_Admin_Posts {
 		}
 
 		$tax_obj = get_taxonomy( $this->_locale_taxonomy );
-		$terms = get_terms( $this->_locale_taxonomy );
+		$terms   = get_terms( $this->_locale_taxonomy );
 
 		if ( count( $terms ) > 0 ) {
 
@@ -336,7 +336,7 @@ class Multilocale_Admin_Posts {
 					implode( $options ),
 					array(
 						'option' => array(
-							'value' => array(),
+							'value'    => array(),
 							'selected' => array(),
 						),
 					)
@@ -368,7 +368,7 @@ class Multilocale_Admin_Posts {
 		}
 
 		$new_columns = array();
-		$tax_obj = get_taxonomy( $this->_post_translation_taxonomy );
+		$tax_obj     = get_taxonomy( $this->_post_translation_taxonomy );
 
 		if ( array_key_exists( 'taxonomy-' . $this->_locale_taxonomy, $columns ) ) {
 			foreach ( $columns as $key => $value ) {
@@ -378,7 +378,7 @@ class Multilocale_Admin_Posts {
 				}
 			}
 		} else {
-			$new_columns = $columns;
+			$new_columns                 = $columns;
 			$new_columns['translations'] = $tax_obj->labels->name;
 		}
 
@@ -427,11 +427,12 @@ class Multilocale_Admin_Posts {
 
 				if ( array_key_exists( $locale->term_id, $translations ) ) {
 
-					$_post = $translations[ $locale->term_id ];
-					$href = get_edit_post_link( $_post );
+					$_post             = $translations[ $locale->term_id ];
+					$href              = get_edit_post_link( $_post );
 					$post_edit_links[] = sprintf(
 						'<a href="%s" title="%s" class="locale-%s translation-%s">%s</a>',
 						$href,
+						/* translators: %s: post title */
 						esc_attr( sprintf( _x( 'Edit &quot;%s&quot;', 'String refers to the post title', 'multilocale' ), apply_filters( 'the_title', $_post->post_title ) ) ), // WPCS: prefix ok.
 						esc_attr( $locale->description ),
 						esc_attr( $_post->post_status ),
@@ -497,13 +498,15 @@ class Multilocale_Admin_Posts {
 
 		if ( ! $post_locale ) {
 
-			require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
+			require_once MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php';
 
 			$locales = multilocale_get_locales();
 			$labels  = get_post_type_labels( get_post_type_object( $post->post_type ) );
-			$label   = sprintf( _x( 'Select %s Locale', 'Post type singular name', 'multilocale' ), $labels->singular_name );
 
-			include( MULTILOCALE_PLUGIN_DIR . 'admin/templates/edit-form-advanced-select.php' );
+			/* translators: %s: post type singular name */
+			$label = sprintf( _x( 'Select %s Locale', 'Post type singular name', 'multilocale' ), $labels->singular_name );
+
+			include MULTILOCALE_PLUGIN_DIR . 'admin/templates/edit-form-advanced-select.php';
 			return;
 
 			/*
@@ -527,10 +530,10 @@ class Multilocale_Admin_Posts {
 		foreach ( $locales as $locale ) {
 
 			$current_post = false;
-			$classes = array( 'locale-tab-' . $locale->description );
+			$classes      = array( 'locale-tab-' . $locale->description );
 
 			if ( (int) $post_locale->term_id === (int) $locale->term_id ) {
-				$classes[] = 'current';
+				$classes[]    = 'current';
 				$current_post = $post;
 			} elseif ( array_key_exists( $locale->term_id, $translations ) ) {
 				$current_post = $translations[ $locale->term_id ];
@@ -539,18 +542,19 @@ class Multilocale_Admin_Posts {
 			if ( ! $current_post ) {
 
 				$classes[] = 'locale-tab-new';
-				$href = add_query_arg(
+				$href      = add_query_arg(
 					array(
-						'locale_id' => $locale->term_id,
+						'locale_id'      => $locale->term_id,
 						'translation_id' => $translation_id,
 					),
 					admin_url( $post_new_file )
 				);
+
 				$title_attr = $post_type_obj->labels->add_new;
 
 			} else {
 
-				$classes[] = 'locale-tab-' . $current_post->post_status;
+				$classes[]  = 'locale-tab-' . $current_post->post_status;
 				$title_attr = $this->get_post_status_label( $current_post->post_status );
 
 				/*
@@ -572,7 +576,7 @@ class Multilocale_Admin_Posts {
 					 *       even if the translation was created by another user?
 					 */
 					$classes[] = 'locale-tab-disabled';
-					$href = false;
+					$href      = false;
 
 				}
 			}
@@ -588,7 +592,7 @@ class Multilocale_Admin_Posts {
 			);
 		}
 
-		include( MULTILOCALE_PLUGIN_DIR . 'admin/templates/edit-form-advanced-tabs.php' );
+		include MULTILOCALE_PLUGIN_DIR . 'admin/templates/edit-form-advanced-tabs.php';
 	}
 
 	/**
@@ -633,6 +637,7 @@ class Multilocale_Admin_Posts {
 	 * Add a post locale and translation group to a post on save.
 	 * Even if it is an auto-draft, keeping things simple for the time being.
 	 *
+	 * @todo Add nonce check.
 	 * @since 0.0.1
 	 *
 	 * @access private
@@ -664,8 +669,8 @@ class Multilocale_Admin_Posts {
 		 * locale with that id exists.
 		 */
 
-		if ( ! empty( $_REQUEST['locale_id'] ) ) {
-			$locale = get_term_by( 'id', absint( $_REQUEST['locale_id'] ), $this->_locale_taxonomy );
+		if ( ! empty( $_REQUEST['locale_id'] ) ) { // WPCS: Input var ok, CSRF ok.
+			$locale = get_term_by( 'id', absint( $_REQUEST['locale_id'] ), $this->_locale_taxonomy ); // WPCS: Input var ok, CSRF ok.
 			if ( $locale ) {
 				$locale_id = $locale->term_id;
 			}
@@ -687,7 +692,8 @@ class Multilocale_Admin_Posts {
 
 		$post_locale = multilocale_update_post_locale( $post, $locale_id );
 
-		if ( empty( $_REQUEST['translation_id'] ) ) {
+		if ( empty( $_REQUEST['translation_id'] ) ) { // WPCS: Input var ok, CSRF ok.
+
 			/*
 			 * If the post is not yet part of a translation group,
 			 * create one and add the post to it.
@@ -702,7 +708,7 @@ class Multilocale_Admin_Posts {
 			 * Maybe there are posts in the translation group.
 			 * Does the group even exist?
 			 */
-			$translations = multilocale_get_posts_by_translation_group_id( absint( wp_unslash( $_REQUEST['translation_id'] ) ) );
+			$translations = multilocale_get_posts_by_translation_group_id( absint( wp_unslash( $_REQUEST['translation_id'] ) ) ); // WPCS: Input var ok, CSRF ok.
 
 			if ( ! $translations ) {
 				multilocale_insert_post_translation_group( $post->ID );
@@ -723,7 +729,7 @@ class Multilocale_Admin_Posts {
 
 				$object_terms = wp_set_object_terms(
 					$post->ID,
-					absint( $_REQUEST['translation_id'] ),
+					absint( $_REQUEST['translation_id'] ), // WPCS: Input var ok, CSRF ok.
 					$this->_post_translation_taxonomy
 				);
 			}
@@ -742,7 +748,7 @@ class Multilocale_Admin_Posts {
 	 */
 	public function filter_pre_post_link( $permalink, $post ) {
 		if ( is_admin() && post_type_supports( $post->post_type, 'multilocale' ) ) {
-			$options = get_option( 'plugin_multilocale' );
+			$options     = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $post );
 			if ( $post_locale && $post_locale->term_id !== $options['default_locale_id'] ) {
 				$permalink = '/' . $post_locale->slug . $permalink;
@@ -765,8 +771,8 @@ class Multilocale_Admin_Posts {
 
 		if ( is_admin() && post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$options        = get_option( 'plugin_multilocale' );
-			$post_locale    = multilocale_get_post_locale( $_post );
+			$options     = get_option( 'plugin_multilocale' );
+			$post_locale = multilocale_get_post_locale( $_post );
 
 			if ( $post_locale && $post_locale->term_id !== $options['default_locale_id'] ) {
 
@@ -793,6 +799,7 @@ class Multilocale_Admin_Posts {
 
 		if ( current_user_can( 'manage_options' ) ) {
 			$msg = sprintf(
+				/* translators: %s: link to 'add locale' admin page */
 				__( 'No locales found. <a href="%s">Add locales</a>.', 'multilocale' ),
 				admin_url( '/options-general.php?page=' . $this->_options_page )
 			);
@@ -871,7 +878,7 @@ class Multilocale_Admin_Posts {
 
 		global $submenu;
 
-		$array = array();
+		$array          = array();
 		$default_locale = multilocale_get_default_locale();
 
 		if ( ! $default_locale ) {
@@ -969,12 +976,14 @@ class Multilocale_Admin_Posts {
 			if ( count( $terms ) ) {
 
 				$args = array(
-					'post_type' => get_post_types_by_support( 'multilocale' ),
-					'tax_query' => array( // WPCS: slow query ok.
+					'post_type'              => get_post_types_by_support( 'multilocale' ),
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'tax_query'              => array( // WPCS: slow query ok.
 						array(
 							'taxonomy' => $this->_locale_taxonomy,
-							'terms' => $terms,
-							'field' => 'term_id',
+							'terms'    => $terms,
+							'field'    => 'term_id',
 							'operator' => 'NOT IN',
 						),
 					),
@@ -1094,7 +1103,7 @@ class Multilocale_Admin_Posts {
 		}
 
 		$post_locale = multilocale_get_post_locale( $_post );
-		$options = get_option( 'plugin_multilocale' );
+		$options     = get_option( 'plugin_multilocale' );
 
 		if ( $post_locale && ! empty( $options['page_for_posts'][ $post_locale->term_id ] ) && $options['page_for_posts'][ $post_locale->term_id ] === $post_id ) {
 			$options['page_for_posts'][ $post_locale->term_id ] = '';
@@ -1130,8 +1139,8 @@ class Multilocale_Admin_Posts {
 
 			if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-				$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-				$ids           = wp_list_pluck( $translations, 'ID' );
+				$translations = multilocale_get_post_translations( $_post, $siblings_only );
+				$ids          = wp_list_pluck( $translations, 'ID' );
 
 				if ( in_array( (int) $page_on_front, $ids, true ) ) {
 					return true;
@@ -1170,8 +1179,8 @@ class Multilocale_Admin_Posts {
 
 			if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-				$translations  = multilocale_get_post_translations( $_post, $siblings_only );
-				$ids           = wp_list_pluck( $translations, 'ID' );
+				$translations = multilocale_get_post_translations( $_post, $siblings_only );
+				$ids          = wp_list_pluck( $translations, 'ID' );
 
 				if ( in_array( (int) $page_for_posts, $ids, true ) ) {
 					return true;

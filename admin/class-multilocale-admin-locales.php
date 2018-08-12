@@ -62,7 +62,7 @@ class Multilocale_Admin_Locales {
 	private function __construct() {
 
 		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
-		$this->_options_page = multilocale()->options_page;
+		$this->_options_page    = multilocale()->options_page;
 
 		$this->_error_messages = array(
 			'db_insert_error'        => esc_html__( 'Could not insert locale into the database', 'multilocale' ),
@@ -185,9 +185,9 @@ class Multilocale_Admin_Locales {
 
 			// Note: We're only using input from the locale dropdown for the time being.
 			// Todo: Use https://github.com/Automattic/wp-cldr plugin if it is activated.
-			require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
+			require_once MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php';
 
-			$gp_locales_obj = new GP_Locales();
+			$gp_locales_obj   = new GP_Locales();
 			$gp_locales_array = $gp_locales_obj->locales();
 
 			if ( ! array_key_exists( $post_data['select_locale'], $gp_locales_array ) ) {
@@ -227,7 +227,7 @@ class Multilocale_Admin_Locales {
 
 					$edit_url = add_query_arg(
 						array(
-							'action' => 'edit_locale',
+							'action'    => 'edit_locale',
 							'locale_id' => $term['term_id'],
 						),
 						admin_url( 'options-general.php?page=' . $this->_options_page )
@@ -252,7 +252,7 @@ class Multilocale_Admin_Locales {
 					 * @param string $term['term_id'] Default locale term ID.
 					 */
 					do_action( 'multilocale_init', $term['term_id'] );
-				} // End if().
+				} // End if.
 				break;
 			case 'insert_locale':
 				$term = multilocale_insert_locale( $locale_array[0], $locale_array[1], $locale_array[2] );
@@ -268,7 +268,7 @@ class Multilocale_Admin_Locales {
 
 					$edit_url = add_query_arg(
 						array(
-							'action' => 'edit_locale',
+							'action'    => 'edit_locale',
 							'locale_id' => $term['term_id'],
 						),
 						admin_url( 'options-general.php?page=' . $this->_options_page )
@@ -405,7 +405,7 @@ class Multilocale_Admin_Locales {
 					exit();
 				}
 				break;
-		} // End switch().
+		} // End switch.
 	}
 
 	/**
@@ -440,7 +440,7 @@ class Multilocale_Admin_Locales {
 			case 'edit_locale':
 			case 'delete_locale':
 				$locale_id = (int) $get_data['locale_id'];
-				$locale = get_term( $locale_id, $this->_locale_taxonomy, OBJECT, 'edit' );
+				$locale    = get_term( $locale_id, $this->_locale_taxonomy, OBJECT, 'edit' );
 
 				if ( ! $locale ) {
 					wp_die( esc_html__( 'You attempted to edit an item that doesn&#8217;t exist. Perhaps it was deleted?', 'default' ) );
@@ -463,7 +463,7 @@ class Multilocale_Admin_Locales {
 	public function add_init_page_text() {
 
 		$supported_post_types = get_post_types_by_support( 'multilocale' );
-		$messages = array();
+		$messages             = array();
 
 		if ( ! $supported_post_types ) {
 			/*
@@ -497,12 +497,13 @@ class Multilocale_Admin_Locales {
 				// Todo: There is a wp function taking care of this, use it.
 				$last_label = array_pop( $post_type_names );
 				$labels     = implode( ', ', $post_type_names );
+
 				/* translators: %s: comma-separated list of post types */
-				$labels     = sprintf( _x( '%1$s and %2$s', 'A comma-separated list where "and" comes before the last element, eg. Dutch, English and French', 'multilocale' ), esc_html( $labels ), esc_html( $last_label ) );
+				$labels = sprintf( _x( '%1$s and %2$s', 'A comma-separated list where "and" comes before the last element, eg. Dutch, English and French', 'multilocale' ), esc_html( $labels ), esc_html( $last_label ) );
 			}
 			/* translators: %s: comma-separated list of post types */
 			$messages[] = sprintf( _x( 'Select your default locale. Existing content (%s) will be automatically assigned to the default locale.', 'Refers to a comma separated list of supported post types', 'multilocale' ), esc_html( $labels ) );
-		} // End if().
+		} // End if.
 
 		foreach ( $messages as $message ) {
 			$allowed_html = array(
@@ -535,16 +536,16 @@ class Multilocale_Admin_Locales {
 			$native_name = 'English';
 		} else {
 
-			require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
+			require_once MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php';
 
-			$gp_locales_obj = new GP_Locales();
+			$gp_locales_obj   = new GP_Locales();
 			$gp_locales_array = $gp_locales_obj->locales();
-			$known_locales = wp_list_pluck( $gp_locales_array, 'slug', 'wp_locale' );
+			$known_locales    = wp_list_pluck( $gp_locales_array, 'slug', 'wp_locale' );
 
 			if ( array_key_exists( $locale, $known_locales ) ) {
-				$locale_obj = $gp_locales_array[ $known_locales[ $locale ] ];
+				$locale_obj  = $gp_locales_array[ $known_locales[ $locale ] ];
 				$native_name = $locale_obj->native_name;
-				$slug = $locale_obj->slug;
+				$slug        = $locale_obj->slug;
 			} else {
 				/*
 				 * The WP_Locale is not present in the locales object.
@@ -577,18 +578,18 @@ class Multilocale_Admin_Locales {
 	 */
 	public function render_settings_page_content( $action ) {
 
-		$options = get_option( 'plugin_multilocale' );
+		$options             = get_option( 'plugin_multilocale' );
 		$locale_taxonomy_obj = get_taxonomy( $this->_locale_taxonomy );
 
 		switch ( $action ) {
 			case 'locales':
 				$args = array(
 					'hide_empty' => false,
-					'orderby' => 'term_order',
-					'order' => 'ASC',
+					'orderby'    => 'term_order',
+					'order'      => 'ASC',
 				);
 
-				$locales = get_terms( $this->_locale_taxonomy, $args );
+				$locales  = get_terms( $this->_locale_taxonomy, $args );
 				$base_url = admin_url( 'options-general.php?page=' . $this->_options_page );
 
 				foreach ( $locales as $locale ) {
@@ -597,7 +598,7 @@ class Multilocale_Admin_Locales {
 						add_query_arg(
 							array(
 								'locale_id' => $locale->term_id,
-								'action' => 'edit_locale',
+								'action'    => 'edit_locale',
 							),
 							$base_url
 						),
@@ -609,7 +610,7 @@ class Multilocale_Admin_Locales {
 						add_query_arg(
 							array(
 								'locale_id' => $locale->term_id,
-								'action' => 'delete_locale',
+								'action'    => 'delete_locale',
 							),
 							$base_url
 						),
@@ -635,17 +636,17 @@ class Multilocale_Admin_Locales {
 				 * Todo: This is getting weird. How are we going to mark installed languages in the dropdown?
 				 *       For the time being only the locale name and slug must be unique.
 				 */
-				$active_locales = multilocale_get_locales();
+				$active_locales      = multilocale_get_locales();
 				$active_locale_names = wp_list_pluck( $active_locales, 'name' );
 
-				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-locales.php' );
+				require_once MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-locales.php';
 				break;
 			case 'edit_locale':
-				if ( ! isset( $_REQUEST['locale_id'] ) ) {
+				if ( ! isset( $_REQUEST['locale_id'] ) ) { // WPCS: input var okay, CSRF ok.
 					wp_die( esc_html( $this->_error_messages['invalid_term_id'] ) );
 				}
 
-				$locale_id          = (int) $_REQUEST['locale_id'];
+				$locale_id          = (int) $_REQUEST['locale_id']; // WPCS: input var okay.
 				$locale_obj         = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
 				$date_formats       = array_unique( apply_filters( 'date_formats', array( __( 'F j, Y', 'default' ), 'Y-m-d', 'm/d/Y', 'd/m/Y' ) ) ); // WPCS: prefix ok.
 				$custom_date        = true;
@@ -659,14 +660,14 @@ class Multilocale_Admin_Locales {
 				$custom_time        = true;
 				$locale_time_format = get_term_meta( $locale_obj->term_id, 'time_format', true );
 
-				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-edit-locale.php' );
+				require_once MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-edit-locale.php';
 				break;
 			case 'delete_locale':
-				if ( ! isset( $_REQUEST['locale_id'] ) ) {
+				if ( ! isset( $_REQUEST['locale_id'] ) ) { // WPCS: input var okay, CSRF ok.
 					wp_die( esc_html( $this->_error_messages['invalid_term_id'] ) );
 				}
 
-				$locale_id      = (int) $_REQUEST['locale_id'];
+				$locale_id      = (int) $_REQUEST['locale_id']; // WPCS: input var okay.
 				$locale_obj     = get_term( $locale_id, $locale_taxonomy_obj->name, OBJECT, 'edit' );
 				$active_locales = multilocale_get_locales();
 
@@ -674,7 +675,7 @@ class Multilocale_Admin_Locales {
 					$locale_time_format = get_option( 'time_format' );
 				}
 
-				require_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-delete-locale.php' );
+				require_once MULTILOCALE_PLUGIN_DIR . 'admin/templates/content-delete-locale.php';
 				break;
 		}
 	}
@@ -706,8 +707,8 @@ class Multilocale_Admin_Locales {
 			$installed_translations = wp_get_installed_translations( $type );
 			foreach ( $installed_translations as $k => $v ) {
 				if ( array_key_exists( $term->description, $v ) ) {
-					$dir = ( 'core' === $type ) ? WP_LANG_DIR . '/' : WP_LANG_DIR . '/' . $type . '/';
-					$prefix = ( 'core' === $type && 'default' === $k ) ? '' : $k . '-';
+					$dir     = ( 'core' === $type ) ? WP_LANG_DIR . '/' : WP_LANG_DIR . '/' . $type . '/';
+					$prefix  = ( 'core' === $type && 'default' === $k ) ? '' : $k . '-';
 					$files[] = $dir . $prefix . $term->description . '.mo';
 					$files[] = $dir . $prefix . $term->description . '.po';
 				}
@@ -734,7 +735,7 @@ class Multilocale_Admin_Locales {
 	 */
 	public function install_language_pack( $term_id ) {
 
-		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+		require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
 		if ( ! wp_can_install_language_pack() ) {
 			return false;
@@ -805,11 +806,11 @@ class Multilocale_Admin_Locales {
 
 		$args = wp_parse_args( $args, $defaults );
 
-		require_once( MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php' );
+		require_once MULTILOCALE_PLUGIN_DIR . 'admin/includes/vendor/glotpress/locales.php';
 
-		$gp_locales_obj = new GP_Locales();
+		$gp_locales_obj   = new GP_Locales();
 		$gp_locales_array = $gp_locales_obj->locales();
-		$html = array();
+		$html             = array();
 
 		foreach ( $gp_locales_array as $locale ) {
 			$html[] = sprintf(

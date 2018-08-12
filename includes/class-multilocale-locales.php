@@ -65,19 +65,19 @@ class Multilocale_Locales {
 	public function register_locale_taxonomy() {
 
 		$labels = array(
-			'name'              => _x( 'Locale', 'taxonomy general name', 'multilocale' ),
-			'singular_name'     => _x( 'Locale', 'taxonomy singular name', 'multilocale' ),
-			'menu_name'         => __( 'Locales', 'multilocale' ),
-			'all_items'         => __( 'All Locales', 'multilocale' ),
-			'edit_item'         => __( 'Edit Locale', 'multilocale' ),
-			'update_item'       => __( 'Update Locale', 'multilocale' ),
-			'add_new_item'      => __( 'Add New Locale', 'multilocale' ),
-			'new_item_name'     => __( 'New Locale Name', 'multilocale' ),
-			'search_items'      => __( 'Search Locales', 'multilocale' ),
-			'popular_items' => __( 'Popular Locales', 'multilocale' ),
-			'add_or_remove_items' => __( 'Add or remove locales', 'multilocale' ),
+			'name'                  => _x( 'Locale', 'taxonomy general name', 'multilocale' ),
+			'singular_name'         => _x( 'Locale', 'taxonomy singular name', 'multilocale' ),
+			'menu_name'             => __( 'Locales', 'multilocale' ),
+			'all_items'             => __( 'All Locales', 'multilocale' ),
+			'edit_item'             => __( 'Edit Locale', 'multilocale' ),
+			'update_item'           => __( 'Update Locale', 'multilocale' ),
+			'add_new_item'          => __( 'Add New Locale', 'multilocale' ),
+			'new_item_name'         => __( 'New Locale Name', 'multilocale' ),
+			'search_items'          => __( 'Search Locales', 'multilocale' ),
+			'popular_items'         => __( 'Popular Locales', 'multilocale' ),
+			'add_or_remove_items'   => __( 'Add or remove locales', 'multilocale' ),
 			'choose_from_most_used' => __( 'Choose from most used locales', 'multilocale' ),
-			'not_found'         => __( 'No locales found', 'multilocale' ),
+			'not_found'             => __( 'No locales found', 'multilocale' ),
 		);
 
 		$args = array(
@@ -124,16 +124,16 @@ class Multilocale_Locales {
 	public function register_locale_term_meta() {
 
 		$term_meta_keys = array(
-			'_locale_blogname' => array(
+			'_locale_blogname'        => array(
 				'description' => esc_html__( 'Site name for the locale', 'multilocale' ),
 			),
 			'_locale_blogdescription' => array(
 				'description' => esc_html__( 'Site description', 'default' ),
 			),
-			'_locale_date_format' => array(
+			'_locale_date_format'     => array(
 				'description' => esc_html__( 'Date format', 'default' ),
 			),
-			'_locale_time_format' => array(
+			'_locale_time_format'     => array(
 				'description' => esc_html__( 'Time format', 'default' ),
 			),
 		);
@@ -143,10 +143,10 @@ class Multilocale_Locales {
 				'term',
 				$meta_key,
 				array(
-					'description' => $args['description'],
+					'description'       => $args['description'],
 					'sanitize_callback' => 'trim',
-					'single' => true,
-					'type' => 'string',
+					'single'            => true,
+					'type'              => 'string',
 				)
 			);
 		}
@@ -182,7 +182,7 @@ class Multilocale_Locales {
 			$this->_locale_taxonomy,
 			array(
 				'description' => $wp_locale,
-				'slug' => $slug,
+				'slug'        => $slug,
 			)
 		);
 
@@ -217,7 +217,7 @@ class Multilocale_Locales {
 	public function get_default_locale() {
 
 		$default_locale_id = $this->get_default_locale_id();
-		$_term = false;
+		$_term             = false;
 
 		if ( $default_locale_id ) {
 			$_term = WP_Term::get_instance( (int) $default_locale_id, $this->_locale_taxonomy );
@@ -266,7 +266,7 @@ class Multilocale_Locales {
 			return new WP_Error( 'locale_not_found', sprintf( 'Locale with ID %d not found', $id ) );
 		}
 
-		$options = get_option( 'plugin_multilocale' );
+		$options                      = get_option( 'plugin_multilocale' );
 		$options['default_locale_id'] = absint( $id );
 
 		return update_option( 'plugin_multilocale', $options );
@@ -290,7 +290,7 @@ class Multilocale_Locales {
 			);
 
 			$term_query = new WP_Term_Query();
-			$terms = $term_query->query( $args );
+			$terms      = $term_query->query( $args );
 
 			if ( count( $terms ) ) {
 				wp_cache_add( 'multilocale_locales', $terms );

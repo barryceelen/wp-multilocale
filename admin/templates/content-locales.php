@@ -128,6 +128,7 @@ defined( 'ABSPATH' ) || die();
 						<label for="">
 							<?php
 							printf(
+								/* translators: %s: locale taxonomy name */
 								esc_html_x( 'Select %s', 'Select locale', 'multilocale' ),
 								esc_html( $locale_taxonomy_obj->labels->singular_name )
 							);

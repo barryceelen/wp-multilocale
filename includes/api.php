@@ -356,7 +356,7 @@ function multilocale_page_is_page_on_front( $post, $siblings_only = false ) {
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$options = get_option( 'plugin_multilocale' );
+			$options     = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
 			if (
@@ -398,7 +398,7 @@ function multilocale_page_is_page_for_posts( $post, $siblings_only = false ) {
 
 		if ( post_type_supports( $_post->post_type, 'multilocale' ) ) {
 
-			$options = get_option( 'plugin_multilocale' );
+			$options     = get_option( 'plugin_multilocale' );
 			$post_locale = multilocale_get_post_locale( $_post );
 
 			if (

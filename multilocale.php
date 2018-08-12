@@ -96,4 +96,4 @@ if ( is_admin() ) {
 	require_once MULTILOCALE_PLUGIN_DIR . 'public/class-multilocale-public-posts.php';
 }
 
-require_once( MULTILOCALE_PLUGIN_DIR . 'includes/api.php' );
+require_once MULTILOCALE_PLUGIN_DIR . 'includes/api.php';

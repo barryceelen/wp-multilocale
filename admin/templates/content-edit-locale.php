@@ -183,6 +183,7 @@ do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj
 							'<input name="default_locale" type="checkbox" id="default_locale" value="%d"%s/> %s',
 							absint( $locale_obj->term_id ),
 							(int) $options['default_locale_id'] === (int) $locale_obj->term_id ? ' checked="checked" disabled="disabled"' : '',
+							/* translators: %s: locale name */
 							(int) $options['default_locale_id'] === (int) $locale_obj->term_id ? sprintf( esc_html__( '&#8220;%s&#8221; is the default locale', 'multilocale' ), esc_html( $locale_obj->name ) ) : sprintf( esc_html__( 'Make &#8220;%s&#8221; the default locale', 'multilocale' ), esc_html( $locale_obj->name ) )
 						);
 						?>

@@ -53,7 +53,7 @@ class Multilocale_Admin {
 	private function __construct() {
 
 		$this->_locale_taxonomy = multilocale()->locale_taxonomy;
-		$this->_options_page = multilocale()->options_page;
+		$this->_options_page    = multilocale()->options_page;
 
 		$this->add_actions_and_filters();
 	}
@@ -156,7 +156,7 @@ class Multilocale_Admin {
 		if ( empty( $active_locales ) ) {
 
 			$submit_button_attr = function_exists( 'add_term_meta' ) ? null : 'disabled';
-			include_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-setup.php' );
+			include_once MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-setup.php';
 
 		} else {
 			/*
@@ -167,6 +167,7 @@ class Multilocale_Admin {
 			$default_tabs = array(
 				'locales' => __( 'Locales', 'multilocale' ),
 			);
+
 			$tabs = apply_filters(
 				'multilocale_options_page_tabs',
 				$default_tabs
@@ -176,7 +177,7 @@ class Multilocale_Admin {
 
 			$current_action = empty( $_GET['action'] ) ? 'locales' : sanitize_key( wp_unslash( $_GET['action'] ) ); // WPCS: input var ok, CSRF ok.
 
-			include_once( MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-options.php' );
+			include_once MULTILOCALE_PLUGIN_DIR . 'admin/templates/page-options.php';
 		}
 	}
 
@@ -192,11 +193,13 @@ class Multilocale_Admin {
 	public function add_plugin_action_link( $links ) {
 
 		if ( current_user_can( 'manage_options' ) ) {
+
 			$link = sprintf(
 				'<a href="%s">%s</a>',
 				admin_url( 'options-general.php?page=' . $this->_options_page ),
 				esc_html__( 'Settings', 'multilocale' )
 			);
+
 			$links = array_merge(
 				array(
 					'settings' => $link,
@@ -314,6 +317,7 @@ class Multilocale_Admin {
 		);
 
 		if ( current_user_can( 'update_core' ) ) {
+			/* translators: %s: link to WordPress updates admin page */
 			$msg = sprintf( __( 'Multilocale requires WordPress 4.4 or higher. <a href="%s">Update</a>', 'multilocale' ), admin_url( 'update-core.php' ) );
 		} else {
 			$msg = sprintf( __( 'Multilocale requires WordPress 4.4 or higher. Please notify the site administrator.', 'multilocale' ), $cur->current );
@@ -341,6 +345,7 @@ class Multilocale_Admin {
 		if ( current_user_can( 'manage_options' ) ) {
 			// Wording shamelessly borrowed from the 'Babble' plugin (http://babbleplugin.com/).
 			$msg = sprintf(
+				/* translators: %s: link to admin permalinks settings page */
 				__( 'Pretty permalinks are disabled. <a href="%s">Please enable them</a> in order to have language prefixed URLs work correctly.', 'multilocale' ),
 				admin_url( '/options-permalink.php' )
 			);

@@ -13,9 +13,14 @@
 defined( 'ABSPATH' ) || die();
 ?>
 
-<h1><?php printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) ); ?></h1>
+<h1>
+	<?php
+	/* translators: %s: locale name */
+	printf( esc_html__( 'Delete %s', 'multilocale' ), esc_html( $locale_taxonomy_obj->labels->singular_name ) );
+	?>
+</h1>
 
-<?php if ( empty( $_REQUEST['locale_id'] ) ) : ?>
+<?php if ( empty( $_REQUEST['locale_id'] ) ) : // WPCS: input var ok, CSRF ok. ?>
 
 	<p><?php echo esc_html( $this->error_messages['invalid_term_id'] ); ?></p>
 

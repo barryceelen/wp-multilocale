@@ -59,8 +59,8 @@ class Multilocale {
 	 */
 	public function __construct() {
 
-		$this->locale_taxonomy = 'locale';
-		$this->options_page = 'multilocale-options';
+		$this->locale_taxonomy           = 'locale';
+		$this->options_page              = 'multilocale-options';
 		$this->post_translation_taxonomy = 'post_translation';
 
 		$this->add_actions_and_filters();
@@ -142,7 +142,6 @@ class Multilocale {
 					foreach ( $locales as $locale ) {
 						if ( $switched_locale === $locale->description ) {
 							return $locale;
-							break;
 						}
 					}
 				}

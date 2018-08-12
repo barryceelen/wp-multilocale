@@ -34,7 +34,7 @@ class Multilocale_Posts {
 	 */
 	private function __construct() {
 
-		$this->locale_taxonomy = multilocale()->locale_taxonomy;
+		$this->locale_taxonomy           = multilocale()->locale_taxonomy;
 		$this->post_translation_taxonomy = multilocale()->post_translation_taxonomy;
 
 		$this->add_actions_and_filters();
@@ -84,16 +84,16 @@ class Multilocale_Posts {
 	public function register_post_translation_taxonomy() {
 
 		$labels = array(
-			'name'              => _x( 'Translations', 'taxonomy general name', 'multilocale' ),
-			'singular_name'     => _x( 'Translation', 'taxonomy singular name', 'multilocale' ),
-			'menu_name'         => __( 'Translations', 'multilocale' ),
-			'all_items'         => __( 'All Translations', 'multilocale' ),
-			'edit_item'         => __( 'Edit Translation', 'multilocale' ),
-			'update_item'       => __( 'Update Translation', 'multilocale' ),
-			'add_new_item'      => __( 'Add Translation', 'multilocale' ),
-			'search_items'      => __( 'Search Translations', 'multilocale' ),
+			'name'                => _x( 'Translations', 'taxonomy general name', 'multilocale' ),
+			'singular_name'       => _x( 'Translation', 'taxonomy singular name', 'multilocale' ),
+			'menu_name'           => __( 'Translations', 'multilocale' ),
+			'all_items'           => __( 'All Translations', 'multilocale' ),
+			'edit_item'           => __( 'Edit Translation', 'multilocale' ),
+			'update_item'         => __( 'Update Translation', 'multilocale' ),
+			'add_new_item'        => __( 'Add Translation', 'multilocale' ),
+			'search_items'        => __( 'Search Translations', 'multilocale' ),
 			'add_or_remove_items' => __( 'Add or remove translations', 'multilocale' ),
-			'not_found'         => __( 'No translations found', 'multilocale' ),
+			'not_found'           => __( 'No translations found', 'multilocale' ),
 		);
 
 		$args = array(
@@ -199,6 +199,7 @@ class Multilocale_Posts {
 		}
 
 		if ( ! multilocale_locale_id_exists( $locale_id ) ) {
+			/* translators: %d: locale ID */
 			return new WP_Error( 'locale_not_found', sprintf( __( 'Locale with id %d not found.', 'multilocale' ), $locale_id ) );
 		}
 
@@ -246,7 +247,7 @@ class Multilocale_Posts {
 	/**
 	 * Get the translations of a post.
 	 *
-	 * @see get_posts()
+	 * @see get_post()
 	 *
 	 * @since 0.0.1
 	 *
@@ -263,7 +264,7 @@ class Multilocale_Posts {
 			return new WP_Error( 'post_not_found', __( 'Post not found.', 'multilocale' ) );
 		}
 
-		$posts = array();
+		$posts             = array();
 		$translation_group = $this->get_post_translation_group( $_post );
 
 		if ( $translation_group ) {
@@ -344,7 +345,7 @@ class Multilocale_Posts {
 		}
 
 		$term_name = uniqid( $_post->ID );
-		$term = wp_insert_term( $term_name, $this->post_translation_taxonomy );
+		$term      = wp_insert_term( $term_name, $this->post_translation_taxonomy );
 
 		if ( is_wp_error( $term ) ) {
 			return $term;
@@ -364,8 +365,6 @@ class Multilocale_Posts {
 	 *
 	 * @todo Add post_type parameter.
 	 *
-	 * @see get_posts()
-	 *
 	 * @since 0.0.1
 	 *
 	 * @param string       $id          Term ID.
@@ -378,10 +377,12 @@ class Multilocale_Posts {
 		$result = array();
 
 		$args = array(
-			'posts_per_page' => 100, // Make PHP Code Sniffer happy.
-			'post_type' => get_post_types_by_support( 'multilocale' ), // Defining only one post type saves one query.
-			'post_status' => $post_status,
-			'tax_query' => array( // WPCS: slow query ok.
+			'posts_per_page'         => 100, // Make PHP Code Sniffer happy.
+			'post_type'              => get_post_types_by_support( 'multilocale' ), // Defining only one post type saves one query.
+			'post_status'            => $post_status,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'tax_query'              => array( // WPCS: slow query ok.
 				array(
 					'taxonomy'         => $this->post_translation_taxonomy,
 					'terms'            => absint( $id ),

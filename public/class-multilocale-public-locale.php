@@ -149,7 +149,7 @@ class Multilocale_Public_Locale {
 			return;
 		}
 
-		$str = is_ssl() ? 'https://' : 'http://';
+		$str  = is_ssl() ? 'https://' : 'http://';
 		$str .= wp_unslash( $_SERVER['HTTP_HOST'] );   // WPCS: sanitization ok, input var ok.
 		$str .= wp_unslash( $_SERVER['REQUEST_URI'] ); // WPCS: sanitization ok, input var ok.
 
