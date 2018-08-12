@@ -179,9 +179,13 @@ class Multilocale_Admin_Posts {
 
 			if ( 'delete' === $_POST['delete_option'] ) { // WPCS: input var okay.
 
+				// Todo: Loop through posts in stead of trying to get them all with 'nopaging'.
 				$args = array(
-					'post_type' => get_post_types_by_support( 'multilocale' ),
-					'tax_query' => array( // WPCS: slow query ok.
+					'nopaging'               => true,
+					'post_type'              => get_post_types_by_support( 'multilocale' ),
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'tax_query'              => array( // WPCS: slow query ok.
 						array(
 							'taxonomy' => $this->_locale_taxonomy,
 							'field'    => 'term_id',
@@ -190,15 +194,15 @@ class Multilocale_Admin_Posts {
 					),
 				);
 
-				$posts = get_posts( $args );
+				$query = new WP_Query( $args );
 
-				if ( $posts ) {
-					foreach ( $posts as $post ) {
+				if ( $query->have_posts() ) {
+					foreach ( $query->posts as $_post ) {
 						/*
 						 * Note: The translation group is removed if the post is the last one in it
 						 *       via an action on delete_term_relationships.
 						 */
-						wp_delete_post( $post->ID, true );
+						wp_delete_post( $_post->ID, true );
 					}
 				}
 			}
@@ -252,21 +256,22 @@ class Multilocale_Admin_Posts {
 		 *       Fix this stuff as it will break if there are more than a handful posts in the database.
 		 *
 		 * Todo: Offer user a choice as to what to do with existing content.
-		 *
 		 */
 		$args = array(
-			'post_type' => get_post_types_by_support( 'multilocale' ),
-			'post_status' => 'any',
-			'nopaging' => true,
+			'post_type'              => get_post_types_by_support( 'multilocale' ),
+			'post_status'            => 'any',
+			'nopaging'               => true,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
 		);
 
-		$posts = get_posts( $args ); // Todo: Use WP_Query?
+		$query = new WP_Query( $args );
 
-		if ( $posts ) {
-			foreach ( $posts as $post ) {
-				if ( ! multilocale_get_post_locale( $post ) ) {
-					$terms = wp_set_object_terms( $post->ID, absint( $term_id ), $this->_locale_taxonomy );
-					$translation_group = multilocale_insert_post_translation_group( $post );
+		if ( $query->have_posts() ) {
+			foreach ( $query->posts as $_post ) {
+				if ( ! multilocale_get_post_locale( $_post ) ) {
+					$terms             = wp_set_object_terms( $_post->ID, absint( $term_id ), $this->_locale_taxonomy );
+					$translation_group = multilocale_insert_post_translation_group( $_post );
 				}
 			}
 		}
@@ -829,23 +834,25 @@ class Multilocale_Admin_Posts {
 		}
 
 		$args = array(
-			'post_type' => $dropdown_args['post_type'],
-			'fields' => 'ids',
-			'tax_query' => array( // WPCS: slow query ok.
+			'fields'                 => 'ids',
+			'post_type'              => $dropdown_args['post_type'],
+			'numberposts'            => 100, // Todo: Magic number.
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'tax_query'              => array( // WPCS: slow query ok.
 				array(
 					'taxonomy' => $this->_locale_taxonomy,
-					'field' => 'term_id',
-					'terms' => array( $post_locale->term_id ),
+					'field'    => 'term_id',
+					'terms'    => array( $post_locale->term_id ),
 					'operator' => 'IN',
 				),
 			),
-			'numberposts' => 100, // Todo: Magic number.
 		);
 
-		$posts = get_posts( $args );
+		$query = new WP_Query( $args );
 
 		$new_dropdown_args = array(
-			'include' => $posts,
+			'include' => $query->posts,
 			'exclude' => $post->ID,
 		);
 
