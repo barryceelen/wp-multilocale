@@ -40,7 +40,7 @@ $multilocale_uninstall_option_names = array(
 	'plugin_multilocale_version',
 );
 
-foreach ( $multilocale_uninstall_option_names as $option ) {
-	delete_option( $option_name );
-	delete_site_option( $option_name );
+foreach ( $multilocale_uninstall_option_names as $multilocale_option_name ) {
+	delete_option( $multilocale_option_name );
+	delete_site_option( $multilocale_option_name );
 }

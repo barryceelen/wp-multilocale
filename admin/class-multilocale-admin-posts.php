@@ -292,7 +292,9 @@ class Multilocale_Admin_Posts {
 		if ( 'post' === $current_screen->base && post_type_supports( $current_screen->post_type, 'multilocale' ) ) {
 			wp_enqueue_style(
 				'plugin_multilocale',
-				MULTILOCALE_PLUGIN_URL . '/admin/css/posts.css'
+				MULTILOCALE_PLUGIN_URL . '/admin/css/posts.css',
+				array(),
+				'0.0.3'
 			);
 		}
 	}
