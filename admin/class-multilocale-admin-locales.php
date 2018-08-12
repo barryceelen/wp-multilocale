@@ -372,11 +372,9 @@ class Multilocale_Admin_Locales {
 				}
 
 				if ( ! empty( $post_data['default_locale'] ) ) {
-					if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
-						$term = wpcom_vip_get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
-					} else {
-						$term = get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
-					}
+
+					$term = get_term_by( 'id', absint( $term['term_id'] ), $this->_locale_taxonomy );
+
 					if ( $term && ! is_wp_error( $term ) ) {
 						multilocale_set_default_locale( $term->term_id );
 					}

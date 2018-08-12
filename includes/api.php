@@ -307,11 +307,7 @@ function multilocale_get_localized_post_type_archive_link( $post_type, $locale =
  */
 function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
 
-	if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
-		$link = wpcom_vip_get_term_link( $term, $taxonomy );
-	} else {
-		$link = get_term_link( $term, $taxonomy );
-	}
+	$link = get_term_link( $term, $taxonomy );
 
 	if ( is_wp_error( $link ) ) {
 		return $link;
@@ -321,11 +317,7 @@ function multilocale_get_localized_term_link( $term, $taxonomy = '', $locale ) {
 		if ( is_int( $locale ) ) {
 			$locale = get_term( $locale, 'locale' );
 		} else {
-			if ( function_exists( 'wpcom_vip_get_term_by' ) ) {
-				$locale = wpcom_vip_get_term_by( 'slug', $locale, 'locale' );
-			} else {
-				$locale = get_term_by( 'slug', $locale, 'locale' );
-			}
+			$locale = get_term_by( 'slug', $locale, 'locale' );
 		}
 		if ( ! $locale || is_wp_error( $locale ) ) {
 			/* translators: %s: locale name */
