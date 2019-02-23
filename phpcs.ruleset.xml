@@ -7,7 +7,6 @@
 	<file>.</file>
 	<rule ref="WordPress">
 		<exclude name="WordPress.WP.I18n.MissingTranslatorsComment"/>
-		<exclude name="WordPress.VIP.RestrictedFunctions"/>
 	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
