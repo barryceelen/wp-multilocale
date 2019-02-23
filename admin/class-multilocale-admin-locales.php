@@ -822,8 +822,8 @@ class Multilocale_Admin_Locales {
 			);
 		}
 
-		return sprintf( '
-			<select class="js-select-locale" name="select_locale">%s</select>',
+		return sprintf(
+			'<select class="js-select-locale" name="select_locale">%s</select>',
 			join( '', $html )
 		);
 	}

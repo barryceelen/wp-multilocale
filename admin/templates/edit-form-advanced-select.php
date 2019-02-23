@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || die();
 		<div class="locale-select-wrap">
 			<select name="locale_id" class="locale-select">
 				<option value="0"><?php echo esc_html( $label ); ?></option>
-				<?php foreach ( $locales as $locale ) : ?>
+				<?php foreach ( $locales as $locale ) : // WPCS: override ok. ?>
 					<option value="<?php echo absint( $locale->term_id ); ?>"><?php echo esc_html( $locale->name ); ?></option>
 				<?php endforeach; ?>
 			</select>

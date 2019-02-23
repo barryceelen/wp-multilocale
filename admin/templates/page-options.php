@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || die();
 	<?php
 	if ( count( $tabs ) === 1 ) {
 
-		foreach ( $tabs as $action => $title ) {
+		foreach ( $tabs as $action => $title ) { // WPCS: override ok.
 			/**
 			 * Fires on the settings page content area.
 			 *
@@ -33,7 +33,7 @@ defined( 'ABSPATH' ) || die();
 		}
 	} else {
 
-		foreach ( $tabs as $action => $title ) {
+		foreach ( $tabs as $action => $title ) { // WPCS: override ok.
 			$html[] = sprintf( // WPCS: prefix ok.
 				'<a href="%s" class="nav-tab%s">%s</a>',
 				add_query_arg(

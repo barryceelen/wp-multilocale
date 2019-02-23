@@ -62,7 +62,7 @@ defined( 'ABSPATH' ) || die();
 						</td>
 					</tr>
 				<?php else : ?>
-					<?php foreach ( $locales as $locale ) : ?>
+					<?php foreach ( $locales as $locale ) : // WPCS: override ok. ?>
 						<tr>
 							<td class="column-locale-name name column-name">
 								<strong><a class="row-title" href="<?php echo esc_url( $locale->multilocale_edit_url ); ?>"><?php echo esc_html( $locale->name ); ?></a></strong>

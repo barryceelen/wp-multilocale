@@ -102,7 +102,7 @@ do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj
 					load_default_textdomain( $locale_obj->description );
 				}
 
-				foreach ( $date_formats as $format ) {
+				foreach ( $date_formats as $format ) { // WPCS: prefix ok.
 					echo "\t<label title='" . esc_attr( $format ) . "'><input type='radio' name='date_format' value='" . esc_attr( $format ) . "'";
 					if ( $locale_date_format === $format ) { // checked() uses "==" rather than "===".
 						echo " checked='checked'";
@@ -136,7 +136,7 @@ do_action( "multilocale_{$locale_taxonomy_obj->name}_pre_edit_form", $locale_obj
 				load_default_textdomain( $locale_obj->description );
 			}
 
-			foreach ( $time_formats as $format ) {
+			foreach ( $time_formats as $format ) { // WPCS: prefix ok.
 				echo "\t<label title='" . esc_attr( $format ) . "'><input type='radio' name='time_format' value='" . esc_attr( $format ) . "'";
 				if ( $locale_time_format === $format ) { // checked() uses "==" rather than "===".
 					echo " checked='checked'";
