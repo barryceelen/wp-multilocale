@@ -52,7 +52,7 @@ defined( 'ABSPATH' ) || die();
 					<label for="default_locale_id"><?php esc_html_e( 'Select a new default locale', 'multilocale' ); ?>: </label>
 					<select name="default_locale_id">
 						<?php
-						foreach ( $active_locales as $locale ) {
+						foreach ( $active_locales as $locale ) { // WPCS: override ok.
 							if ( (int) $locale->term_id !== (int) $options['default_locale_id'] ) {
 								printf( '<option value="%d">%s</option>', esc_attr( $locale->term_id ), esc_html( $locale->name ) );
 							}
